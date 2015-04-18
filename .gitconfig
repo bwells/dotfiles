@@ -1,0 +1,7 @@
+[user]
+	name = Bradford Wells
+	email = bwells@altalang.com
+[push]
+	default = current
+[core]
+	editor = vim
