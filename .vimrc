@@ -48,6 +48,11 @@ Plugin 'tpope/vim-repeat'
 
 Plugin 'tpope/vim-surround'
 
+" session management
+" :Prosession <dir> to change/create
+Plugin 'tpope/vim-obsession'
+Plugin 'dhruvasagar/vim-prosession'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
