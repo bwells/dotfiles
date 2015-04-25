@@ -26,7 +26,7 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'airblade/vim-gitgutter'
 
 " is decent fucking commenting so much to ask?
-" nerdcomment, commentary.vim
+" nerdcomment, commentary.vim alternatives
 " gcc to toggle comment current line
 " gc to toggle comment selected line(s)
 Plugin 'tomtom/tcomment_vim'
@@ -35,6 +35,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'fatih/vim-go'
 
 " consider neocomplete or YCM for autocomplete
+" ^ required by vim-go for autocomplete
 
 " statusline
 Plugin 'bling/vim-airline'
@@ -52,6 +53,9 @@ Plugin 'tpope/vim-surround'
 " :Prosession <dir> to change/create
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
+
+" explore ctrlspace as alternative for both 
+" session management and fuzzy file finding
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -91,3 +95,47 @@ nnoremap <esc> :noh<return><esc>
 
 " file patterns for ctrlp loading to ignore
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|pyc)$'
+
+" this command doesn't work with submodule contents 
+" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+" allows you to have multiple buffers open
+set hidden
+" lines of code will not wrap to hte next line
+set nowrap
+" set autoindent
+set autoindent
+" copy the indentation of the previous line if the auto indent doesn't know
+" what to do
+set copyindent
+" indenting a line with >> or << will move by 4
+set shiftwidth=4
+" pressing tab in insert mode will use 4 spaces
+set softtabstop=4
+" use spaces instead of tabs
+set expandtab
+" highlight matching braces/tags
+set showmatch
+" ignore case when searching
+set ignorecase
+" ... unless there's a capital letter in the query
+set smartcase
+" indent to correct locatin with tab
+set smarttab
+" highlight search matches
+set hlsearch
+" search while you enter they query, not after
+set incsearch
+" let vim set the title of the terminal window
+set title
+" use a visual indiator instead of a beep
+set visualbell
+" or just turn off errors bells 
+" set noerrorbells
+" enable syntax highlighting
+syntax enable
+" tell vim that your terminal supports 256 colors
+set t_Co=256
+
+" change leader to space
+" let mapleader=" "
