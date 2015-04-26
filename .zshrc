@@ -86,4 +86,4 @@ export PATH=/usr/local/bin:/usr/local/share/python:/sbin:$PATH:$GOPATH/bin
 
 # export WORKON_HOME=~/environments
 
-export DOCKER_HOST=127.17.8.1:2375
+export DOCKER_HOST=tcp://localhost:2375
