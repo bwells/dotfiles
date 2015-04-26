@@ -96,6 +96,11 @@ nnoremap <esc> :noh<return><esc>
 " file patterns for ctrlp loading to ignore
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|pyc)$'
 
+if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_use_caching = 0
+endif
+
 " this command doesn't work with submodule contents 
 " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
