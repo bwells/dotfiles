@@ -11,6 +11,9 @@ Plugin 'gmarik/Vundle.vim'
 " basic setup for all vim
 Plugin 'tpope/vim-sensible'
 
+" sublime matching theme
+Plugin 'sickill/vim-monokai'
+
 " git integration. seems to have the most mindshare
 Plugin 'tpope/vim-fugitive'
 
@@ -54,6 +57,13 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 
+" tell vim that your terminal supports 256 colors
+let base16colorspace=256  
+set t_Co=256 
+
+" theme
+" Plugin 'chriskempson/base16-vim'
+
 " explore ctrlspace as alternative for both 
 " session management and fuzzy file finding
 
@@ -69,8 +79,8 @@ noremap <Right> <NOP>
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
-" set ruler at 80 chars 
-set colorcolumn=80
+" set ruler at 81 chars 
+set colorcolumn=81
 
 " turn on line numbers
 set number
@@ -91,10 +101,11 @@ set splitbelow
 set splitright
 
 " clear highlight with <esc> after a search
-nnoremap <esc> :noh<return><esc>
+nnoremap <esc><esc> :noh<return><esc>
 
 " file patterns for ctrlp loading to ignore
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|pyc)$'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_extensions = ['mixed']
 
 if executable('ag')
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -109,16 +120,16 @@ set hidden
 " lines of code will not wrap to hte next line
 set nowrap
 " set autoindent
-set autoindent
+" set autoindent
 " copy the indentation of the previous line if the auto indent doesn't know
 " what to do
-set copyindent
+" set copyindent
 " indenting a line with >> or << will move by 4
-set shiftwidth=4
+" set shiftwidth=4
 " pressing tab in insert mode will use 4 spaces
-set softtabstop=4
+" set softtabstop=4
 " use spaces instead of tabs
-set expandtab
+" set expandtab
 " highlight matching braces/tags
 set showmatch
 " ignore case when searching
@@ -139,8 +150,30 @@ set visualbell
 " set noerrorbells
 " enable syntax highlighting
 syntax enable
-" tell vim that your terminal supports 256 colors
-set t_Co=256
+colorscheme monokai
+
+set pastetoggle=<F5>
 
 " change leader to space
-" let mapleader=" "
+let mapleader=" "
+
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#hunks#enabled = 0
+" let g:airline_left_sep=''
+" let g:airline_right_sep=''
+let g:airline_theme='molokai'
+let g:airline#extensions#whitespace#enabled = 1
+
+if has('mouse')
+    set mouse=a
+    set ttymouse=xterm2
+endif
+
+" edit vimrc in a vsplit
+nnoremap <leader>vv :vsplit $MYVIMRC<cr>
+" source vimrc
+nnoremap <leader>VV source $MYVIMRC<cr>
+
+" map jk to esc
+inoremap jk <esc>l 
