@@ -46,7 +46,7 @@ export UPDATE_ZSH_DAYS=31
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew osx sublime vagrant)
+plugins=(git brew osx sublime vagrant history-substring-search virtualenv virtualenvwrapper)
 # more plugins: virtualenv virtualenvwrapper
 
 # User configuration
