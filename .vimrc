@@ -187,3 +187,6 @@ nnoremap <leader>VV source $MYVIMRC<cr>
 
 " map jk to esc
 inoremap jk <esc>l 
+
+" change the default register to the system clipboard
+:set clipboard^=unnamed
