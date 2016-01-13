@@ -3,3 +3,4 @@
 *.sublime-workspace
 *.pyc
 *.swp
+__pycache__
