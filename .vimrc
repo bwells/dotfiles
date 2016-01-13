@@ -167,7 +167,9 @@ let g:airline#extensions#whitespace#enabled = 1
 
 if has('mouse')
     set mouse=a
-    set ttymouse=xterm2
+    if !has('nvim')
+	set ttymouse=xterm2
+    endif
 endif
 
 " edit vimrc in a vsplit
