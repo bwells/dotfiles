@@ -57,6 +57,12 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 
+Plugin 'nixprime/cpsm'
+
+Plugin 'Shougo/unite.vim'
+
+Plugin 'unblevable/quick-scope'
+
 " tell vim that your terminal supports 256 colors
 let base16colorspace=256  
 set t_Co=256 
@@ -107,10 +113,12 @@ nnoremap <esc><esc> :noh<return><esc>
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_extensions = ['mixed']
 
-if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-    let g:ctrlp_use_caching = 0
-endif
+" if executable('ag')
+"     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"     let g:ctrlp_use_caching = 0
+" endif
+
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
 " this command doesn't work with submodule contents 
 " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
