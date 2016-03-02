@@ -20,7 +20,7 @@ Plugin 'tpope/vim-fugitive'
 " goto anything like support
 " alternative plugins: commandt
 " ctrl-p to activate
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " weird/awesome move anywhere package
 Plugin 'Lokaltog/vim-easymotion'
