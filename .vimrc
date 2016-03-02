@@ -190,3 +190,6 @@ inoremap jk <esc>l
 
 " change the default register to the system clipboard
 :set clipboard^=unnamed
+
+" remove trailing whitespace on save 
+autocmd FileType c,cpp,java,php,go,python,yaml,ruby,sql autocmd BufWritePre <buffer> :%s/\s\+$//e
