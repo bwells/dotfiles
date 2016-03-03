@@ -11,9 +11,6 @@ Plugin 'gmarik/Vundle.vim'
 " basic setup for all vim
 Plugin 'tpope/vim-sensible'
 
-" sublime matching theme
-Plugin 'sickill/vim-monokai'
-
 " git integration. seems to have the most mindshare
 Plugin 'tpope/vim-fugitive'
 
@@ -161,7 +158,9 @@ set visualbell
 " set noerrorbells
 " enable syntax highlighting
 syntax enable
-colorscheme monokai
+
+" https://github.com/tomasr/molokai
+colorscheme molokai
 
 set pastetoggle=<F5>
 
