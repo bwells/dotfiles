@@ -74,6 +74,8 @@ set t_Co=256
 " explore ctrlspace as alternative for both 
 " session management and fuzzy file finding
 
+Plugin 'dag/vim-fish'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
