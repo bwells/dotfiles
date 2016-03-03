@@ -201,3 +201,7 @@ let g:netrw_list_hide = '.*\.pyc$,'
 let g:netrw_list_hide.='\.DS_Store,'
 let g:netrw_list_hide.= '\.git,'
 let g:netrw_list_hide.= '\__pycache__,'
+
+if &shell =~# 'fish$'
+    set shell=sh
+endif
