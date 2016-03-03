@@ -11,9 +11,6 @@ Plugin 'gmarik/Vundle.vim'
 " basic setup for all vim
 Plugin 'tpope/vim-sensible'
 
-" sublime matching theme
-Plugin 'sickill/vim-monokai'
-
 " git integration. seems to have the most mindshare
 Plugin 'tpope/vim-fugitive'
 
@@ -41,7 +38,8 @@ Plugin 'fatih/vim-go'
 " ^ required by vim-go for autocomplete
 
 " statusline
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Plugin 'nathanaelkane/vim-indent-guides'
 " Not liking it - no way to highlight less than a column
@@ -64,14 +62,16 @@ Plugin 'Shougo/unite.vim'
 Plugin 'unblevable/quick-scope'
 
 " tell vim that your terminal supports 256 colors
-let base16colorspace=256  
-set t_Co=256 
+let base16colorspace=256
+set t_Co=256
 
 " theme
 " Plugin 'chriskempson/base16-vim'
 
-" explore ctrlspace as alternative for both 
+" explore ctrlspace as alternative for both
 " session management and fuzzy file finding
+
+Plugin 'dag/vim-fish'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -85,7 +85,7 @@ noremap <Right> <NOP>
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
-" set ruler at 81 chars 
+" set ruler at 81 chars
 set colorcolumn=81
 
 " turn on line numbers
@@ -95,7 +95,7 @@ set number
 map <Leader> <Plug>(easymotion-prefix)
 " \w for search down, \k for search up
 
-" remap split navigation to vim hjkl 
+" remap split navigation to vim hjkl
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -122,7 +122,7 @@ let g:ctrlp_root_markers = ['Dockerfile', 'requirements.txt']
 
 " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
-" this command doesn't work with submodule contents 
+" this command doesn't work with submodule contents
 " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " allows you to have multiple buffers open
@@ -156,18 +156,20 @@ set incsearch
 set title
 " use a visual indiator instead of a beep
 set visualbell
-" or just turn off errors bells 
+" or just turn off errors bells
 " set noerrorbells
 " enable syntax highlighting
 syntax enable
-colorscheme monokai
+
+" https://github.com/tomasr/molokai
+colorscheme molokai
 
 set pastetoggle=<F5>
 
 " change leader to space
 let mapleader=" "
 
-let g:airline_powerline_fonts=1
+" let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#hunks#enabled = 0
 " let g:airline_left_sep=''
@@ -188,10 +190,19 @@ nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 nnoremap <leader>VV source $MYVIMRC<cr>
 
 " map jk to esc
-inoremap jk <esc>l 
+inoremap jk <esc>l
 
 " change the default register to the system clipboard
 :set clipboard^=unnamed
 
-" remove trailing whitespace on save 
-autocmd FileType c,cpp,java,php,go,python,yaml,ruby,sql autocmd BufWritePre <buffer> :%s/\s\+$//e
+" remove trailing whitespace on save
+autocmd BufWritePre * :%s/\s\+$//e
+
+let g:netrw_list_hide = '.*\.pyc$,'
+let g:netrw_list_hide.='\.DS_Store,'
+let g:netrw_list_hide.= '\.git,'
+let g:netrw_list_hide.= '\__pycache__,'
+
+if &shell =~# 'fish$'
+    set shell=sh
+endif
