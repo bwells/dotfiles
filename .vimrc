@@ -196,3 +196,8 @@ inoremap jk <esc>l
 
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
+
+let g:netrw_list_hide = '.*\.pyc$,'
+let g:netrw_list_hide.='\.DS_Store,'
+let g:netrw_list_hide.= '\.git,'
+let g:netrw_list_hide.= '\__pycache__,'
