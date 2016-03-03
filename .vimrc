@@ -65,13 +65,13 @@ Plugin 'Shougo/unite.vim'
 Plugin 'unblevable/quick-scope'
 
 " tell vim that your terminal supports 256 colors
-let base16colorspace=256  
-set t_Co=256 
+let base16colorspace=256
+set t_Co=256
 
 " theme
 " Plugin 'chriskempson/base16-vim'
 
-" explore ctrlspace as alternative for both 
+" explore ctrlspace as alternative for both
 " session management and fuzzy file finding
 
 Plugin 'dag/vim-fish'
@@ -88,7 +88,7 @@ noremap <Right> <NOP>
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
-" set ruler at 81 chars 
+" set ruler at 81 chars
 set colorcolumn=81
 
 " turn on line numbers
@@ -98,7 +98,7 @@ set number
 map <Leader> <Plug>(easymotion-prefix)
 " \w for search down, \k for search up
 
-" remap split navigation to vim hjkl 
+" remap split navigation to vim hjkl
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -123,7 +123,7 @@ let g:ctrlp_extensions = ['mixed']
 
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
-" this command doesn't work with submodule contents 
+" this command doesn't work with submodule contents
 " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " allows you to have multiple buffers open
@@ -157,7 +157,7 @@ set incsearch
 set title
 " use a visual indiator instead of a beep
 set visualbell
-" or just turn off errors bells 
+" or just turn off errors bells
 " set noerrorbells
 " enable syntax highlighting
 syntax enable
@@ -189,7 +189,7 @@ nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 nnoremap <leader>VV source $MYVIMRC<cr>
 
 " map jk to esc
-inoremap jk <esc>l 
+inoremap jk <esc>l
 
 " change the default register to the system clipboard
 :set clipboard^=unnamed
