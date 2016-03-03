@@ -41,7 +41,8 @@ Plugin 'fatih/vim-go'
 " ^ required by vim-go for autocomplete
 
 " statusline
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Plugin 'nathanaelkane/vim-indent-guides'
 " Not liking it - no way to highlight less than a column
