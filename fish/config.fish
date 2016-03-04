@@ -1,9 +1,18 @@
+# create an alias to edit fish config
+abbr -a fe vim ~/.config/fish/config.fish
+abbr -a resource source ~/.config/fish/config.fish
+
+# add workspace to cd search path
+set -U CDPATH ~/workspace
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
 set -g WORKON_HOME ~/environments
 set -g VIRTUALFISH_HOME ~/environments
 
+# activate a virtualenv on entry
+# also deactivates on project exit
+# requires project root directory and virtualenv directory have the same name
 function chpwd --on-variable PWD --description "Activate Python virtualenvs on entry"
 	set GIT_TOPLEVEL (git rev-parse --show-toplevel 2> /dev/null)
 
@@ -18,8 +27,4 @@ function chpwd --on-variable PWD --description "Activate Python virtualenvs on e
 			vf deactivate
 		end
 	end
-end
-
-function resource
-	source ~/.config/fish/config.fish
 end
