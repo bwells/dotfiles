@@ -206,3 +206,5 @@ let g:netrw_list_hide.= '\__pycache__,'
 if &shell =~# 'fish$'
     set shell=sh
 endif
+
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
