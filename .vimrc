@@ -5,6 +5,10 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+"""""""""""
+" PLUGINS
+"""""""""""
+
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
@@ -18,6 +22,12 @@ Plugin 'tpope/vim-fugitive'
 " alternative plugins: commandt
 " ctrl-p to activate
 Plugin 'ctrlpvim/ctrlp.vim'
+" explore ctrlspace as alternative for both
+" session management and fuzzy file finding
+
+" better matcher for ctrlp
+" be sure to run the manual C build step as well
+Plugin 'nixprime/cpsm'
 
 " weird/awesome move anywhere package
 Plugin 'Lokaltog/vim-easymotion'
@@ -26,7 +36,6 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'airblade/vim-gitgutter'
 
 " is decent fucking commenting so much to ask?
-" nerdcomment, commentary.vim alternatives
 " gcc to toggle comment current line
 " gc to toggle comment selected line(s)
 Plugin 'tomtom/tcomment_vim'
@@ -41,132 +50,62 @@ Plugin 'fatih/vim-go'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-" Plugin 'nathanaelkane/vim-indent-guides'
-" Not liking it - no way to highlight less than a column
-
+" auto quote/bracket/paren matching
 Plugin 'jiangmiao/auto-pairs'
 
-Plugin 'tpope/vim-repeat'
-
+" motions/text objects for surrounding selections with chars
+" not super happy this this one,
+" explore configuration or alternatives
 Plugin 'tpope/vim-surround'
+
+" extend the power of . to more complex objects
+Plugin 'tpope/vim-repeat'
 
 " session management
 " :Prosession <dir> to change/create
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 
-Plugin 'nixprime/cpsm'
-
+" not sure i need this. kind of a competitor of ctrlp
 Plugin 'Shougo/unite.vim'
 
+" color highlights same line navigation options
 Plugin 'unblevable/quick-scope'
 
-" tell vim that your terminal supports 256 colors
-let base16colorspace=256
-set t_Co=256
-
-" theme
-" Plugin 'chriskempson/base16-vim'
-
-" explore ctrlspace as alternative for both
-" session management and fuzzy file finding
-
+" fish shell syntax etc
 Plugin 'dag/vim-fish'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" disable arrow keys :(
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+"""""""""""""""""""""""
+" PLUGIN CONFIGURATION
+"""""""""""""""""""""""
 
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
-" set ruler at 81 chars
-set colorcolumn=81
-
-" turn on line numbers
-set number
-
 " bind easymotion to <Leader> instead of <Leader><Leader>
-map <Leader> <Plug>(easymotion-prefix)
 " \w for search down, \k for search up
+map <Leader> <Plug>(easymotion-prefix)
 
-" remap split navigation to vim hjkl
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" open new splits to the right or below
-" like a non sociopath
-set splitbelow
-set splitright
-
-" clear highlight with <esc> after a search
-nnoremap <esc><esc> :noh<return><esc>
+" use cpsm instead of built ctrlp for matching
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
 " file patterns for ctrlp loading to ignore
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$,\.pyc'
-let g:ctrlp_extensions = ['mixed']
 
+let g:ctrlp_extensions = ['mixed']
 let g:ctrlp_root_markers = ['.vimproject', 'Dockerfile', 'requirements.txt']
 
+" use vim cwd as search path root
+" so far the only reliable solution to the git submodule problem
 let g:ctrlp_working_path_mode = 'w'
 
 " if executable('ag')
 "     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 "     let g:ctrlp_use_caching = 0
 " endif
-
-let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-
-" allows you to have multiple buffers open
-set hidden
-" lines of code will not wrap to hte next line
-set nowrap
-" set autoindent
-" set autoindent
-" copy the indentation of the previous line if the auto indent doesn't know
-" what to do
-" set copyindent
-" indenting a line with >> or << will move by 4
-" set shiftwidth=4
-" pressing tab in insert mode will use 4 spaces
-" set softtabstop=4
-" use spaces instead of tabs
-" set expandtab
-" highlight matching braces/tags
-set showmatch
-" ignore case when searching
-set ignorecase
-" ... unless there's a capital letter in the query
-set smartcase
-" indent to correct locatin with tab
-set smarttab
-" highlight search matches
-set hlsearch
-" search while you enter they query, not after
-set incsearch
-" let vim set the title of the terminal window
-set title
-" use a visual indiator instead of a beep
-set visualbell
-" or just turn off errors bells
-" set noerrorbells
-" enable syntax highlighting
-syntax enable
-
-" https://github.com/tomasr/molokai
-colorscheme molokai
-
-set pastetoggle=<F5>
-
-" change leader to space
-let mapleader=" "
 
 " let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
@@ -176,6 +115,17 @@ let g:airline#extensions#hunks#enabled = 0
 let g:airline_theme='molokai'
 let g:airline#extensions#whitespace#enabled = 1
 
+""""""""""""""""
+" IT'S NOT 1970
+""""""""""""""""
+
+" tell vim that your terminal supports 256 colors
+let base16colorspace=256
+set t_Co=256
+
+set ttyfast
+
+" enable the mouse
 if has('mouse')
     set mouse=a
     if !has('nvim')
@@ -183,27 +133,126 @@ if has('mouse')
     endif
 endif
 
+"""""""""""""""""""""""""
+" BASE VIM CONFIGURATION
+"""""""""""""""""""""""""
+
+" remap split navigation to match vim hjkl
+" because we're not sociopaths
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" clear highlight with <esc> after a search
+nnoremap <esc><esc> :noh<return><esc>
+
+" turn on line numbers
+set number
+
+" set ruler at 81 chars
+set colorcolumn=81
+
+" disable arrow keys :/
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" open new splits to the right or below
+" like a non sociopath
+set splitbelow
+set splitright
+
+" allows you to have multiple buffers open
+set hidden
+
+" lines of code will not wrap to hte next line
+set nowrap
+
+" copy the indentation of the previous line
+" if the auto indent doesn't know what to do
+" set autoindent
+
+" set copyindent
+" indenting a line with >> or << will move by 4
+
+" pressing tab in insert mode will use 4 spaces
+" set shiftwidth=4
+" set softtabstop=4
+" use spaces instead of tabs
+" set expandtab
+
+" highlight matching braces/tags
+set showmatch
+
+" ignore case when searching
+set ignorecase
+
+" ... unless there's a capital letter in the query
+set smartcase
+
+" indent to correct locatin with tab
+set smarttab
+
+" highlight search matches
+set hlsearch
+
+" search while you enter they query, not after
+set incsearch
+
+" let vim set the title of the terminal window
+set title
+
+" use a visual indiator instead of a beep
+set visualbell
+
+" or just turn off errors bells
+" set noerrorbells
+
+" enable syntax highlighting
+syntax enable
+
+" https://github.com/tomasr/molokai
+colorscheme molokai
+
+" hit f5 to toggle paste modes
+" fixes vim reindenting pasted code
+set pastetoggle=<F5>
+
+" change leader to space
+let mapleader=" "
+
+"""""""""
+" REMAPS
+"""""""""
+
 " edit vimrc in a vsplit
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
+
 " source vimrc
 nnoremap <leader>VV source $MYVIMRC<cr>
 
-" map jk to esc
+" map jk to esc when in insert mode
 inoremap jk <esc>l
 
 " change the default register to the system clipboard
-:set clipboard^=unnamed
+set clipboard^=unnamed
 
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
+" files to hide from netrw
 let g:netrw_list_hide = '.*\.pyc$,'
 let g:netrw_list_hide.='\.DS_Store,'
 let g:netrw_list_hide.= '\.git,'
 let g:netrw_list_hide.= '\__pycache__,'
 
+" sane files to ignore
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
+
+" fish doesn't play posix
+" tell vim to use a regular shell
 if &shell =~# 'fish$'
     set shell=sh
 endif
-
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
