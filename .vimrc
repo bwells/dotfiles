@@ -110,20 +110,19 @@ set splitright
 nnoremap <esc><esc> :noh<return><esc>
 
 " file patterns for ctrlp loading to ignore
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$,\.pyc'
 let g:ctrlp_extensions = ['mixed']
 
-let g:ctrlp_root_markers = ['Dockerfile', 'requirements.txt']
+let g:ctrlp_root_markers = ['.vimproject', 'Dockerfile', 'requirements.txt']
+
+let g:ctrlp_working_path_mode = 'w'
 
 " if executable('ag')
 "     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 "     let g:ctrlp_use_caching = 0
 " endif
 
-" let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-
-" this command doesn't work with submodule contents
-" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
 " allows you to have multiple buffers open
 set hidden
