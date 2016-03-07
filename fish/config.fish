@@ -3,7 +3,7 @@ abbr -a fe vim ~/.config/fish/config.fish
 abbr -a resource source ~/.config/fish/config.fish
 
 # add workspace to cd search path
-set -U CDPATH ~/workspace
+set -U CDPATH . ~ ~/workspace
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)

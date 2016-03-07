@@ -1,13 +1,12 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+""""""""""
+" PLUGINS
+""""""""""
+set nocompatible   " be iMproved, required
+filetype off       " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
-"""""""""""
-" PLUGINS
-"""""""""""
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -220,12 +219,12 @@ colorscheme molokai
 " fixes vim reindenting pasted code
 set pastetoggle=<F5>
 
+"""""""
+" MAPS
+"""""""
+
 " change leader to space
 let mapleader=" "
-
-"""""""""
-" REMAPS
-"""""""""
 
 " edit vimrc in a vsplit
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
