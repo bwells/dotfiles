@@ -17,6 +17,9 @@ Plugin 'tpope/vim-sensible'
 " git integration. seems to have the most mindshare
 Plugin 'tpope/vim-fugitive'
 
+" sanity to copy/paste
+Plugin 'svermeulen/vim-easyclip'
+
 " goto anything like support
 " alternative plugins: commandt
 " ctrl-p to activate
