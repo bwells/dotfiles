@@ -117,6 +117,11 @@ let g:airline#extensions#hunks#enabled = 0
 let g:airline_theme='molokai'
 let g:airline#extensions#whitespace#enabled = 1
 
+let g:EasyClipUsePasteToggleDefaults = 0
+nmap <c-f> <plug>EasyClipSwapPasteForward
+nmap <c-d> <plug>EasyClipSwapPasteBackwards
+let g:EasyClipAutoFormat = 1
+
 """"""""""""""""
 " IT'S NOT 1970
 """"""""""""""""
