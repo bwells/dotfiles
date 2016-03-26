@@ -5,6 +5,8 @@ abbr -a resource source ~/.config/fish/config.fish
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
+set -x  DOCKER_HOST localhost:2375
+
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
 set -gx WORKON_HOME ~/environments
