@@ -77,6 +77,9 @@ Plugin 'unblevable/quick-scope'
 " fish shell syntax etc
 Plugin 'dag/vim-fish'
 
+" allow vim<->tmux pane navigation
+Plugin 'christoomey/vim-tmux-navigator'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
