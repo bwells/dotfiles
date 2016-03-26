@@ -7,8 +7,8 @@ set -U CDPATH . ~ ~/workspace
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
-set -g WORKON_HOME ~/environments
-set -g VIRTUALFISH_HOME ~/environments
+set -gx WORKON_HOME ~/environments
+set -gx VIRTUALFISH_HOME ~/environments
 
 # activate a virtualenv on entry
 # also deactivates on project exit
