@@ -283,3 +283,11 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
 if &shell =~# 'fish$'
     set shell=sh
 endif
+
+" add a command to close the current buffer
+" without also closing the split
+" rotates to the previous buffer before closing
+command! Bclose bp\|bd #
+
+" map 'bc' to 'Bc' for ease of typing
+cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
