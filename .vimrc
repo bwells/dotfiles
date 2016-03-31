@@ -251,11 +251,14 @@ set pastetoggle=<F5>
 " change leader to space
 let mapleader=" "
 
+" edit vimrc in place
+nnoremap <leader>v :edit $MYVIMRC<cr>
+
 " edit vimrc in a vsplit
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 
 " source vimrc
-nnoremap <leader>VV source $MYVIMRC<cr>
+nnoremap <leader>r :source $MYVIMRC<cr>
 
 " map jk to esc when in insert mode
 inoremap jk <esc>l
