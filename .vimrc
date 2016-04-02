@@ -23,13 +23,13 @@ Plugin 'svermeulen/vim-easyclip'
 " goto anything like support
 " alternative plugins: commandt
 " ctrl-p to activate
-Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'ctrlpvim/ctrlp.vim'
 " explore ctrlspace as alternative for both
 " session management and fuzzy file finding
 
 " better matcher for ctrlp
 " be sure to run the manual C build step as well
-Plugin 'nixprime/cpsm'
+" Plugin 'nixprime/cpsm'
 
 " weird/awesome move anywhere package
 Plugin 'Lokaltog/vim-easymotion'
@@ -71,6 +71,9 @@ Plugin 'dhruvasagar/vim-prosession'
 " not sure i need this. kind of a competitor of ctrlp
 Plugin 'Shougo/unite.vim'
 
+" vimproc - required for Unite /async modes
+Plugin 'Shougo/vimproc.vim'
+
 " color highlights same line navigation options
 Plugin 'unblevable/quick-scope'
 
@@ -100,18 +103,18 @@ let g:go_fmt_command = "goimports"
 " \w for search down, \k for search up
 map <Leader> <Plug>(easymotion-prefix)
 
-" use cpsm instead of built ctrlp for matching
-let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-
-" file patterns for ctrlp loading to ignore
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$,\.pyc'
-
-let g:ctrlp_extensions = ['mixed']
-let g:ctrlp_root_markers = ['.vimproject', 'Dockerfile', 'requirements.txt']
-
-" use vim cwd as search path root
-" so far the only reliable solution to the git submodule problem
-let g:ctrlp_working_path_mode = 'w'
+" " use cpsm instead of built ctrlp for matching
+" let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+"
+" " file patterns for ctrlp loading to ignore
+" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$,\.pyc'
+"
+" let g:ctrlp_extensions = ['mixed']
+" let g:ctrlp_root_markers = ['.vimproject', 'Dockerfile', 'requirements.txt']
+"
+" " use vim cwd as search path root
+" " so far the only reliable solution to the git submodule problem
+" let g:ctrlp_working_path_mode = 'w'
 
 " if executable('ag')
 "     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -137,6 +140,10 @@ let g:EasyClipAutoFormat = 1
 
 " remap mark to gm as easyclip adds Move operator on m
 nnoremap gm m
+
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
+nnoremap <Leader>f :Unite -start-insert file_rec/async:!<CR>
 
 """"""""""""""""
 " IT'S NOT 1970
@@ -250,11 +257,14 @@ set pastetoggle=<F5>
 " change leader to space
 let mapleader=" "
 
+" edit vimrc in place
+nnoremap <leader>v :edit $MYVIMRC<cr>
+
 " edit vimrc in a vsplit
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 
 " source vimrc
-nnoremap <leader>VV source $MYVIMRC<cr>
+nnoremap <leader>r :source $MYVIMRC<cr>
 
 " map jk to esc when in insert mode
 inoremap jk <esc>l
@@ -279,3 +289,11 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
 if &shell =~# 'fish$'
     set shell=sh
 endif
+
+" add a command to close the current buffer
+" without also closing the split
+" rotates to the previous buffer before closing
+command! Bclose bp\|bd #
+
+" map 'bc' to 'Bc' for ease of typing
+cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
