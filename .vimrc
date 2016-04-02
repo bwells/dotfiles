@@ -80,6 +80,12 @@ Plugin 'dag/vim-fish'
 " allow vim<->tmux pane navigation
 Plugin 'christoomey/vim-tmux-navigator'
 
+" automatic ctags management
+Plugin 'xolox/vim-easytags'
+
+" requirement for easytags
+Plugin 'xolox/vim-misc'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
