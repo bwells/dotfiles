@@ -263,7 +263,9 @@ nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 
 " source vimrc
-nnoremap <leader>r :source $MYVIMRC<cr>
+" nnoremap <leader>r :source $MYVIMRC<cr>
+
+autocmd! bufwritepost .vimrc source %
 
 " map jk to esc when in insert mode
 inoremap jk <esc>l
