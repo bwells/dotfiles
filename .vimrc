@@ -89,6 +89,10 @@ Plugin 'xolox/vim-easytags'
 " requirement for easytags
 Plugin 'xolox/vim-misc'
 
+" sneek - simpler alternative to easymotion
+" or a better f
+Plugin 'justinmk/vim-sneak'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
