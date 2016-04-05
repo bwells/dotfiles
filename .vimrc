@@ -145,9 +145,14 @@ let g:EasyClipAutoFormat = 1
 " remap mark to gm as easyclip adds Move operator on m
 nnoremap gm m
 
+call unite#custom#profile('files', 'filters', 'sorter_rank')
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+
 " nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
 nnoremap <Leader>f :Unite -start-insert file_rec/async:!<CR>
+
+
 
 """"""""""""""""
 " IT'S NOT 1970
@@ -268,7 +273,9 @@ nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 
 " source vimrc
-nnoremap <leader>r :source $MYVIMRC<cr>
+" nnoremap <leader>r :source $MYVIMRC<cr>
+
+autocmd! bufwritepost .vimrc source %
 
 " map jk to esc when in insert mode
 inoremap jk <esc>l
