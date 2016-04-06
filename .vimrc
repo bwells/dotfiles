@@ -153,7 +153,8 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 
 " nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
-nnoremap <Leader>f :Unite -start-insert file_rec/async:!<CR>
+nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
+nnoremap <Leader>g :Unite -start-insert buffer<CR>
 
 " alias Bdelete to Bclose
 command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
@@ -190,6 +191,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+nnoremap <C-N> :bnext<CR>
+nnoremap <C-P> :bprev<CR>
+
 " clear highlight with <esc> after a search
 nnoremap <esc><esc> :noh<return><esc>
 
@@ -204,6 +208,11 @@ noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
+
+" i keep hitting shift-j or k instead of ctrl-j or k
+" override the defaults (join and lookup keyword) to something less annoying
+noremap J 5j
+noremap K 5k
 
 " open new splits to the right or below
 " like a non sociopath
@@ -282,6 +291,7 @@ nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 " source vimrc
 " nnoremap <leader>r :source $MYVIMRC<cr>
 
+" auto source vimrc on write
 autocmd! bufwritepost .vimrc source %
 
 " map jk to esc when in insert mode
