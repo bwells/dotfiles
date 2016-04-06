@@ -93,6 +93,9 @@ Plugin 'xolox/vim-misc'
 " or a better f
 Plugin 'justinmk/vim-sneak'
 
+" better bdelete
+Plugin 'moll/vim-bbye'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -152,7 +155,11 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 " nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
 nnoremap <Leader>f :Unite -start-insert file_rec/async:!<CR>
 
+" alias Bdelete to Bclose
+command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
 
+" map 'bc' to 'Bc' for ease of typing
+cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
 
 """"""""""""""""
 " IT'S NOT 1970
@@ -301,10 +308,6 @@ if &shell =~# 'fish$'
     set shell=sh
 endif
 
-" add a command to close the current buffer
-" without also closing the split
-" rotates to the previous buffer before closing
-command! Bclose bp\|bd #
+" let's do some whitspace highlighting
+" set listchars=tab:▶ ,space:.,trail:.
 
-" map 'bc' to 'Bc' for ease of typing
-cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
