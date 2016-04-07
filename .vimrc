@@ -98,8 +98,6 @@ Plugin 'justinmk/vim-sneak'
 " better bdelete
 Plugin 'moll/vim-bbye'
 
-Bundle "daylerees/colour-schemes", { "rtp": "vim/" }
-
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -292,13 +290,9 @@ set visualbell
 syntax enable
 
 " https://github.com/tomasr/molokai
-" colorscheme molokai
-" colors Potpourri
-" colors Tribal
-colors Halflife
-" colors Peacock
-" colors Stark
-" colors Potpourri-Contrast
+colors molokai
+" autocmd ColorScheme janah highlight Normal ctermbg=235
+" colors janah
 
 " hit f5 to toggle paste modes
 " fixes vim reindenting pasted code
