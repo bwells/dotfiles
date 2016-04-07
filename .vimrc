@@ -309,10 +309,14 @@ nnoremap <leader>v :edit $MYVIMRC<cr>
 nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 
 " source vimrc
-" nnoremap <leader>r :source $MYVIMRC<cr>
+nnoremap <leader>r :source $MYVIMRC<cr>
 
 " auto source vimrc on write
-autocmd! bufwritepost .vimrc source %
+" autocmd! bufwritepost .vimrc source %
+augroup reload_vimrc
+    autocmd!
+    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+augroup END
 
 " map jk to esc when in insert mode
 inoremap jk <esc>l
