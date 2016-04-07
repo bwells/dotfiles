@@ -110,7 +110,7 @@ let g:go_fmt_command = "goimports"
 
 " bind easymotion to <Leader> instead of <Leader><Leader>
 " \w for search down, \k for search up
-map <Leader> <Plug>(easymotion-prefix)
+" map <Leader> <Plug>(easymotion-prefix)
 
 " " use cpsm instead of built ctrlp for matching
 " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
