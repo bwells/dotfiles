@@ -49,8 +49,10 @@ Plugin 'fatih/vim-go'
 " ^ required by vim-go for autocomplete
 
 " statusline
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'vim-airline/vim-airline'
+" Plugin 'vim-airline/vim-airline-themes'
+
+Plugin 'itchyny/lightline.vim'
 
 " auto quote/bracket/paren matching
 Plugin 'jiangmiao/auto-pairs'
@@ -129,12 +131,12 @@ map <Leader> <Plug>(easymotion-prefix)
 " endif
 
 " let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#hunks#enabled = 0
+  " let g:airline#extensions#tabline#enabled = 1
+  " let g:airline#extensions#hunks#enabled = 0
 " let g:airline_left_sep=''
 " let g:airline_right_sep=''
-let g:airline_theme='molokai'
-let g:airline#extensions#whitespace#enabled = 1
+  " let g:airline_theme='molokai'
+  " let g:airline#extensions#whitespace#enabled = 1
 
 " remap paste ring actions to ctrl-f (forward) and ctrl-d
 let g:EasyClipUsePasteToggleDefaults = 0
@@ -162,6 +164,22 @@ command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
 " map 'bc' to 'Bc' for ease of typing
 cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
 
+" uses meno for powerline from
+" https://gist.github.com/justinmayer/7537418#file-menlo-for-powerline-zip
+set noshowmode
+let g:lightline = {
+	\ 'colorscheme': 'wombat',
+	\ 'component': {
+	\   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
+	\   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'
+	\ },
+	\ 'component_visible_condition': {
+	\   'readonly': '(&filetype!="help"&& &readonly)',
+	\   'modified': '(&filetype!="help"&&(&modified||!&modifiable))'
+	\ },
+	\ 'separator': { 'left': '', 'right': '' },
+	\ 'subseparator': { 'left': '', 'right': '' }
+	\ }
 """"""""""""""""
 " IT'S NOT 1970
 """"""""""""""""
@@ -183,6 +201,8 @@ endif
 """""""""""""""""""""""""
 " BASE VIM CONFIGURATION
 """""""""""""""""""""""""
+
+set guifont=Menlo\ Regular\ for\ Powerline:h11
 
 " remap split navigation to match vim hjkl
 " because we're not sociopaths
