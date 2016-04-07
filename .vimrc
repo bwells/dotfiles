@@ -211,6 +211,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" C-N and P to buffer navigation
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
 
