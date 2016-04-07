@@ -5,7 +5,12 @@ abbr -a resource source ~/.config/fish/config.fish
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-set -x  DOCKER_HOST localhost:2375
+# set docker host
+set -x DOCKER_HOST localhost:2375
+
+# setup gopath
+set -x GOPATH ~/workspace/go
+set PATH $GOPATH/bin $PATH
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
