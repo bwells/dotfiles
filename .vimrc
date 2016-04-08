@@ -271,8 +271,12 @@ noremap <Right> <NOP>
 
 " i keep hitting shift-j or k instead of ctrl-j or k
 " override the defaults (join and lookup keyword) to something less annoying
-noremap J 5j
-noremap K 5k
+nnoremap J 5j
+nnoremap K 5k
+
+" if i hit c-j/k in insert mode dump out and do what i wanted
+inoremap <C-j> <esc><c-w><c-j>
+inoremap <C-k> <esc><c-w><c-k>
 
 " open new splits to the right or below
 " like a non sociopath
