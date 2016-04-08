@@ -174,22 +174,48 @@ command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
 " map 'bc' to 'Bc' for ease of typing
 cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
 
-" uses meno for powerline from
+" uses menlo for powerline from
 " https://gist.github.com/justinmayer/7537418#file-menlo-for-powerline-zip
 set noshowmode
 let g:lightline = {
 	\ 'colorscheme': 'wombat',
+	\ 'active': {
+	\ 	'left': [ [ 'mode', 'paste' ],
+	\       	  [ 'fugitive' ],
+	\		  [ 'readonly', 'filename', 'modified' ] ],
+	\	 'right': [ [ 'lineinfo' ],
+	\                   [ 'percent' ],
+	\                   [ 'filetype', 'fileformat', 'fileencoding' ] ]
+	\ },
+	\ 'inactive': {
+	\ 	'left': [ [ 'filename' ] ],
+	\ 	'right': [ [ 'lineinfo' ],
+	\ 	           [ 'percent' ] ]
+	\ },
+	\ 'component_function': {
+	\	'fugitive': 'LightLineFugitive'
+	\ },
 	\ 'component': {
-	\   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-	\   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'
+	\  'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
+	\  'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
 	\ },
 	\ 'component_visible_condition': {
 	\   'readonly': '(&filetype!="help"&& &readonly)',
-	\   'modified': '(&filetype!="help"&&(&modified||!&modifiable))'
+	\   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+	\   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
 	\ },
 	\ 'separator': { 'left': '', 'right': '' },
 	\ 'subseparator': { 'left': '', 'right': '' }
 	\ }
+
+function! LightLineFugitive()
+  if exists("*fugitive#head")
+    let _ = fugitive#head()
+    return strlen(_) ? ' '._ : ''
+  endif
+  return ''
+endfunction
+
 """"""""""""""""
 " IT'S NOT 1970
 """"""""""""""""
