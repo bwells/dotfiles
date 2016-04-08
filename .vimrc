@@ -101,12 +101,19 @@ Plugin 'justinmk/vim-sneak'
 " better bdelete
 Plugin 'moll/vim-bbye'
 
+" gave in and using nerdtree rather than netrw
+Plugin 'scrooloose/nerdtree'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 """""""""""""""""""""""
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
+
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeRespectWildIgnore = 1
 
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
