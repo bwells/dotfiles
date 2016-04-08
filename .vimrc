@@ -1,3 +1,6 @@
+" change leader to space
+let mapleader=" "
+
 """"""""""
 " PLUGINS
 """"""""""
@@ -301,9 +304,6 @@ set pastetoggle=<F5>
 """""""
 " MAPS
 """""""
-
-" change leader to space
-let mapleader=" "
 
 " edit vimrc in place
 nnoremap <leader>v :edit $MYVIMRC<cr>
