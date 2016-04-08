@@ -248,8 +248,11 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " C-N and P to buffer navigation
-nnoremap <C-N> :bnext<CR>
-nnoremap <C-P> :bprev<CR>
+" nnoremap <C-N> :bnext<CR>
+" nnoremap <C-P> :bprev<CR>
+" let's try tab and shift-tab instead
+nnoremap <tab> :bn<cr>
+nnoremap <s-tab> :bp<cr>
 
 " clear highlight with <esc> after a search
 nnoremap <esc><esc> :noh<return><esc>
