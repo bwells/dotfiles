@@ -1,4 +1,5 @@
 " change leader to space
+" required before plugin loads to ensure they configure correctly
 let mapleader=" "
 
 """"""""""
