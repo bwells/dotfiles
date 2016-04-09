@@ -393,6 +393,9 @@ augroup END
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
+" clear a line without removing it
+nnoremap <leader>d 0D
+
 " change the default register to the system clipboard
 set clipboard^=unnamed
 
