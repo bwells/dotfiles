@@ -70,7 +70,8 @@ Plugin 'tpope/vim-repeat'
 
 " session management
 " :Prosession <dir> to change/create
-" Plugin 'tpope/vim-obsession'
+Plugin 'tpope/vim-obsession'
+Plugin 'monokrome/vim-lazy-obsession'
 " Plugin 'dhruvasagar/vim-prosession'
 
 " not sure i need this. kind of a competitor of ctrlp
@@ -105,7 +106,7 @@ Plugin 'moll/vim-bbye'
 Plugin 'scrooloose/nerdtree'
 
 " session management
-Plugin 'xolox/vim-session'
+" Plugin 'xolox/vim-session'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -116,28 +117,29 @@ filetype plugin indent on    " required
 
 " don't save hidden buffers
 set sessionoptions-=buffers
+set sessionoptions-=options
 
-" Load a session if the last dir in CWD matches a session name.lower()
-" Inspired by http://stackoverflow.com/a/31978241
-function! AutoSession()
-	let l:sessionname = tolower(split(getcwd(), '/')[-1])
-	let l:sessionfile = g:session_directory . '/' . l:sessionname .	g:session_extension
-	let l:sessionpath = fnamemodify(l:sessionfile, ':p')
-	if (filereadable(l:sessionpath))
-		echom "Loading session " . l:sessionpath
-		exe 'OpenSession! ' . l:sessionname
-	else
-		echom "No session matching " . l:sessionpath
-	endif
-endfunction
-
-" attempt to autoload a session if no command line args are given
-if (argc() == 0)
-	augroup vimenter
-		autocmd!
-		autocmd VimEnter * nested :call AutoSession()
-	augroup END
-endif
+" " Load a session if the last dir in CWD matches a session name.lower()
+" " Inspired by http://stackoverflow.com/a/31978241
+" function! AutoSession()
+" 	let l:sessionname = tolower(split(getcwd(), '/')[-1])
+" 	let l:sessionfile = g:session_directory . '/' . l:sessionname .	g:session_extension
+" 	let l:sessionpath = fnamemodify(l:sessionfile, ':p')
+" 	if (filereadable(l:sessionpath))
+" 		echom "Loading session " . l:sessionpath
+" 		exe 'OpenSession! ' . l:sessionname
+" 	else
+" 		echom "No session matching " . l:sessionpath
+" 	endif
+" endfunction
+"
+" " attempt to autoload a session if no command line args are given
+" if (argc() == 0)
+" 	augroup vimenter
+" 		autocmd!
+" 		autocmd VimEnter * nested :call AutoSession()
+" 	augroup END
+" endif
 
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
