@@ -113,6 +113,7 @@ filetype plugin indent on    " required
 
 " don't save hidden buffers
 set sessionoptions-=buffers
+set sessionoptions-=options
 
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
