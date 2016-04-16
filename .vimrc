@@ -365,6 +365,15 @@ augroup reload_vimrc
     autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
 augroup END
 
+" tab settings for filetypes
+augroup vim_filetype
+    autocmd!
+    autocmd FileType vim set tabstop=4 shiftwidth=4
+    autocmd FileType javascript set tabstop=4 shiftwidth=4 expandtab
+augroup END
+
+
+
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
