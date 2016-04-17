@@ -398,7 +398,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
 " fish doesn't play posix
 " tell vim to use a regular shell
 if &shell =~# 'fish$'
-    set shell=sh
+    set shell=zsh
 endif
 
 " let's do some whitspace highlighting
