@@ -61,7 +61,7 @@ Plug 'tpope/vim-repeat'
 Plug 'Shougo/unite.vim'
 
 " vimproc - required for Unite /async modes
-Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " color highlights same line navigation options
 Plug 'unblevable/quick-scope'
@@ -86,7 +86,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'moll/vim-bbye'
 
 " gave in and using nerdtree rather than netrw
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 Plug 'bwells/vim-named-sessions'
 
