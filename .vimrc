@@ -5,107 +5,95 @@ let mapleader=" "
 """"""""""
 " PLUGINS
 """"""""""
-set nocompatible   " be iMproved, required
-filetype off       " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+call plug#begin()
 
 " basic setup for all vim
-Plugin 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'
 
 " git integration. seems to have the most mindshare
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " sanity to copy/paste
-Plugin 'svermeulen/vim-easyclip'
+Plug 'svermeulen/vim-easyclip'
 
 " goto anything like support
 " alternative plugins: commandt
 " ctrl-p to activate
-" Plugin 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 " explore ctrlspace as alternative for both
 " session management and fuzzy file finding
 
 " better matcher for ctrlp
 " be sure to run the manual C build step as well
-" Plugin 'nixprime/cpsm'
+" Plug 'nixprime/cpsm'
 
 " weird/awesome move anywhere package
-Plugin 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-easymotion'
 
 " hopefully good git gutter support
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 
 " is decent fucking commenting so much to ask?
 " gcc to toggle comment current line
 " gc to toggle comment selected line(s)
-Plugin 'tomtom/tcomment_vim'
+Plug 'tomtom/tcomment_vim'
 
 " IDE level vim/go integration
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
 
 " consider neocomplete or YCM for autocomplete
 " ^ required by vim-go for autocomplete
 
-" statusline
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
-
-Plugin 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim'
 
 " auto quote/bracket/paren matching
-Plugin 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 
 " motions/text objects for surrounding selections with chars
 " not super happy this this one,
 " explore configuration or alternatives
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 " extend the power of . to more complex objects
-Plugin 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 
 " not sure i need this. kind of a competitor of ctrlp
-Plugin 'Shougo/unite.vim'
+Plug 'Shougo/unite.vim'
 
 " vimproc - required for Unite /async modes
-Plugin 'Shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim'
 
 " color highlights same line navigation options
-Plugin 'unblevable/quick-scope'
+Plug 'unblevable/quick-scope'
 
 " fish shell syntax etc
-Plugin 'dag/vim-fish'
+Plug 'dag/vim-fish'
 
 " allow vim<->tmux pane navigation
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 " automatic ctags management
-Plugin 'xolox/vim-easytags'
+Plug 'xolox/vim-easytags'
 
 " requirement for easytags
-Plugin 'xolox/vim-misc'
+Plug 'xolox/vim-misc'
 
 " sneek - simpler alternative to easymotion
 " or a better f
-Plugin 'justinmk/vim-sneak'
+Plug 'justinmk/vim-sneak'
 
 " better bdelete
-Plugin 'moll/vim-bbye'
+Plug 'moll/vim-bbye'
 
 " gave in and using nerdtree rather than netrw
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
-Plugin 'bwells/vim-named-sessions'
+Plug 'bwells/vim-named-sessions'
 
-Plugin 'bwells/simplysublime'
+Plug 'bwells/simplysublime'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+" Add plugins to &runtimepath
+call plug#end()
 
 """""""""""""""""""""""
 " PLUGIN CONFIGURATION
