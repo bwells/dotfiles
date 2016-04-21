@@ -6,7 +6,7 @@ abbr -a resource source ~/.config/fish/config.fish
 set -U CDPATH . ~ ~/workspace
 
 # set docker host
-set -x DOCKER_HOST localhost:2375
+# set -x DOCKER_HOST localhost:2375
 
 # setup gopath
 set -x GOPATH ~/workspace/go
