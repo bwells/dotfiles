@@ -90,6 +90,9 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 Plug 'ekalinin/Dockerfile.vim'
 
+" add motions for word hunks in camel or underscore case
+Plug 'chaoren/vim-wordmotion'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
@@ -209,6 +212,9 @@ function! LightLineFugitive()
   endif
   return ''
 endfunction
+
+" wordmotion config
+let g:wordmotion_prefix = "<leader>"
 
 """"""""""""""""
 " IT'S NOT 1970
