@@ -88,6 +88,8 @@ Plug 'moll/vim-bbye'
 " gave in and using nerdtree rather than netrw
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
+Plug 'ekalinin/Dockerfile.vim'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
