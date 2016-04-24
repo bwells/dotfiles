@@ -21,7 +21,7 @@ Plug 'svermeulen/vim-easyclip'
 " ctrl-p to activate
 " Plug 'ctrlpvim/ctrlp.vim'
 " explore ctrlspace as alternative for both
-" session management and fuzzy file finding
+" fuzzy file finding
 
 " better matcher for ctrlp
 " be sure to run the manual C build step as well
@@ -37,12 +37,6 @@ Plug 'airblade/vim-gitgutter'
 " gcc to toggle comment current line
 " gc to toggle comment selected line(s)
 Plug 'tomtom/tcomment_vim'
-
-" IDE level vim/go integration
-Plug 'fatih/vim-go'
-
-" consider neocomplete or YCM for autocomplete
-" ^ required by vim-go for autocomplete
 
 Plug 'itchyny/lightline.vim'
 
@@ -64,10 +58,7 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " color highlights same line navigation options
-Plug 'unblevable/quick-scope'
-
-" fish shell syntax etc
-Plug 'dag/vim-fish'
+" Plug 'unblevable/quick-scope'
 
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -88,10 +79,16 @@ Plug 'moll/vim-bbye'
 " gave in and using nerdtree rather than netrw
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
-Plug 'ekalinin/Dockerfile.vim'
-
 " add motions for word hunks in camel or underscore case
 Plug 'chaoren/vim-wordmotion'
+
+" IDE level vim/go integration
+Plug 'fatih/vim-go', { 'for': 'go' }
+
+" fish shell syntax etc
+Plug 'dag/vim-fish', { 'for': 'fish' }
+
+Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
 
 Plug 'bwells/vim-named-sessions'
 
