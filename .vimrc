@@ -362,7 +362,7 @@ augroup END
 augroup vim_filetype
     autocmd!
     autocmd FileType vim set tabstop=4 shiftwidth=4
-    autocmd FileType javascript set tabstop=4 shiftwidth=4 expandtab
+    autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
 augroup END
 
 
