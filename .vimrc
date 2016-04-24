@@ -213,6 +213,12 @@ endfunction
 " wordmotion config
 let g:wordmotion_prefix = "<leader>"
 
+" easytags config
+let g:easytags_async = 1
+
+" turn off easytags messages
+" let g:easytags_suppress_report = 1
+
 """"""""""""""""
 " IT'S NOT 1970
 """"""""""""""""
