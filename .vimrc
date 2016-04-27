@@ -90,6 +90,8 @@ Plug 'dag/vim-fish', { 'for': 'fish' }
 
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
 
+Plug 'tomasr/molokai'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
