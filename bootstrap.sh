@@ -42,6 +42,8 @@ curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubuserc
 # install vim plugins
 vim -c PlugInstall
 
+# TODO: install tmux plugins
+
 # setup repo checkouts root
 mkdir ~/workspace
 
