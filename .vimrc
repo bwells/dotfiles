@@ -156,7 +156,11 @@ nnoremap gm m
 
 call unite#custom#profile('files', 'filters', 'sorter_rank')
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
+" call unite#filters#sorter_default#use(['sorter_rank'])
+
+call unite#custom#source('file,file_rec,file_rec/async',
+					   \ 'ignore_pattern',
+					   \ join(['data/', '.git'], '\|'))
 
 " nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
 nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
