@@ -12,7 +12,8 @@ ln -s ~/dotfiles/.gitignore ~/.gitignore
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/.pylintrc ~/.pylintrc
 ln -s ~/dotfiles/.vimrc ~/.vimrc
-mkdir ~/.config
+mkdir -p ~/.config/nvim
+ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/fish ~/.config/fish
 
 # install command line tools and/or xcode
@@ -32,8 +33,11 @@ brew tap caskroom/cask
 brew cask install google-chrome firefox iterm2 slack flowdock adium dropbox \
 	          mysqlworkbench
 
-# install vim-plug
+# install vim-plug for vim
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# install vim-plug for nvim
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # install vim plugins
 vim -c PlugInstall
