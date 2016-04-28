@@ -10,6 +10,7 @@ ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.gitignore ~/.gitignore
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+ln -s ~/dotfiles/.pylintrc ~/.pylintrc
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 mkdir ~/.config
 ln -s ~/dotfiles/fish ~/.config/fish
