@@ -12,6 +12,9 @@ set -U CDPATH . ~ ~/workspace
 set -x GOPATH ~/workspace/go
 set PATH $GOPATH/bin $PATH
 
+# add brew sbin to path
+set PATH $PATH /usr/local/sbin
+
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
 set -gx WORKON_HOME ~/environments
