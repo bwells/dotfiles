@@ -59,7 +59,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(web-mode)
    ;; A list of packages that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -282,6 +282,10 @@ you should place your code here."
     (setq-default evil-escape-key-sequence "jk"))
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+  (turn-on-fci-mode)
+
+  (setq neo-show-hidden-files nil)
 
   )
 

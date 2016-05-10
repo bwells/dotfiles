@@ -37,6 +37,7 @@ load-plugins=
 # --disable=W"
 disable=relative-import,wrong-import-order,using-constant-test,no-member
 disable=line-too-long,C0301,E1101,C0103,C0111,unused-wildcard-import
+disable=singleton-comparison
 
 
 [REPORTS]
