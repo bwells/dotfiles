@@ -37,7 +37,8 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     spacemacs-helm
+     ;; spacemacs-helm
+     ;; helm-spacemacs
      auto-completion
      better-defaults
      emacs-lisp
@@ -259,7 +260,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'trailing
    ))
 
 (defun dotspacemacs/user-init ()
@@ -279,15 +280,20 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (defun dotspacemacs/user-config ()
+
+  ;; set jk as an escape sequence
     (setq-default evil-escape-key-sequence "jk"))
 
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
   ;; (turn-on-fci-mode)
-  (turn-on-fci-mode)
   (add-hook 'prog-mode-hook 'turn-on-fci-mode)
 
+  ;; set neotree to hide ignored files by default
   (setq neo-show-hidden-files nil)
+
+  ;; (spaceline-toggle-buffer-size-off)
+  (setq spaceline-buffer-size-p nil)
 
   )
 
