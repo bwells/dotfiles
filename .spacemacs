@@ -283,7 +283,9 @@ you should place your code here."
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+  ;; (turn-on-fci-mode)
   (turn-on-fci-mode)
+  (add-hook 'prog-mode-hook 'turn-on-fci-mode)
 
   (setq neo-show-hidden-files nil)
 
