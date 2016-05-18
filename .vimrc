@@ -95,6 +95,16 @@ Plug 'tomasr/molokai'
 
 Plug 'scrooloose/syntastic'
 
+" deep python understanding
+" Plug 'davidhalter/jedi-vim'
+
+" adds indent level as an object
+Plug 'michaeljsmith/vim-indent-object'
+
+" lots of targets
+" separators, args, etc
+Plug 'wellle/targets.vim'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
