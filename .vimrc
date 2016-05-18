@@ -235,6 +235,9 @@ let g:wordmotion_prefix = "<leader>"
 " easytags config
 let g:easytags_async = 1
 
+let g:easytags_cmd = '/usr/local/bin/ctags'
+let g:easytags_dynamic_files = 1
+
 " turn off easytags messages
 " let g:easytags_suppress_report = 1
 
@@ -280,43 +283,20 @@ endif
 
 set guifont=Menlo\ Regular\ for\ Powerline:h11
 
-" remap split navigation to match vim hjkl
-" because we're not sociopaths
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" C-N and P to buffer navigation
-" nnoremap <C-N> :bnext<CR>
-" nnoremap <C-P> :bprev<CR>
-" let's try tab and shift-tab instead
-nnoremap <tab> :bn<cr>
-nnoremap <s-tab> :bp<cr>
-
-" clear highlight with <esc> after a search
-nnoremap <esc><esc> :noh<return><esc>
-
 " turn on line numbers
-set number
+" set number
+
+" turn on relative line numbers
+set relativenumber
 
 " set ruler at 81 chars
 set colorcolumn=81
 
-" disable arrow keys :/
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+" highlight the line the cursor is on
+set cursorline
 
-" i keep hitting shift-j or k instead of ctrl-j or k
-" override the defaults (join and lookup keyword) to something less annoying
-nnoremap J 5j
-nnoremap K 5k
-
-" if i hit c-j/k in insert mode dump out and do what i wanted
-inoremap <C-j> <esc><c-w><c-j>
-inoremap <C-k> <esc><c-w><c-k>
+" enable lazyredraw to not slaughter performance
+set lazyredraw
 
 " open new splits to the right or below
 " like a non sociopath
@@ -369,6 +349,9 @@ set visualbell
 " or just turn off errors bells
 " set noerrorbells
 
+" change the default register to the system clipboard
+set clipboard^=unnamed
+
 " enable syntax highlighting
 syntax enable
 
@@ -384,6 +367,38 @@ set pastetoggle=<F5>
 """""""
 " MAPS
 """""""
+
+" remap split navigation to match vim hjkl
+" because we're not sociopaths
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" C-N and P to buffer navigation
+" nnoremap <C-N> :bnext<CR>
+" nnoremap <C-P> :bprev<CR>
+" let's try tab and shift-tab instead
+nnoremap <tab> :bn<cr>
+nnoremap <s-tab> :bp<cr>
+
+" clear highlight with <esc> after a search
+nnoremap <esc><esc> :noh<return><esc>
+
+" disable arrow keys in normal mode
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" i keep hitting shift-j or k instead of ctrl-j or k
+" override the defaults (join and lookup keyword) to something less annoying
+" nnoremap J 5j
+" nnoremap K 5k
+
+" if i hit c-j/k in insert mode dump out and do what i wanted
+inoremap <C-j> <esc><c-w><c-j>
+inoremap <C-k> <esc><c-w><c-k>
 
 " edit vimrc in place
 nnoremap <leader>v :edit $MYVIMRC<cr>
@@ -408,16 +423,11 @@ augroup vim_filetype
     autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
 augroup END
 
-
-
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
 " clear a line without removing it
 nnoremap <leader>d 0D
-
-" change the default register to the system clipboard
-set clipboard^=unnamed
 
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
