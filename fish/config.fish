@@ -15,6 +15,8 @@ set PATH $GOPATH/bin $PATH
 # add brew sbin to path
 set PATH $PATH /usr/local/sbin
 
+# set fzf default intput ag becuase ag respects ignored file settings
+set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
 set -gx WORKON_HOME ~/environments
