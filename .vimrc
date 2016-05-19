@@ -191,6 +191,7 @@ let g:EasyClipAutoFormat = 1
 " trying fzf for file and buffer search
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :Buffers<CR>
+nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -414,8 +415,8 @@ nnoremap <C-H> <C-W><C-H>
 " nnoremap <C-N> :bnext<CR>
 " nnoremap <C-P> :bprev<CR>
 " let's try tab and shift-tab instead
-nnoremap <tab> :bn<cr>
-nnoremap <s-tab> :bp<cr>
+" nnoremap <tab> :bn<cr>
+" nnoremap <s-tab> :bp<cr>
 
 " clear highlight with <esc> after a search
 nnoremap <esc><esc> :noh<return><esc>
