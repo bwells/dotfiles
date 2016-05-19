@@ -444,20 +444,6 @@ nnoremap <leader>vv :vsplit $MYVIMRC<cr>
 " source vimrc
 nnoremap <leader>r :source $MYVIMRC<cr>
 
-" auto source vimrc on write
-" autocmd! bufwritepost .vimrc source %
-augroup reload_vimrc
-    autocmd!
-    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
-augroup END
-
-" tab settings for filetypes
-augroup vim_filetype
-    autocmd!
-    autocmd FileType vim set tabstop=4 shiftwidth=4
-    autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
-augroup END
-
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
@@ -466,6 +452,20 @@ nnoremap <leader>d 0D
 
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
+
+" auto source vimrc on write
+" autocmd! bufwritepost .vimrc source %
+augroup reload_vimrc
+	autocmd!
+	autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+augroup END
+
+" tab settings for filetypes
+augroup vim_filetype
+	autocmd!
+	autocmd FileType vim set tabstop=4 shiftwidth=4
+	autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
+augroup END
 
 " files to hide from netrw
 let g:netrw_list_hide = '.*\.pyc$,'
