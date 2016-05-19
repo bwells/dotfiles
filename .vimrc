@@ -497,7 +497,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
 " tell vim to use a regular shell
 if &shell =~# 'fish$'
     " disable all zsh files while we're at it
-    set shell=zsh\ -f\ -d
+    set shell=zsh
 endif
 
 " let's do some whitspace highlighting
