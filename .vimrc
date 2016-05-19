@@ -168,9 +168,9 @@ let g:go_fmt_command = "goimports"
 nnoremap gm m
 
 " remap paste ring actions to ctrl-f (forward) and ctrl-d
-let g:EasyClipUsePasteToggleDefaults = 0
-nmap <c-f> <plug>EasyClipSwapPasteForward
-nmap <c-d> <plug>EasyClipSwapPasteBackwards
+" let g:EasyClipUsePasteToggleDefaults = 0
+" nmap <c-f> <plug>EasyClipSwapPasteForward
+" nmap <c-d> <plug>EasyClipSwapPasteBackwards
 
 " enable auto reformating on paste
 " leader-p to paste w/ disabled
@@ -448,8 +448,24 @@ nnoremap <leader>r :source $MYVIMRC<cr>
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
-" clear a line without removing it
-nnoremap <leader>d 0D
+" Y behave like D or C
+nnoremap Y y$
+
+" Keep search results at the center of screen
+nmap n nzz
+nmap N Nzz
+nmap * *zz
+nmap # #zz
+nmap g* g*zz
+nmap g# g#zz
+
+"""""""""""""
+" OTHER STUFF
+"""""""""""""
+
+" disable command history window
+" really tired of triggering it instead of :q
+noremap q: <NOP>
 
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
@@ -480,7 +496,8 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
 " fish doesn't play posix
 " tell vim to use a regular shell
 if &shell =~# 'fish$'
-    set shell=zsh
+    " disable all zsh files while we're at it
+    set shell=zsh\ -f\ -d
 endif
 
 " let's do some whitspace highlighting
