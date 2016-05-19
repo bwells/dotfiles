@@ -38,6 +38,7 @@ Plug 'airblade/vim-gitgutter'
 " gc to toggle comment selected line(s)
 Plug 'tomtom/tcomment_vim'
 
+" lightweight and independent statusline plugin
 Plug 'itchyny/lightline.vim'
 
 " auto quote/bracket/paren matching
@@ -52,16 +53,18 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 
 " not sure i need this. kind of a competitor of ctrlp
-Plug 'Shougo/unite.vim'
+" Plug 'Shougo/unite.vim'
 
 " vimproc - required for Unite /async modes
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " color highlights same line navigation options
 " Plug 'unblevable/quick-scope'
 
+" TODO: conflicting with ctrl j/k working with fzf results
+"       disabled until figured out
 " allow vim<->tmux pane navigation
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 
 " automatic ctags management
 Plug 'xolox/vim-easytags'
@@ -104,6 +107,10 @@ Plug 'michaeljsmith/vim-indent-object'
 " lots of targets
 " separators, args, etc
 Plug 'wellle/targets.vim'
+
+" fzf fuzzy finder wrapper
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'bwells/vim-named-sessions'
 
@@ -157,6 +164,9 @@ let g:go_fmt_command = "goimports"
   " let g:airline_theme='molokai'
   " let g:airline#extensions#whitespace#enabled = 1
 
+" remap mark to gm as easyclip adds Move operator on m
+nnoremap gm m
+
 " remap paste ring actions to ctrl-f (forward) and ctrl-d
 let g:EasyClipUsePasteToggleDefaults = 0
 nmap <c-f> <plug>EasyClipSwapPasteForward
@@ -166,20 +176,36 @@ nmap <c-d> <plug>EasyClipSwapPasteBackwards
 " leader-p to paste w/ disabled
 let g:EasyClipAutoFormat = 1
 
-" remap mark to gm as easyclip adds Move operator on m
-nnoremap gm m
-
-call unite#custom#profile('files', 'filters', 'sorter_rank')
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" call unite#filters#sorter_default#use(['sorter_rank'])
-
-call unite#custom#source('file,file_rec,file_rec/async',
-					   \ 'ignore_pattern',
-					   \ join(['data/', '.git'], '\|'))
+" call unite#custom#profile('files', 'filters', 'sorter_rank')
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" " call unite#filters#sorter_default#use(['sorter_rank'])
+"
+" call unite#custom#source('file,file_rec,file_rec/async',
+" 					   \ 'ignore_pattern',
+" 					   \ join(['data/', '.git'], '\|'))
 
 " nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
-nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
-nnoremap <Leader>g :Unite -start-insert buffer<CR>
+" nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
+" nnoremap <Leader>g :Unite -start-insert buffer<CR>
+
+" trying fzf for file and buffer search
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>g :Buffers<CR>
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " alias Bdelete to Bclose
 command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
@@ -273,7 +299,7 @@ set ttyfast
 if has('mouse')
     set mouse=a
     if !has('nvim')
-	set ttymouse=xterm2
+		set ttymouse=xterm2
     endif
 endif
 
@@ -281,10 +307,19 @@ endif
 " BASE VIM CONFIGURATION
 """""""""""""""""""""""""
 
+if has('nvim')
+	" ctrl-h == backspace in basic shell.
+	" override this in nvim's case to get correct split navigation back
+	nmap <BS> <C-W>h
+
+	" map esc to switch-to-normal-mode in a terminal
+	tnoremap <Esc> <C-\><C-n>
+endif
+
 set guifont=Menlo\ Regular\ for\ Powerline:h11
 
 " turn on line numbers
-" set number
+set number
 
 " turn on relative line numbers
 set relativenumber
