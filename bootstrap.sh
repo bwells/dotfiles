@@ -22,7 +22,8 @@ ln -s ~/dotfiles/fish ~/.config/fish
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install fish zsh tmux vim macvim git go mysql nmap node python
+brew install fish zsh tmux vim macvim git go mysql nmap node python fzf \
+	     the_silver_searcher
 
 # TODO: change default shell to fish
 
@@ -41,6 +42,9 @@ curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubuserc
 
 # install vim plugins
 vim -c PlugInstall
+
+# install nvim plugins
+nvim -c PlugInstall
 
 # install tpm
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
