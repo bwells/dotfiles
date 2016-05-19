@@ -503,7 +503,6 @@ endif
 " let's do some whitspace highlighting
 " set listchars=tab:▶ ,space:.,trail:.
 
-" set backupdir=~/.vim/backup//
-" set directory=~/.vim/swap//
-" set undodir=~/.vim/undo//
+set nobackup
+set nowritebackup
 set noswapfile
