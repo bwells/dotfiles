@@ -438,8 +438,11 @@ nnoremap <C-H> <C-W><C-H>
 " nnoremap <C-N> :bnext<CR>
 " nnoremap <C-P> :bprev<CR>
 " let's try tab and shift-tab instead
-" nnoremap <tab> :bn<cr>
-" nnoremap <s-tab> :bp<cr>
+nnoremap <tab> :bNext<cr>
+nnoremap <s-tab> :bprev<cr>
+
+" jump to mru buffer
+nnoremap <leader><tab> :b#<cr>
 
 " clear highlight with <esc> after a search
 nnoremap <esc><esc> :noh<return><esc>
