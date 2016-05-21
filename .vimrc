@@ -266,11 +266,30 @@ let g:wordmotion_prefix = "<leader>"
 " easytags config
 let g:easytags_async = 1
 
+" disable using tags files for syntax highlighting
+" it was slaughtering render performance
+let g:easytags_auto_highlight = 0
+
 let g:easytags_cmd = '/usr/local/bin/ctags'
-let g:easytags_dynamic_files = 1
+
+" force vim to use a tags file at the root of CWD only
+set tags=./tags;
+let &cpoptions .= 'd'
+
+" force creating a project specific tags file
+let g:easytags_dynamic_files = 2
 
 " turn off easytags messages
 " let g:easytags_suppress_report = 1
+
+let g:easytags_languages = {
+	\ 'python': {
+    \	'args': ['--python-kinds=-iv', '-R']
+	\ }
+\}
+
+" command to run tags on the entire project
+command! InitTags :silent execute "!ctags -R --fields=+l --languages=python --python-kinds=-iv -f tags .\n" | redraw!
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
