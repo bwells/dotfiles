@@ -101,7 +101,7 @@ Plug 'tomasr/molokai'
 Plug 'scrooloose/syntastic'
 
 " deep python understanding
-" Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 
 " adds indent level as an object
 Plug 'michaeljsmith/vim-indent-object'
