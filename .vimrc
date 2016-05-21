@@ -20,20 +20,22 @@ Plug 'svermeulen/vim-easyclip'
 " alternative plugins: commandt
 " ctrl-p to activate
 " Plug 'ctrlpvim/ctrlp.vim'
-" explore ctrlspace as alternative for both
-" fuzzy file finding
 
 " better matcher for ctrlp
 " be sure to run the manual C build step as well
 " Plug 'nixprime/cpsm'
+"
+" explore ctrlspace as alternative for both
+" fuzzy file finding
+" Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " weird/awesome move anywhere package
 Plug 'Lokaltog/vim-easymotion'
 
-" hopefully good git gutter support
+" git gutter. []c to navigate change hunks
+" <leader>hs to stage hunk
 Plug 'airblade/vim-gitgutter'
 
-" is decent fucking commenting so much to ask?
 " gcc to toggle comment current line
 " gc to toggle comment selected line(s)
 Plug 'tomtom/tcomment_vim'
@@ -52,7 +54,7 @@ Plug 'tpope/vim-surround'
 " extend the power of . to more complex objects
 Plug 'tpope/vim-repeat'
 
-" not sure i need this. kind of a competitor of ctrlp
+" do everything interface library
 " Plug 'Shougo/unite.vim'
 
 " vimproc - required for Unite /async modes
@@ -214,9 +216,11 @@ command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
 " map 'bc' to 'Bc' for ease of typing
 cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
 
+" disable vim's own mode indicator
+set noshowmode
+
 " uses menlo for powerline from
 " https://gist.github.com/justinmayer/7537418#file-menlo-for-powerline-zip
-set noshowmode
 let g:lightline = {
 	\ 'colorscheme': 'wombat',
 	\ 'active': {
