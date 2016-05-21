@@ -474,6 +474,14 @@ nnoremap <leader>r :source $MYVIMRC<cr>
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
+" Keep search results at the center of screen
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+
 " Y behave like D or C
 nnoremap Y y$
 
