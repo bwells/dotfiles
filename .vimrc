@@ -485,13 +485,9 @@ nnoremap g# g#zz
 " Y behave like D or C
 nnoremap Y y$
 
-" Keep search results at the center of screen
-nmap n nzz
-nmap N Nzz
-nmap * *zz
-nmap # #zz
-nmap g* g*zz
-nmap g# g#zz
+" toggle key for cursorline and relativenumber
+" both of which slow down screen renders horribly on occasion
+map <f5> :setlocal cursorline! relativenumber!<cr>
 
 """""""""""""
 " OTHER STUFF
