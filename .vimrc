@@ -54,6 +54,11 @@ Plug 'tpope/vim-surround'
 " extend the power of . to more complex objects
 Plug 'tpope/vim-repeat'
 
+" plugin management QOL from tpope
+" zS to show active syntax highlight group
+" K helm for viml
+Plug 'tpope/vim-scriptease'
+
 " do everything interface library
 " Plug 'Shougo/unite.vim'
 
