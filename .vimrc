@@ -56,7 +56,6 @@ Plug 'tpope/vim-repeat'
 
 " plugin management QOL from tpope
 " zS to show active syntax highlight group
-" K helm for viml
 Plug 'tpope/vim-scriptease'
 
 " do everything interface library
@@ -199,6 +198,8 @@ let g:EasyClipAutoFormat = 1
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>g :Buffers<CR>
 nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
+
+
 
 " Customize fzf colors to match your color scheme
 " let g:fzf_colors =
@@ -480,6 +481,8 @@ nnoremap <leader>r :source $MYVIMRC<cr>
 inoremap jk <esc>l
 
 " Keep search results at the center of screen
+" TODO: find the config that only centered the screen if the next result
+" would cause a scroll
 nnoremap n nzz
 nnoremap N Nzz
 nnoremap * *zz
@@ -493,6 +496,9 @@ nnoremap Y y$
 " toggle key for cursorline and relativenumber
 " both of which slow down screen renders horribly on occasion
 map <f5> :setlocal cursorline! relativenumber!<cr>
+
+" get help on word under cursor
+nnoremap K :help <cword><cr>
 
 """""""""""""
 " OTHER STUFF
