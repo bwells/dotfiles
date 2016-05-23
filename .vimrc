@@ -425,9 +425,8 @@ colors molokai
 " autocmd ColorScheme janah highlight Normal ctermbg=235
 " colors janah
 
-" hit f5 to toggle paste modes
-" fixes vim reindenting pasted code
-set pastetoggle=<F5>
+" disable fucking folding
+set nofoldenable
 
 """""""
 " MAPS
