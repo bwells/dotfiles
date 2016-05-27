@@ -59,10 +59,10 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-scriptease'
 
 " do everything interface library
-" Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite.vim'
 
 " vimproc - required for Unite /async modes
-" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " color highlights same line navigation options
 " Plug 'unblevable/quick-scope'
@@ -109,6 +109,9 @@ Plug 'davidhalter/jedi-vim'
 
 " adds indent level as an object
 Plug 'michaeljsmith/vim-indent-object'
+
+" adds gS and gJ to syntactically aware split/join constructs
+Plug 'AndrewRadev/splitjoin.vim'
 
 " lots of targets
 " separators, args, etc
@@ -163,12 +166,12 @@ let g:go_fmt_command = "goimports"
 " endif
 
 " let g:airline_powerline_fonts=1
-  " let g:airline#extensions#tabline#enabled = 1
-  " let g:airline#extensions#hunks#enabled = 0
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#hunks#enabled = 0
 " let g:airline_left_sep=''
 " let g:airline_right_sep=''
-  " let g:airline_theme='molokai'
-  " let g:airline#extensions#whitespace#enabled = 1
+" let g:airline_theme='molokai'
+" let g:airline#extensions#whitespace#enabled = 1
 
 " remap mark to gm as easyclip adds Move operator on m
 nnoremap gm m
@@ -177,29 +180,57 @@ nnoremap gm m
 " let g:EasyClipUsePasteToggleDefaults = 0
 " nmap <c-f> <plug>EasyClipSwapPasteForward
 " nmap <c-d> <plug>EasyClipSwapPasteBackwards
+" Defaulting back to ctrl-p and ctrl-n
 
 " enable auto reformating on paste
 " leader-p to paste w/ disabled
 let g:EasyClipAutoFormat = 1
 
 " call unite#custom#profile('files', 'filters', 'sorter_rank')
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" " call unite#filters#sorter_default#use(['sorter_rank'])
-"
-" call unite#custom#source('file,file_rec,file_rec/async',
-" 					   \ 'ignore_pattern',
-" 					   \ join(['data/', '.git'], '\|'))
+" call unite#custom#source('file_rec', 'sorters', 'sorter_length')
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+call unite#custom#source('file,file_rec,file_rec/async',
+				   \ 'ignore_pattern',
+				   \ join(['data/', '.git'], '\|'))
+
+" if executable('ag')
+"   let g:unite_source_rec_async_command =
+"     \ ['ag', '--nocolor', '--nogroup',
+"     \  '--depth', '10', '-g', '']
+"   " ag is quite fast, so we increase this number
+"   let g:unite_source_rec_min_cache_files = 1200
+" endif
 
 " nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
-" nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
-" nnoremap <Leader>g :Unite -start-insert buffer<CR>
+
+if has('nvim')
+	nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
+else
+	nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
+endif
+nnoremap <Leader>b :Unite -start-insert buffer<CR>
+
+if executable('ag')
+	  let g:unite_source_grep_command = 'ag'
+	  let g:unite_source_grep_default_opts =
+	  \ '-i --vimgrep --hidden --ignore ' .
+	  \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+	  let g:unite_source_grep_recursive_opt = ''
+endif
+
+call unite#custom#profile('default', 'context', {
+      \   'start_insert': 1,
+      \   'winheight': 15,
+      \   'direction': 'botright',
+      \ })
+
 
 " trying fzf for file and buffer search
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>g :Buffers<CR>
-nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
-
-
+" nnoremap <leader>f :Files<CR>
+" nnoremap <leader>g :Buffers<CR>
+" nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
 
 " Customize fzf colors to match your color scheme
 " let g:fzf_colors =
@@ -215,6 +246,11 @@ nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
 "   \ 'marker':  ['fg', 'Keyword'],
 "   \ 'spinner': ['fg', 'Label'],
 "   \ 'header':  ['fg', 'Comment'] }
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+map  <leader>e <Plug>(easymotion-bd-f)
+nmap <leader>e <Plug>(easymotion-overwin-f)
+let g:EasyMotion_smartcase = 1
 
 " alias Bdelete to Bclose
 command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
@@ -360,6 +396,13 @@ set colorcolumn=81
 " highlight the line the cursor is on
 set cursorline
 
+augroup CursorLine
+  autocmd!
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
+augroup END
+
+
 " enable lazyredraw to not slaughter performance
 set lazyredraw
 
@@ -443,7 +486,7 @@ nnoremap <C-H> <C-W><C-H>
 " nnoremap <C-N> :bnext<CR>
 " nnoremap <C-P> :bprev<CR>
 " let's try tab and shift-tab instead
-nnoremap <tab> :bNext<cr>
+nnoremap <tab> :bnext<cr>
 nnoremap <s-tab> :bprev<cr>
 
 " jump to mru buffer
