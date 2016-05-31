@@ -121,6 +121,10 @@ Plug 'wellle/targets.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+" finally something to give vertical spacing alignment bars?
+" Disabling for now. Kills scroll performance once the viewport is moving
+" Plug 'Yggdroot/indentLine'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
@@ -350,6 +354,8 @@ let g:syntastic_mode_map = {
 " :SyntasticCheck to check
 " :SyntasticToggleMode to toggle active/passive
 
+" disabled until performance is evaluated
+" let g:indentLine_char = '⎸'
 
 """"""""""""""""
 " IT'S NOT 1970
