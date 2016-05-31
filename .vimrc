@@ -58,6 +58,9 @@ Plug 'tpope/vim-repeat'
 " zS to show active syntax highlight group
 Plug 'tpope/vim-scriptease'
 
+" provides mixed case abbreviations and searches
+Plug 'tpope/vim-abolish'
+
 " do everything interface library
 Plug 'Shougo/unite.vim'
 
