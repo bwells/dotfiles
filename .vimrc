@@ -475,7 +475,10 @@ colors molokai
 " colors janah
 
 " disable fucking folding
-set nofoldenable
+augroup fuck_folding
+	au BufEnter * set nofoldenable
+	" au BufLeave * set nofoldenable
+augroup END
 
 """""""
 " MAPS
