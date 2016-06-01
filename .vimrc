@@ -601,3 +601,36 @@ endif
 set nobackup
 set nowritebackup
 set noswapfile
+
+
+function! SwapTest()
+	" Searches for test or implementation files and swaps
+	" the current buffer to the alternate.
+
+	let l:filename = tolower(expand('%:t'))
+	let l:cwd = getcwd()
+
+	" if currently in a test file
+	" we'll look for the implementation file
+	if filename =~ "^test_"
+		" chop that off before searching
+		let l:filename = join(split(l:filename, '_')[1:], '_')
+		let l:pattern = '**/' . l:filename
+	else
+		" otherwise look for the test file
+		let l:pattern = '**/test_' . l:filename
+	endif
+
+	" recursively search CWD for files matching the pattern
+	" 0 is leaves wildingore and suffixes enabled
+	" 1 specifies to return results as a list
+	let l:matches = globpath(l:cwd, l:pattern, 0, 1)
+
+	if len(l:matches) == 1
+		execute 'edit ' . l:matches[0]
+	endif
+endfunction
+
+command! SwapTest call SwapTest()
+
+nnoremap <leader>t :SwapTest<cr>
