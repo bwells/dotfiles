@@ -120,6 +120,9 @@ Plug 'AndrewRadev/splitjoin.vim'
 " separators, args, etc
 Plug 'wellle/targets.vim'
 
+" :s live feedback
+Plug 'osyo-manga/vim-over'
+
 " fzf fuzzy finder wrapper
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -594,7 +597,7 @@ let g:netrw_list_hide.= '\.git,'
 let g:netrw_list_hide.= '\__pycache__,'
 
 " sane files to ignore
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,*/__pycache__
 
 " fish doesn't play posix
 " tell vim to use a regular shell
@@ -610,6 +613,15 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
 
 function! SwapTest()
 	" Searches for test or implementation files and swaps
@@ -641,4 +653,4 @@ endfunction
 
 command! SwapTest call SwapTest()
 
-nnoremap <leader>t :SwapTest<cr>
+nnoremap <silent> <leader>t :SwapTest<cr>
