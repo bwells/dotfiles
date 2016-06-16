@@ -61,6 +61,9 @@ Plug 'tpope/vim-scriptease'
 " provides mixed case abbreviations and searches
 Plug 'tpope/vim-abolish'
 
+" deep python understanding
+Plug 'davidhalter/jedi-vim'
+
 " do everything interface library
 Plug 'Shougo/unite.vim'
 
@@ -106,9 +109,6 @@ Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
 Plug 'tomasr/molokai'
 
 Plug 'scrooloose/syntastic'
-
-" deep python understanding
-Plug 'davidhalter/jedi-vim'
 
 " adds indent level as an object
 Plug 'michaeljsmith/vim-indent-object'
@@ -199,8 +199,8 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 
 call unite#custom#source('file,file_rec,file_rec/async',
-				   \ 'ignore_pattern',
-				   \ join(['data/', '.git'], '\|'))
+				       \ 'ignore_pattern',
+				       \ join(['data/', '.git'], '\|'))
 
 " if executable('ag')
 "   let g:unite_source_rec_async_command =
@@ -210,14 +210,19 @@ call unite#custom#source('file,file_rec,file_rec/async',
 "   let g:unite_source_rec_min_cache_files = 1200
 " endif
 
-" nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async:!<CR>
-
 if has('nvim')
 	nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
 else
 	nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
 endif
 nnoremap <Leader>b :Unite -start-insert buffer<CR>
+nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
+if executable('pt')
+  let g:unite_source_grep_command = 'pt'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+  let g:unite_source_grep_recursive_opt = ''
+  let g:unite_source_grep_encoding = 'utf-8'
+endif
 
 if executable('ag')
 	  let g:unite_source_grep_command = 'ag'
