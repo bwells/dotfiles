@@ -124,6 +124,8 @@ Plug 'wellle/targets.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+Plug 'sophacles/vim-bundle-mako'
+
 " finally something to give vertical spacing alignment bars?
 " Disabling for now. Kills scroll performance once the viewport is moving
 " Plug 'Yggdroot/indentLine'
@@ -578,10 +580,11 @@ augroup reload_vimrc
 augroup END
 
 " tab settings for filetypes
-augroup vim_filetype
+augroup filetypes
 	autocmd!
 	autocmd FileType vim set tabstop=4 shiftwidth=4
 	autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
+    autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
 augroup END
 
 " files to hide from netrw
