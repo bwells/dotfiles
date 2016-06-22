@@ -1,10 +1,11 @@
 .DS_Store
+tags
+.cache
+__pycache__
 *.sublime-project
 *.sublime-workspace
 *.pyc
 *.swp
-__pycache__
 fish_history
 fish_read_history
 fishd.*
-tags
