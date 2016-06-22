@@ -10,22 +10,23 @@ set -U CDPATH . ~ ~/workspace
 
 # setup gopath
 set -gx GOPATH ~/workspace/go
-set PATH $GOPATH/bin $PATH
+set -gx PATH $GOPATH/bin $PATH
 
 # add brew sbin to path
-set PATH $PATH /usr/local/sbin
+set -gx PATH $PATH /usr/local/sbin
 
 # set fzf default intput ag becuase ag respects ignored file settings
 set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
+
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
 set -gx WORKON_HOME ~/environments
 set -gx VIRTUALFISH_HOME ~/environments
 
-# TODO: if no virtualfix is found try busting out of a venv
 # activate a virtualenv on entry
 # also deactivates on project exit
 # requires project root directory and virtualenv directory have the same name
+# TODO: if no virtualfix is found try busting out of a venv
 function chpwd --on-variable PWD --description "Activate Python virtualenvs on entry"
 	set GIT_TOPLEVEL (git rev-parse --show-toplevel 2> /dev/null)
 
