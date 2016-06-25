@@ -547,12 +547,21 @@ inoremap jk <esc>l
 " Keep search results at the center of screen
 " TODO: find the config that only centered the screen if the next result
 " would cause a scroll
-nnoremap n nzz
-nnoremap N Nzz
+" nnoremap n nzz
+" nnoremap N Nzz
+nnoremap n n:call <SID>MaybeMiddle()<cr>
+nnoremap N N:call <SID>MaybeMiddle()<cr>
 nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+
+" scroll current line to middle if it is within two of the window edge
+function! s:MaybeMiddle()
+	if winline() <= 2  || winline() >= winheight(0) - 1
+		normal! zz
+	endif
+endfunction
 
 " Y behave like D or C
 nnoremap Y y$
