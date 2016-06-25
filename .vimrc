@@ -597,7 +597,11 @@ augroup filetypes
 	autocmd FileType vim set tabstop=4 shiftwidth=4
 	autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
+    autocmd FileType dosini set commentstring=#%s
 augroup END
+
+" change the comment character for .ini files
+call tcomment#DefineType('dosini', '#%s')
 
 " files to hide from netrw
 let g:netrw_list_hide = '.*\.pyc$,'
