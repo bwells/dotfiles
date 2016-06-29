@@ -97,6 +97,13 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 " add motions for word hunks in camel or underscore case
 Plug 'chaoren/vim-wordmotion'
 
+" lots of targets
+" separators, args, etc
+Plug 'wellle/targets.vim'
+
+" adds indent level as an object
+Plug 'michaeljsmith/vim-indent-object'
+
 " IDE level vim/go integration
 Plug 'fatih/vim-go', { 'for': 'go' }
 
@@ -114,15 +121,8 @@ Plug 'tomasr/molokai'
 
 Plug 'scrooloose/syntastic'
 
-" adds indent level as an object
-Plug 'michaeljsmith/vim-indent-object'
-
 " adds gS and gJ to syntactically aware split/join constructs
 Plug 'AndrewRadev/splitjoin.vim'
-
-" lots of targets
-" separators, args, etc
-Plug 'wellle/targets.vim'
 
 " :s live feedback
 Plug 'osyo-manga/vim-over'
