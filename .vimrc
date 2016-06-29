@@ -30,7 +30,7 @@ Plug 'svermeulen/vim-easyclip'
 " Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " weird/awesome move anywhere package
-Plug 'Lokaltog/vim-easymotion'
+" Plug 'Lokaltog/vim-easymotion'
 
 " git gutter. []c to navigate change hunks
 " <leader>hs to stage hunk
@@ -62,7 +62,7 @@ Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-abolish'
 
 " deep python understanding
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 
 " do everything interface library
 Plug 'Shougo/unite.vim'
@@ -76,7 +76,7 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " TODO: conflicting with ctrl j/k working with fzf results
 "       disabled until figured out
 " allow vim<->tmux pane navigation
-" Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 " automatic ctags management
 Plug 'xolox/vim-easytags'
@@ -103,7 +103,11 @@ Plug 'fatih/vim-go', { 'for': 'go' }
 " fish shell syntax etc
 Plug 'dag/vim-fish', { 'for': 'fish' }
 
+" dockerfile support
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
+
+" mako support
+Plug 'sophacles/vim-bundle-mako'
 
 " color scheme
 Plug 'tomasr/molokai'
@@ -127,8 +131,6 @@ Plug 'osyo-manga/vim-over'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-Plug 'sophacles/vim-bundle-mako'
-
 " finally something to give vertical spacing alignment bars?
 " Disabling for now. Kills scroll performance once the viewport is moving
 " Plug 'Yggdroot/indentLine'
@@ -145,7 +147,7 @@ call plug#end()
 """""""""""""""""""""""
 
 " don't save hidden buffers
-set sessionoptions-=buffers
+" set sessionoptions-=buffers
 set sessionoptions-=options
 
 let g:NERDTreeDirArrowExpandable = '▸'
@@ -222,12 +224,6 @@ else
 endif
 nnoremap <Leader>b :Unite -start-insert buffer<CR>
 nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
-if executable('pt')
-  let g:unite_source_grep_command = 'pt'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_grep_encoding = 'utf-8'
-endif
 
 if executable('ag')
 	  let g:unite_source_grep_command = 'ag'
@@ -235,6 +231,13 @@ if executable('ag')
 	  \ '-i --vimgrep --hidden --ignore ' .
 	  \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
 	  let g:unite_source_grep_recursive_opt = ''
+endif
+
+if executable('pt')
+	let g:unite_source_grep_command = 'pt'
+	let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+	let g:unite_source_grep_recursive_opt = ''
+	let g:unite_source_grep_encoding = 'utf-8'
 endif
 
 call unite#custom#profile('default', 'context', {
@@ -523,11 +526,6 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
-" i keep hitting shift-j or k instead of ctrl-j or k
-" override the defaults (join and lookup keyword) to something less annoying
-" nnoremap J 5j
-" nnoremap K 5k
-
 " if i hit c-j/k in insert mode dump out and do what i wanted
 inoremap <C-j> <esc><c-w><c-j>
 inoremap <C-k> <esc><c-w><c-k>
@@ -545,19 +543,17 @@ nnoremap <leader>r :source $MYVIMRC<cr>
 inoremap jk <esc>l
 
 " Keep search results at the center of screen
-" TODO: find the config that only centered the screen if the next result
-" would cause a scroll
 " nnoremap n nzz
 " nnoremap N Nzz
-nnoremap n n:call <SID>MaybeMiddle()<cr>
-nnoremap N N:call <SID>MaybeMiddle()<cr>
-nnoremap * *zz
-nnoremap # #zz
-nnoremap g* g*zz
-nnoremap g# g#zz
+nnoremap n n:call <SID>CenterView()<cr>
+nnoremap N N:call <SID>CenterView()<cr>
+nnoremap * *:call <SID>CenterView()<cr>
+nnoremap # #:call <SID>CenterView()<cr>
+nnoremap g* g*:call <SID>CenterView()<cr>
+nnoremap g# g#:call <SID>CenterView()<cr>
 
 " scroll current line to middle if it is within two of the window edge
-function! s:MaybeMiddle()
+function! s:CenterView()
 	if winline() <= 2  || winline() >= winheight(0) - 1
 		normal! zz
 	endif
@@ -573,25 +569,24 @@ map <f5> :setlocal cursorline! relativenumber!<cr>
 " get help on word under cursor
 nnoremap K :help <cword><cr>
 
-"""""""""""""
-" OTHER STUFF
-"""""""""""""
-
 " disable command history window
 " really tired of triggering it instead of :q
 noremap q: <NOP>
+
+"""""""""""""
+" OTHER STUFF
+"""""""""""""
 
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
 " auto source vimrc on write
-" autocmd! bufwritepost .vimrc source %
 augroup reload_vimrc
 	autocmd!
 	autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
 augroup END
 
-" tab settings for filetypes
+" customizations for filetypes
 augroup filetypes
 	autocmd!
 	autocmd FileType vim set tabstop=4 shiftwidth=4
