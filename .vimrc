@@ -619,6 +619,7 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+if !has('nvim')
 " python with virtualenv support
 py << EOF
 import os
@@ -628,6 +629,7 @@ if 'VIRTUAL_ENV' in os.environ:
   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
   execfile(activate_this, dict(__file__=activate_this))
 EOF
+endif
 
 function! SwapTest()
 	" Searches for test or implementation files and swaps
