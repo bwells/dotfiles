@@ -403,7 +403,8 @@ endif
 if has('nvim')
 	" ctrl-h == backspace in basic shell.
 	" override this in nvim's case to get correct split navigation back
-	nmap <BS> <C-W>h
+	" nmap <BS> <C-W>h
+	nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 
 	" map esc to switch-to-normal-mode in a terminal
 	tnoremap <Esc> <C-\><C-n>
@@ -505,17 +506,9 @@ augroup END
 " MAPS
 """""""
 
-" remap split navigation to match vim hjkl
-" because we're not sociopaths
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" vim-tmux-navigator adds ctrl-hjkl and / for pane navigation
 
-" C-N and P to buffer navigation
-" nnoremap <C-N> :bnext<CR>
-" nnoremap <C-P> :bprev<CR>
-" let's try tab and shift-tab instead
+" buffer navigation
 nnoremap <tab> :bnext<cr>
 nnoremap <s-tab> :bprev<cr>
 
