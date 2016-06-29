@@ -13,6 +13,10 @@ Plug 'tpope/vim-sensible'
 " git integration. seems to have the most mindshare
 Plug 'tpope/vim-fugitive'
 
+" sneek - simpler alternative to easymotion
+" or a better f
+Plug 'justinmk/vim-sneak'
+
 " sanity to copy/paste
 Plug 'svermeulen/vim-easyclip'
 
@@ -83,10 +87,6 @@ Plug 'xolox/vim-easytags'
 
 " requirement for easytags
 Plug 'xolox/vim-misc'
-
-" sneek - simpler alternative to easymotion
-" or a better f
-Plug 'justinmk/vim-sneak'
 
 " better bdelete
 Plug 'moll/vim-bbye'
@@ -372,6 +372,11 @@ let g:syntastic_mode_map = {
 
 " disabled until performance is evaluated
 " let g:indentLine_char = '⎸'
+
+" add easymotion like arbitrary key for global movement to sneak
+let g:sneak#streak = 1
+let g:sneak#s_next = 1
+let g:sneak#absolute_dir = 1
 
 """"""""""""""""
 " IT'S NOT 1970
