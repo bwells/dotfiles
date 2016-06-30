@@ -517,7 +517,8 @@ colors molokai
 
 " disable fucking folding
 augroup fuck_folding
-	au BufEnter * set nofoldenable
+	autocmd!
+	autocmd BufEnter * set nofoldenable
 	" au BufLeave * set nofoldenable
 augroup END
 
