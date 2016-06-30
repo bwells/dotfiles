@@ -596,6 +596,12 @@ nnoremap K :help <cword><cr>
 " really tired of triggering it instead of :q
 noremap q: <NOP>
 
+" switch ' and ` for marks.
+" ' defaults to begining of line on the marked line
+" ` defaults to the exact marked spot
+nnoremap ' `
+nnoremap ` '
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
