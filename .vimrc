@@ -139,9 +139,7 @@ Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
 
-" revert to 'takac/vim-hardtime' once
-" https://github.com/takac/vim-hardtime/pull/39 is accepted
-Plug 'bwells/vim-hardtime'
+Plug 'takac/vim-hardtime'
 
 " Add plugins to &runtimepath
 call plug#end()
