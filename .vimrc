@@ -139,12 +139,22 @@ Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
 
+Plug 'takac/vim-hardtime'
+
 " Add plugins to &runtimepath
 call plug#end()
 
 """""""""""""""""""""""
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
+
+let g:hardtime_default_on = 1
+let g:list_of_normal_keys = ["h", "j", "k", "l"]
+let g:list_of_visual_keys = ["h", "j", "k", "l"]
+let g:list_of_insert_keys = []
+let g:list_of_disabled_keys = []
+let g:hardtime_timeout = 1000
+let g:hardtime_maxcount = 10
 
 " don't save hidden buffers
 " set sessionoptions-=buffers
