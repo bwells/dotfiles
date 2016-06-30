@@ -60,7 +60,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(web-mode)
+   dotspacemacs-additional-packages '(web-mode multi-web-mode js3-mode)
    ;; A list of packages that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -292,8 +292,16 @@ you should place your code here."
   ;; set neotree to hide ignored files by default
   (setq neo-show-hidden-files nil)
 
-  ;; (spaceline-toggle-buffer-size-off)
+  ;; disable the file size entry in the mode line
   (setq spaceline-buffer-size-p nil)
+
+  ;; (setq mweb-default-major-mode 'html-mode)
+  ;; (setq mweb-tags
+  ;;       '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+  ;;         (js3-mode "<script[^>]*>" "</script>")
+  ;;         (css-mode "<style[^>]*>" "</style>")))
+  ;; (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+  ;; (multi-web-global-mode 1)
 
   )
 

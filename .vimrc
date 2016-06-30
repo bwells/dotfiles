@@ -434,12 +434,14 @@ set colorcolumn=81
 " highlight the line the cursor is on
 set cursorline
 
+" only enable cursorline in the active buffer
+" TODO: add relativenumber to this, but make it smart enough to not set
+" relativenumber on help windows
 augroup CursorLine
   autocmd!
   autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   autocmd WinLeave * setlocal nocursorline
 augroup END
-
 
 " enable lazyredraw to not slaughter performance
 set lazyredraw
@@ -519,6 +521,7 @@ augroup END
 " vim-tmux-navigator adds ctrl-hjkl and / for pane navigation
 
 " buffer navigation
+" I'm basically never using these. Find a better use for tab.
 nnoremap <tab> :bnext<cr>
 nnoremap <s-tab> :bprev<cr>
 
@@ -550,7 +553,7 @@ nnoremap <leader>r :source $MYVIMRC<cr>
 " map jk to esc when in insert mode
 inoremap jk <esc>l
 
-" Keep search results at the center of screen
+" Keep search movements at the center of screen
 " nnoremap n nzz
 " nnoremap N Nzz
 nnoremap n n:call <SID>CenterView()<cr>
@@ -560,6 +563,12 @@ nnoremap # #:call <SID>CenterView()<cr>
 nnoremap g* g*:call <SID>CenterView()<cr>
 nnoremap g# g#:call <SID>CenterView()<cr>
 
+" does not seem to be working...
+nnoremap ]m ]m:call <SID>CenterView()<cr>
+nnoremap [m [m:call <SID>CenterView()<cr>
+nnoremap ]] ]]:call <SID>CenterView()<cr>
+nnoremap [[ [[:call <SID>CenterView()<cr>
+
 " scroll current line to middle if it is within two of the window edge
 function! s:CenterView()
 	if winline() <= 2  || winline() >= winheight(0) - 1
@@ -567,8 +576,7 @@ function! s:CenterView()
 	endif
 endfunction
 
-" Y behave like D or C
-nnoremap Y y$
+" easyclip provides Y - yank to end of line to match D and C
 
 " toggle key for cursorline and relativenumber
 " both of which slow down screen renders horribly on occasion
@@ -642,6 +650,8 @@ EOF
 endif
 
 function! SwapTest()
+	" TODO: figure out why this doesn't work for test->impl
+	" for training/contact_roles
 	" Searches for test or implementation files and swaps
 	" the current buffer to the alternate.
 
