@@ -139,7 +139,9 @@ Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
 
-Plug 'takac/vim-hardtime'
+" revert to 'takac/vim-hardtime' once
+" https://github.com/takac/vim-hardtime/pull/39 is accepted
+Plug 'bwells/vim-hardtime'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -155,6 +157,11 @@ let g:list_of_insert_keys = []
 let g:list_of_disabled_keys = []
 let g:hardtime_timeout = 1000
 let g:hardtime_maxcount = 10
+let g:hardtime_ignore_buffer_patterns = ["NERD.*"]
+
+" TODO: idea: add command for jumping up or down when you meant the opposite
+" -> 10j, shit i meant to 10k. rather than have to hit 20k, hit K and it
+" calculates that your last jump was 10 down, so go up 20.
 
 " don't save hidden buffers
 " set sessionoptions-=buffers
