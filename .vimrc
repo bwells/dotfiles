@@ -135,6 +135,8 @@ Plug 'junegunn/fzf.vim'
 " Disabling for now. Kills scroll performance once the viewport is moving
 " Plug 'Yggdroot/indentLine'
 
+Plug 'hynek/vim-python-pep8-indent'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
