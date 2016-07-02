@@ -137,6 +137,8 @@ Plug 'junegunn/fzf.vim'
 
 " Plug 'vim-scripts/indentpython.vim'
 
+Plug 'hynek/vim-python-pep8-indent'
+
 Plug 'bwells/vim-named-sessions'
 
 Plug 'bwells/simplysublime'
