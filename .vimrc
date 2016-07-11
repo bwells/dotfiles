@@ -152,6 +152,8 @@ call plug#end()
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
 
+let g:rehash256=1
+
 let g:hardtime_default_on = 1
 let g:list_of_normal_keys = ["h", "j", "k", "l"]
 let g:list_of_visual_keys = ["h", "j", "k", "l"]
@@ -512,8 +514,10 @@ set clipboard^=unnamed
 " enable syntax highlighting
 syntax enable
 
-" https://github.com/tomasr/molokai
 colors molokai
+" update the matched search background to not obscure the cursor
+highlight Search guibg=#af005f ctermbg=125
+
 " autocmd ColorScheme janah highlight Normal ctermbg=235
 " colors janah
 
