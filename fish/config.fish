@@ -8,8 +8,6 @@ set -U CDPATH . ~ ~/workspace
 # set docker host
 # set -x DOCKER_HOST localhost:2375
 
-set -gx HOMEBREW_GITHUB_API_TOKEN ca8f6fde42417bc2104943e45ece8b8e20d2550a
-
 # setup gopath
 set -gx GOPATH ~/workspace/go
 set -gx PATH $GOPATH/bin $PATH
