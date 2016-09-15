@@ -463,7 +463,7 @@ set splitright
 " allows you to have multiple buffers open
 set hidden
 
-" lines of code will not wrap to hte next line
+" lines of code will not wrap to the next line
 set nowrap
 
 " copy the indentation of the previous line
