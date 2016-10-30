@@ -122,7 +122,9 @@ Plug 'sophacles/vim-bundle-mako'
 " color scheme
 Plug 'tomasr/molokai'
 
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+
+Plug 'w0rp/ale'
 
 " adds gS and gJ to syntactically aware split/join constructs
 Plug 'AndrewRadev/splitjoin.vim'
@@ -391,6 +393,16 @@ let g:syntastic_mode_map = {
 
 " :SyntasticCheck to check
 " :SyntasticToggleMode to toggle active/passive
+
+let g:ale_linters = {
+\   'python': ['pylint'],
+\}
+
+nmap <silent> [e <Plug>(ale_previous_wrap)
+nmap <silent> ]e <Plug>(ale_next_wrap)
+
+" let g:ale_sign_error = '\uE0D6'
+" let g:ale_sign_warning = '\uE0C8'
 
 " disabled until performance is evaluated
 " let g:indentLine_char = '⎸'
