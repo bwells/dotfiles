@@ -104,6 +104,9 @@ Plug 'wellle/targets.vim'
 " adds indent level as an object
 Plug 'michaeljsmith/vim-indent-object'
 
+Plug 'kana/vim-textobj-user'
+Plug 'bps/vim-textobj-python'
+
 " IDE level vim/go integration
 Plug 'fatih/vim-go', { 'for': 'go' }
 
