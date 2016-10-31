@@ -22,8 +22,8 @@ ln -s ~/dotfiles/fish ~/.config/fish
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install fish zsh tmux vim macvim git go mysql nmap node python fzf \
-	     the_silver_searcher
+brew install fish zsh tmux vim macvim git go mysql nmap node
+	     sqlite python python3 fzf the_silver_searcher
 
 # TODO: change default shell to fish
 
@@ -31,8 +31,13 @@ brew install fish zsh tmux vim macvim git go mysql nmap node python fzf \
 brew tap caskroom/cask
 
 # install apps
-brew cask install google-chrome firefox iterm2 slack flowdock adium dropbox \
-	          mysqlworkbench
+brew cask install firefox iterm2 adium \
+	          mysqlworkbench \
+
+# optional installs
+# brew cask install vagrant vmware-fusion
+
+# need vagrant
 
 # install vim-plug for vim
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
