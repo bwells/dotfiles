@@ -163,8 +163,9 @@ let g:list_of_visual_keys = ["h", "j", "k", "l"]
 let g:list_of_insert_keys = []
 let g:list_of_disabled_keys = []
 let g:hardtime_timeout = 1000
-let g:hardtime_maxcount = 10
-let g:hardtime_ignore_buffer_patterns = ["NERD.*"]
+let g:hardtime_maxcount = 8
+let g:hardtime_ignore_buffer_patterns = ["NERD.*", ".*Location List.*"]
+let g:hardtime_ignore_quickfix = 1
 
 " TODO: idea: add command for jumping up or down when you meant the opposite
 " -> 10j, shit i meant to 10k. rather than have to hit 20k, hit K and it
