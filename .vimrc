@@ -204,14 +204,6 @@ let g:go_fmt_command = "goimports"
 "     let g:ctrlp_use_caching = 0
 " endif
 
-" let g:airline_powerline_fonts=1
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#hunks#enabled = 0
-" let g:airline_left_sep=''
-" let g:airline_right_sep=''
-" let g:airline_theme='molokai'
-" let g:airline#extensions#whitespace#enabled = 1
-
 " remap mark to gm as easyclip adds Move operator on m
 nnoremap gm m
 
