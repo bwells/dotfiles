@@ -148,6 +148,8 @@ Plug 'bwells/simplysublime'
 
 Plug 'takac/vim-hardtime'
 
+Plug 'FooSoft/vim-argwrap'
+
 " defines a sort motion
 Plug 'christoomey/vim-sort-motion'
 
@@ -407,6 +409,8 @@ nmap <silent> ]e <Plug>(ale_next_wrap)
 let g:sneak#streak = 1
 let g:sneak#s_next = 1
 let g:sneak#absolute_dir = 1
+
+nnoremap <silent> <leader>a :ArgWrap<cr>
 
 """"""""""""""""
 " IT'S NOT 1970
