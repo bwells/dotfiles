@@ -148,6 +148,9 @@ Plug 'bwells/simplysublime'
 
 Plug 'takac/vim-hardtime'
 
+" defines a sort motion
+Plug 'christoomey/vim-sort-motion'
+
 " Add plugins to &runtimepath
 call plug#end()
 
