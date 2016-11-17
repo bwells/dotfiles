@@ -635,6 +635,7 @@ augroup filetypes
 	autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType dosini set commentstring=#%s
+    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 augroup END
 
 " change the comment character for .ini files
