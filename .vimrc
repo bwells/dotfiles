@@ -124,6 +124,7 @@ Plug 'tomasr/molokai'
 
 " Plug 'scrooloose/syntastic'
 
+" Async lint runner
 Plug 'w0rp/ale'
 
 " adds gS and gJ to syntactically aware split/join constructs
@@ -152,6 +153,9 @@ Plug 'FooSoft/vim-argwrap'
 
 " defines a sort motion
 Plug 'christoomey/vim-sort-motion'
+
+" newer async autocompleter
+Plug 'maralla/completor.vim'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -398,9 +402,6 @@ let g:ale_linters = {
 
 nmap <silent> [e <Plug>(ale_previous_wrap)
 nmap <silent> ]e <Plug>(ale_next_wrap)
-
-" let g:ale_sign_error = '\uE0D6'
-" let g:ale_sign_warning = '\uE0C8'
 
 " disabled until performance is evaluated
 " let g:indentLine_char = '⎸'
@@ -655,7 +656,7 @@ let g:netrw_list_hide.= '\.git,'
 let g:netrw_list_hide.= '\__pycache__,'
 
 " sane files to ignore
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,*/__pycache__
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,*/__pycache__,*/tags
 
 " fish doesn't play posix
 " tell vim to use a regular shell
