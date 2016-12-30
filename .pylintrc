@@ -53,6 +53,9 @@ disable=
 	# unable to import a module
 	import-error,
 
+	# pylint can't seem to handle the models importing things internally
+	import-self,
+
 	# no-member isn't aware of dynamically added methods and attributes
 	# so basically everything related to sqlalchemy rasies this warning.
 	no-member,
