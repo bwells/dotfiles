@@ -23,6 +23,9 @@ eval (python -m virtualfish)
 set -gx WORKON_HOME ~/environments
 set -gx VIRTUALFISH_HOME ~/environments
 
+# import ssh keys on boot
+ssh-add -A 2>/dev/null;
+
 # activate a virtualenv on entry
 # also deactivates on project exit
 # requires project root directory and virtualenv directory have the same name
