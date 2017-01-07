@@ -160,6 +160,8 @@ call plug#end()
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
 
+nnoremap <silent> <leader>a :ArgWrap<CR>
+
 let g:rehash256=1
 
 let g:hardtime_default_on = 1
@@ -244,7 +246,7 @@ if has('nvim')
 else
 	nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
 endif
-nnoremap <Leader>b :Unite -start-insert buffer<CR>
+nnoremap <Leader>g :Unite -start-insert buffer<CR>
 nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
 
 if executable('ag')
@@ -667,6 +669,7 @@ endif
 " let's do some whitspace highlighting
 " set listchars=tab:▶ ,space:.,trail:.
 
+" because fuck these are annoying
 set nobackup
 set nowritebackup
 set noswapfile
@@ -716,3 +719,109 @@ endfunction
 command! SwapTest call SwapTest()
 
 nnoremap <silent> <leader>t :SwapTest<cr>
+
+function! SetupBuffer()
+	syn match WinNormal /  .*/
+	syn match WinSelected /> .*/hs=s+1
+
+	hi def link WinNormal   PMenu
+	hi def link WinSelected PMenuSel
+
+	" noautocmd botright pedit __Potion_Bytecode__
+	split __mybuff__
+
+	" select previous window
+	" noautocmd wincmd P
+
+	setlocal nomodifiable
+
+	setlocal nobuflisted
+	setlocal nowrap
+	setlocal nonumber
+	if exists('+relativenumber')
+		setlocal norelativenumber
+	endif
+	setlocal nocursorcolumn
+	setlocal colorcolumn=0
+	" setlocal nocursorline
+	setlocal cursorline
+	setlocal nospell
+	setlocal nolist
+
+	" setlocal noshowmode
+	" setlocal noruler
+	" setlocal laststatus=0
+	" setlocal noshowcmd
+
+	set modifiable
+	" clear the buffer
+	normal! ggdG
+
+	setlocal buftype=nofile
+
+	setlocal winfixheight
+
+	resize 5
+
+	" map a-z and A-Z to our key echo loop
+	let ranges = range(65, 90) + range(97, 122)
+	for n in ranges
+		execute 'nnoremap <buffer> ' . nr2char(n) . ' :call MyLoop("' . nr2char(n) . '")<cr>'
+	endfor
+	execute 'nnoremap <buffer> <space> :call MyLoop(" ")<cr>'
+
+	" map keys to navigate the results list
+	nnoremap <silent> <buffer> <down> :normal! j<cr>
+	nnoremap <silent> <buffer> <up> :normal! k<cr>
+	nnoremap <silent> <buffer> <c-j> :normal! j<cr>
+	nnoremap <silent> <buffer> <c-k> :normal! k<cr>
+
+	nnoremap <esc> normal! <c-w><c-k><cr>
+
+ 	let s:input_so_far = ''
+	set nomodifiable
+	call MyLoop('')
+endfunction
+
+function! MyLoop(char)
+
+	setlocal modifiable
+
+	let s:input_so_far .= a:char
+	echom "so far: '" . s:input_so_far "'"
+
+	if a:char ==# " "
+		echom "got a space"
+	endif
+
+	" draw main content
+	let content = ["  result 1", "  result 2", "> result 3", "  result 4"]
+
+	silent! normal! ggdG
+
+	" add content to the window
+	silent! call append(0, content)
+
+	" silent! call cursor(3, 1)
+
+	" draw statusline
+	setlocal statusline=""
+
+	redraw
+
+	" draw prompt
+	echon '> ' . s:input_so_far . '_'
+
+	setlocal nomodifiable
+
+	" general pattern for drawing a prompt
+	" 1. draw your actaul content
+	" 2. set setatusline
+	" 3. map all valid keys to a custom handliner including a-zA-Z0-9
+	" 4. echoh out a prompt + saved previous input
+	" 5. in that handler add your new input and
+	" 6. redraw everything
+
+endfunction
+
+nnoremap <leader>s :call SetupBuffer()<cr>
