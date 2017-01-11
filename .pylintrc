@@ -75,7 +75,7 @@ disable=
 	# Also, where would we put this non-method functions?
 	no-self-use,
 
-	# yes i know i'm bad if i use `glogal`. I don't need you to bitch at me
+	# yes i know i'm bad if i use `global`. I don't need you to bitch at me
 	# about it.
 	global-statement,
 
