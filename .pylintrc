@@ -79,6 +79,9 @@ disable=
 	# about it.
 	global-statement,
 
+	# python doesn't get to just claim `id` and `filter` and the like.
+	redefined-builtin,
+
 	# this isn't fine grained enough without changing the regexs for each
 	# identifier to fit our code style. eg: "log" at the module level
 	# is an invalid constant identifier.
@@ -125,7 +128,7 @@ evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / stateme
 bad-functions=map,filter,apply,input,file
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,j,k,ex,Run,_
+good-names=i,j,k,ex,Run,_,id,log
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata
