@@ -134,8 +134,8 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'osyo-manga/vim-over'
 
 " fzf fuzzy finder wrapper
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
 
 " finally something to give vertical spacing alignment bars?
 " Disabling for now. Kills scroll performance once the viewport is moving
