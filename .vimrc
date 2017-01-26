@@ -134,8 +134,8 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'osyo-manga/vim-over'
 
 " fzf fuzzy finder wrapper
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
 
 " finally something to give vertical spacing alignment bars?
 " Disabling for now. Kills scroll performance once the viewport is moving
@@ -235,7 +235,9 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 
 call unite#custom#source('file,file_rec,file_rec/async',
 				       \ 'ignore_pattern',
-				       \ join(['data/', '.git'], '\|'))
+				       \ join(['data/', '.git', 'node_modules/'], '\|'))
+
+" call unite#custom#source('file_rec', 'matchers', ['matcher_project_ignore_files', 'matcher_default'])
 
 " if executable('ag')
 "   let g:unite_source_rec_async_command =
@@ -349,6 +351,10 @@ function! LightLineFugitive()
   endif
   return ''
 endfunction
+
+let g:gitgutter_sign_added = '✚'
+let g:gitgutter_sign_modified = '➜'
+let g:gitgutter_sign_removed = '✘'
 
 " wordmotion config
 let g:wordmotion_prefix = "<leader>"
