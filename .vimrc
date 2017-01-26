@@ -350,6 +350,10 @@ function! LightLineFugitive()
   return ''
 endfunction
 
+let g:gitgutter_sign_added = '✚'
+let g:gitgutter_sign_modified = '➜'
+let g:gitgutter_sign_removed = '✘'
+
 " wordmotion config
 let g:wordmotion_prefix = "<leader>"
 
