@@ -233,7 +233,9 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 
 call unite#custom#source('file,file_rec,file_rec/async',
 				       \ 'ignore_pattern',
-				       \ join(['data/', '.git'], '\|'))
+				       \ join(['data/', '.git', 'node_modules/'], '\|'))
+
+" call unite#custom#source('file_rec', 'matchers', ['matcher_project_ignore_files', 'matcher_default'])
 
 " if executable('ag')
 "   let g:unite_source_rec_async_command =
