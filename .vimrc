@@ -616,6 +616,10 @@ noremap q: <NOP>
 nnoremap ' `
 nnoremap ` '
 
+" change next mapping from
+" http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
+nnoremap cn *``cgn
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
