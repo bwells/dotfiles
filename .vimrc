@@ -276,7 +276,6 @@ call unite#custom#profile('default', 'context', {
       \   'direction': 'botright',
       \ })
 
-
 " trying fzf for file and buffer search
 " nnoremap <leader>f :Files<CR>
 " nnoremap <leader>g :Buffers<CR>
@@ -296,11 +295,6 @@ call unite#custom#profile('default', 'context', {
 "   \ 'marker':  ['fg', 'Keyword'],
 "   \ 'spinner': ['fg', 'Label'],
 "   \ 'header':  ['fg', 'Comment'] }
-
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-map  <leader>e <Plug>(easymotion-bd-f)
-nmap <leader>e <Plug>(easymotion-overwin-f)
-let g:EasyMotion_smartcase = 1
 
 " alias Bdelete to Bclose
 command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
@@ -390,19 +384,6 @@ command! InitTags :silent execute "!ctags -R --fields=+l --languages=python --py
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_mode_map = {
-            \ "mode": "passive",
-            \ "active_filetypes": [],
-            \ "passive_filetypes": [] }
-
-" :SyntasticCheck to check
-" :SyntasticToggleMode to toggle active/passive
 
 let g:ale_linters = {
 \   'python': ['pylint'],
