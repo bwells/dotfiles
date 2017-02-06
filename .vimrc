@@ -421,6 +421,10 @@ let g:sneak#absolute_dir = 1
 
 nnoremap <silent> <leader>a :ArgWrap<cr>
 
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
 """"""""""""""""
 " IT'S NOT 1970
 """"""""""""""""
