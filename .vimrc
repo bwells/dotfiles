@@ -13,6 +13,8 @@ Plug 'tpope/vim-sensible'
 " git integration. seems to have the most mindshare
 Plug 'tpope/vim-fugitive'
 
+Plug 'tpope/vim-rhubarb'
+
 " sneek - simpler alternative to easymotion
 " or a better f
 Plug 'justinmk/vim-sneak'
