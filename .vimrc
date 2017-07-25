@@ -624,8 +624,25 @@ nnoremap cn *``cgn
 " OTHER STUFF
 """""""""""""
 
+function! TrimTrailingWhitespace()
+	" save cursor position and last search
+	let pos = getpos(".")
+	let _s = @/
+
+	" trim trailling whitespace
+	%s/\s\+$//e
+
+	" restore cursor position and last search
+	call setpos(".", pos)
+	let @/ = _s
+endfunction
+
 " remove trailing whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e
+augroup trim_whitespace
+	autocmd!
+	" trims whitespace and restores cursor position
+	autocmd BufWritePre * call TrimTrailingWhitespace()
+augroup END
 
 " auto source vimrc on write
 augroup reload_vimrc
