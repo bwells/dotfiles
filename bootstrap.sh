@@ -25,6 +25,9 @@ ln -s ~/dotfiles/fish ~/.config/fish
 brew install fish zsh tmux vim macvim git go mysql nmap node
 	     sqlite python python3 fzf the_silver_searcher
 
+brew tap universal-ctags/universal-ctags
+brew install --HEAD universal-ctags
+
 # TODO: change default shell to fish
 
 # setup cask
