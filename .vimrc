@@ -82,11 +82,7 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
 
-" automatic ctags management
-Plug 'xolox/vim-easytags'
-
-" requirement for easytags
-Plug 'xolox/vim-misc'
+Plug 'ludovicchabant/vim-gutentags'
 
 " better bdelete
 Plug 'moll/vim-bbye'
@@ -353,33 +349,9 @@ let g:gitgutter_sign_removed = '✘'
 " wordmotion config
 let g:wordmotion_prefix = "<leader>"
 
-" easytags config
-let g:easytags_async = 1
-
-" disable using tags files for syntax highlighting
-" it was slaughtering render performance
-let g:easytags_auto_highlight = 0
-
-let g:easytags_cmd = '/usr/local/bin/ctags'
-
-" force vim to use a tags file at the root of CWD only
-set tags=./tags;
-let &cpoptions .= 'd'
-
-" force creating a project specific tags file
-let g:easytags_dynamic_files = 2
-
-" turn off easytags messages
-" let g:easytags_suppress_report = 1
-
-let g:easytags_languages = {
-	\ 'python': {
-    \	'args': ['--python-kinds=-iv', '-R']
-	\ }
-\}
-
-" command to run tags on the entire project
-command! InitTags :silent execute "!ctags -R --fields=+l --languages=python --python-kinds=-iv -f tags .\n" | redraw!
+""""""
+" TAGS
+""""""
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -405,6 +377,56 @@ nnoremap <silent> <leader>a :ArgWrap<cr>
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
+" call unite#custom#profile('files', 'filters', 'sorter_rank')
+" call unite#custom#source('file_rec', 'sorters', 'sorter_length')
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+call unite#custom#source('file,file_rec,file_rec/async',
+            \ 'ignore_pattern',
+            \ join(['data/', '.git', 'node_modules/'], '\|'))
+
+" call unite#custom#source('file_rec', 'matchers', ['matcher_project_ignore_files', 'matcher_default'])
+
+" if executable('ag')
+"   let g:unite_source_rec_async_command =
+"     \ ['ag', '--nocolor', '--nogroup',
+"     \  '--depth', '10', '-g', '']
+"   " ag is quite fast, so we increase this number
+"   let g:unite_source_rec_min_cache_files = 1200
+" endif
+
+if has('nvim')
+    nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
+else
+    nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
+endif
+nnoremap <Leader>b :Unite -start-insert buffer<CR>
+nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
+
+if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+                \ '-i --vimgrep --hidden --ignore ' .
+                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+endif
+
+" if executable('pt')
+"     let g:unite_source_grep_command = 'pt'
+"     let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+"     let g:unite_source_grep_recursive_opt = ''
+"     let g:unite_source_grep_encoding = 'utf-8'
+" endif
+
+call unite#custom#profile('default', 'context', {
+            \   'start_insert': 1,
+            \   'winheight': 15,
+            \   'direction': 'botright',
+            \ })
+
+let g:sort_motion_flags = "ui"
 
 """"""""""""""""
 " IT'S NOT 1970
