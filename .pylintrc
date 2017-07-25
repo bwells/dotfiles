@@ -90,6 +90,8 @@ disable=
 	# is an invalid constant identifier.
 	# invalid-name
 
+	protected-access
+
 # removed while converting from codes to full names
 # E0213 - no-self-argument
 # E1126 - invalid-sequence-index
