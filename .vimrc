@@ -620,6 +620,16 @@ nnoremap ` '
 " http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
 nnoremap cn *``cgn
 
+" delete the line below (o) and above(O) the current line
+" without moving the current cursor position
+nnoremap do mzjdd`z
+nnoremap dO mzkdd`z
+
+" add a blank linke below (o) or above(O) the current line
+" and remain in normal mode
+nnoremap <leader>o mzo<esc>`z
+nnoremap <leader>O mzO<esc>`z
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
