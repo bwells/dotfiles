@@ -582,7 +582,7 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-if !has('nvim')
+if !has('nvim') && has('python')
 " python with virtualenv support
 py << EOF
 import os
@@ -591,6 +591,18 @@ if 'VIRTUAL_ENV' in os.environ:
   env_base_dir = os.environ['VIRTUAL_ENV']
   activate_this = os.path.join(env_base_dir, 'bin/activate_this.py')
   execfile(activate_this, dict(__file__=activate_this))
+EOF
+endif
+
+if !has('nvim') && has('python3')
+" python with virtualenv support
+py3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+	env_base_dir = os.environ['VIRTUAL_ENV']
+	activate_this = os.path.join(env_base_dir, 'bin/activate_this.py')
+	execfile(activate_this, dict(__file__=activate_this))
 EOF
 endif
 
