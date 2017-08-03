@@ -137,10 +137,11 @@ call plug#end()
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
 
-nnoremap <silent> <leader>a :ArgWrap<CR>
-
+""" molokai
+" instruct the molokai colorscheme to use the new fancy version
 let g:rehash256=1
 
+""" vim-hardtime
 let g:hardtime_default_on = 1
 let g:list_of_normal_keys = ["h", "j", "k", "l"]
 let g:list_of_visual_keys = ["h", "j", "k", "l"]
@@ -155,17 +156,21 @@ let g:hardtime_ignore_quickfix = 1
 " -> 10j, shit i meant to 10k. rather than have to hit 20k, hit K and it
 " calculates that your last jump was 10 down, so go up 20.
 
+""" vim-named-sessions
 " don't save hidden buffers
 " set sessionoptions-=buffers
 set sessionoptions-=options
 
+""" nerdtree
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 let g:NERDTreeRespectWildIgnore = 1
 
+""" vim-go
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
+""" vim-easyclip
 " remap mark to gm as easyclip adds Move operator on m
 nnoremap gm m
 
@@ -173,12 +178,14 @@ nnoremap gm m
 " leader-p to paste w/ disabled
 let g:EasyClipAutoFormat = 1
 
+""" vim-bbye
 " alias Bdelete to Bclose
 command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
 
 " map 'bc' to 'Bc' for ease of typing
 cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))
 
+""" lightline.vim
 " disable vim's own mode indicator
 set noshowmode
 
@@ -223,41 +230,38 @@ function! LightLineFugitive()
   return ''
 endfunction
 
+" TODO: this gets added to the statusline on each vimrc reload. figure out
+" how to clear it then add these blocks
+set statusline+=%#warningmsg#
+set statusline+=%*
+
+""" vim-gitgutter
 let g:gitgutter_sign_added = '✚'
 let g:gitgutter_sign_modified = '➜'
 let g:gitgutter_sign_removed = '✘'
 
-" wordmotion config
+""" vim-wordmotion
 let g:wordmotion_prefix = "<leader>"
 
-""""""
-" TAGS
-""""""
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
+""" ale
 let g:ale_linters = {
 \   'python': ['pylint'],
+\   'javascript': ['eslint'],
 \}
 
 nmap <silent> [e <Plug>(ale_previous_wrap)
 nmap <silent> ]e <Plug>(ale_next_wrap)
 
+""" vim-sneak
 " add easymotion like arbitrary key for global movement to sneak
 let g:sneak#streak = 1
 let g:sneak#s_next = 1
 let g:sneak#absolute_dir = 1
 
-nnoremap <silent> <leader>a :ArgWrap<cr>
+""" vim-argwrap
+nnoremap <silent> <leader>a :ArgWrap<CR>
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-
-" call unite#custom#profile('files', 'filters', 'sorter_rank')
-" call unite#custom#source('file_rec', 'sorters', 'sorter_length')
+""" unite.vim
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 
@@ -287,6 +291,7 @@ call unite#custom#profile('default', 'context', {
             \   'direction': 'botright',
             \ })
 
+""" vim-sort-motion
 let g:sort_motion_flags = "ui"
 
 """"""""""""""""
@@ -482,8 +487,14 @@ noremap q: <NOP>
 " switch ' and ` for marks.
 " ' defaults to begining of line on the marked line
 " ` defaults to the exact marked spot
-nnoremap ' `
-nnoremap ` '
+" nnoremap ' `
+" nnoremap ` '
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <C-f> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <C-F> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
 
 " change next mapping from
 " http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
