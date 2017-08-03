@@ -654,6 +654,10 @@ nnoremap dO mzkdd`z
 nnoremap <leader>o mzo<esc>`z
 nnoremap <leader>O mzO<esc>`z
 
+" scroll the screen keeping the cursor line in the same visual spot
+nnoremap <C-e> 2j2<C-e>
+nnoremap <C-y> 2k2<C-y>
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
