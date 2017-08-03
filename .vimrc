@@ -22,22 +22,6 @@ Plug 'justinmk/vim-sneak'
 " sanity to copy/paste
 Plug 'svermeulen/vim-easyclip'
 
-" goto anything like support
-" alternative plugins: commandt
-" ctrl-p to activate
-" Plug 'ctrlpvim/ctrlp.vim'
-
-" better matcher for ctrlp
-" be sure to run the manual C build step as well
-" Plug 'nixprime/cpsm'
-"
-" explore ctrlspace as alternative for both
-" fuzzy file finding
-" Plug 'vim-ctrlspace/vim-ctrlspace'
-
-" weird/awesome move anywhere package
-" Plug 'Lokaltog/vim-easymotion'
-
 " git gutter. []c to navigate change hunks
 " <leader>hs to stage hunk
 Plug 'airblade/vim-gitgutter'
@@ -67,17 +51,11 @@ Plug 'tpope/vim-scriptease'
 " provides mixed case abbreviations and searches
 Plug 'tpope/vim-abolish'
 
-" deep python understanding
-" Plug 'davidhalter/jedi-vim'
-
 " do everything interface library
 Plug 'Shougo/unite.vim'
 
 " vimproc - required for Unite /async modes
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-
-" color highlights same line navigation options
-" Plug 'unblevable/quick-scope'
 
 " TODO: conflicting with ctrl j/k working with fzf results
 "       disabled until figured out
@@ -152,9 +130,6 @@ Plug 'FooSoft/vim-argwrap'
 " defines a sort motion
 Plug 'christoomey/vim-sort-motion'
 
-" newer async autocompleter
-Plug 'maralla/completor.vim'
-
 " Add plugins to &runtimepath
 call plug#end()
 
@@ -191,108 +166,12 @@ let g:NERDTreeRespectWildIgnore = 1
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
-" bind easymotion to <Leader> instead of <Leader><Leader>
-" \w for search down, \k for search up
-" map <Leader> <Plug>(easymotion-prefix)
-
-" " use cpsm instead of built ctrlp for matching
-" let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-"
-" " file patterns for ctrlp loading to ignore
-" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$,\.pyc'
-"
-" let g:ctrlp_extensions = ['mixed']
-" let g:ctrlp_root_markers = ['.vimproject', 'Dockerfile', 'requirements.txt']
-"
-" " use vim cwd as search path root
-" " so far the only reliable solution to the git submodule problem
-" let g:ctrlp_working_path_mode = 'w'
-
-" if executable('ag')
-"     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-"     let g:ctrlp_use_caching = 0
-" endif
-
 " remap mark to gm as easyclip adds Move operator on m
 nnoremap gm m
-
-" remap paste ring actions to ctrl-f (forward) and ctrl-d
-" let g:EasyClipUsePasteToggleDefaults = 0
-" nmap <c-f> <plug>EasyClipSwapPasteForward
-" nmap <c-d> <plug>EasyClipSwapPasteBackwards
-" Defaulting back to ctrl-p and ctrl-n
 
 " enable auto reformating on paste
 " leader-p to paste w/ disabled
 let g:EasyClipAutoFormat = 1
-
-" call unite#custom#profile('files', 'filters', 'sorter_rank')
-" call unite#custom#source('file_rec', 'sorters', 'sorter_length')
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-call unite#custom#source('file,file_rec,file_rec/async',
-				       \ 'ignore_pattern',
-				       \ join(['data/', '.git', 'node_modules/'], '\|'))
-
-" call unite#custom#source('file_rec', 'matchers', ['matcher_project_ignore_files', 'matcher_default'])
-
-" if executable('ag')
-"   let g:unite_source_rec_async_command =
-"     \ ['ag', '--nocolor', '--nogroup',
-"     \  '--depth', '10', '-g', '']
-"   " ag is quite fast, so we increase this number
-"   let g:unite_source_rec_min_cache_files = 1200
-" endif
-
-if has('nvim')
-	nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
-else
-	nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
-endif
-nnoremap <Leader>g :Unite -start-insert buffer<CR>
-nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
-
-if executable('ag')
-	  let g:unite_source_grep_command = 'ag'
-	  let g:unite_source_grep_default_opts =
-	  \ '-i --vimgrep --hidden --ignore ' .
-	  \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-	  let g:unite_source_grep_recursive_opt = ''
-endif
-
-if executable('pt')
-	let g:unite_source_grep_command = 'pt'
-	let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-	let g:unite_source_grep_recursive_opt = ''
-	let g:unite_source_grep_encoding = 'utf-8'
-endif
-
-call unite#custom#profile('default', 'context', {
-      \   'start_insert': 1,
-      \   'winheight': 15,
-      \   'direction': 'botright',
-      \ })
-
-" trying fzf for file and buffer search
-" nnoremap <leader>f :Files<CR>
-" nnoremap <leader>g :Buffers<CR>
-" nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
-
-" Customize fzf colors to match your color scheme
-" let g:fzf_colors =
-" \ { 'fg':      ['fg', 'Normal'],
-"   \ 'bg':      ['bg', 'Normal'],
-"   \ 'hl':      ['fg', 'Comment'],
-"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-"   \ 'hl+':     ['fg', 'Statement'],
-"   \ 'info':    ['fg', 'PreProc'],
-"   \ 'prompt':  ['fg', 'Conditional'],
-"   \ 'pointer': ['fg', 'Exception'],
-"   \ 'marker':  ['fg', 'Keyword'],
-"   \ 'spinner': ['fg', 'Label'],
-"   \ 'header':  ['fg', 'Comment'] }
 
 " alias Bdelete to Bclose
 command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>
@@ -366,9 +245,6 @@ let g:ale_linters = {
 nmap <silent> [e <Plug>(ale_previous_wrap)
 nmap <silent> ]e <Plug>(ale_next_wrap)
 
-" disabled until performance is evaluated
-" let g:indentLine_char = '⎸'
-
 " add easymotion like arbitrary key for global movement to sneak
 let g:sneak#streak = 1
 let g:sneak#s_next = 1
@@ -389,16 +265,6 @@ call unite#custom#source('file,file_rec,file_rec/async',
             \ 'ignore_pattern',
             \ join(['data/', '.git', 'node_modules/'], '\|'))
 
-" call unite#custom#source('file_rec', 'matchers', ['matcher_project_ignore_files', 'matcher_default'])
-
-" if executable('ag')
-"   let g:unite_source_rec_async_command =
-"     \ ['ag', '--nocolor', '--nogroup',
-"     \  '--depth', '10', '-g', '']
-"   " ag is quite fast, so we increase this number
-"   let g:unite_source_rec_min_cache_files = 1200
-" endif
-
 if has('nvim')
     nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
 else
@@ -414,13 +280,6 @@ if executable('ag')
                 \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
     let g:unite_source_grep_recursive_opt = ''
 endif
-
-" if executable('pt')
-"     let g:unite_source_grep_command = 'pt'
-"     let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-"     let g:unite_source_grep_recursive_opt = ''
-"     let g:unite_source_grep_encoding = 'utf-8'
-" endif
 
 call unite#custom#profile('default', 'context', {
             \   'start_insert': 1,
@@ -504,13 +363,6 @@ set nowrap
 " set autoindent
 
 " set copyindent
-" indenting a line with >> or << will move by 4
-
-" pressing tab in insert mode will use 4 spaces
-" set shiftwidth=4
-" set softtabstop=4
-" use spaces instead of tabs
-" set expandtab
 
 " highlight matching braces/tags
 set showmatch
@@ -536,9 +388,6 @@ set title
 " use a visual indiator instead of a beep
 set visualbell
 
-" or just turn off errors bells
-" set noerrorbells
-
 " change the default register to the system clipboard
 set clipboard^=unnamed
 
@@ -546,17 +395,13 @@ set clipboard^=unnamed
 syntax enable
 
 colors molokai
-" update the matched search background to not obscure the cursor
+" update the matched search background to a color that does not obscure the cursor
 highlight Search guibg=#af005f ctermbg=125
-
-" autocmd ColorScheme janah highlight Normal ctermbg=235
-" colors janah
 
 " disable fucking folding
 augroup fuck_folding
 	autocmd!
 	autocmd BufEnter * set nofoldenable
-	" au BufLeave * set nofoldenable
 augroup END
 
 """""""
