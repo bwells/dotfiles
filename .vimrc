@@ -560,12 +560,12 @@ call tcomment#DefineType('dosini', '#%s')
 
 " files to hide from netrw
 let g:netrw_list_hide = '.*\.pyc$,'
+let g:netrw_list_hide.= '__pycache__/,'
 let g:netrw_list_hide.='\.DS_Store,'
 let g:netrw_list_hide.= '\.git,'
-let g:netrw_list_hide.= '\__pycache__'
 
 " sane files to ignore
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,__pycache__,*/tags,*/node_modules
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,__pycache__,*/tags,*/tags.lock,*/tags.temp,*/node_modules
 
 " fish doesn't play posix
 " tell vim to use a regular shell
