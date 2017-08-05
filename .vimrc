@@ -326,7 +326,9 @@ if has('nvim')
 	tnoremap <Esc> <C-\><C-n>
 endif
 
-set guifont=Menlo\ Regular\ for\ Powerline:h11
+if exists('&guifont')
+	set guifont=Menlo\ Regular\ for\ Powerline:h11
+endif
 
 " turn on line numbers
 set number
