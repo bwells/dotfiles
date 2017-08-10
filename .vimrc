@@ -242,6 +242,10 @@ let g:gitgutter_sign_removed = '✘'
 """ vim-wordmotion
 let g:wordmotion_prefix = "<leader>"
 
+" override the default 'b' mapping to avoid conflicting
+" with <leader>b to open FZF buffer search
+let g:wordmotion_mappings = { 'b': '<M-b>' }
+
 """ ale
 let g:ale_linters = {
 \   'python': ['pylint'],
