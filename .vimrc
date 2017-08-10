@@ -57,8 +57,6 @@ Plug 'Shougo/unite.vim'
 " vimproc - required for Unite /async modes
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
-" TODO: conflicting with ctrl j/k working with fzf results
-"       disabled until figured out
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -121,8 +119,9 @@ Plug 'hynek/vim-python-pep8-indent'
 
 Plug 'bwells/vim-named-sessions'
 
-Plug 'bwells/simplysublime'
+" Plug 'bwells/simplysublime'
 
+" punish yourself for repeat hjkl too much
 Plug 'takac/vim-hardtime'
 
 Plug 'FooSoft/vim-argwrap'
