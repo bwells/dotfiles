@@ -2,6 +2,8 @@
 abbr -a fe vim ~/.config/fish/config.fish
 abbr -a resource source ~/.config/fish/config.fish
 
+alias vimr="vimr -s"
+
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
@@ -15,8 +17,11 @@ set -gx PATH $GOPATH/bin $PATH
 # add brew sbin to path
 set -gx PATH $PATH /usr/local/sbin
 
+# add mvim install location to path
+set -gx PATH $PATH /Applications/MacVim.app/Contents/bin
+
 # set fzf default intput ag becuase ag respects ignored file settings
-set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
+# set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)

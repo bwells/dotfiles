@@ -105,9 +105,9 @@ Plug 'AndrewRadev/splitjoin.vim'
 " :s live feedback
 Plug 'osyo-manga/vim-over'
 
-" fzf fuzzy finder wrapper
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
+" fzf fuzzy finder and wrapper
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " finally something to give vertical spacing alignment bars?
 " Disabling for now. Kills scroll performance once the viewport is moving
@@ -272,12 +272,12 @@ call unite#custom#source('file,file_rec,file_rec/async',
             \ 'ignore_pattern',
             \ join(['data/', '.git', 'node_modules/'], '\|'))
 
-if has('nvim')
-    nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
-else
-    nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
-endif
-nnoremap <Leader>b :Unite -start-insert buffer<CR>
+" if has('nvim')
+"     nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
+" else
+"     nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
+" endif
+" nnoremap <Leader>b :Unite -start-insert buffer<CR>
 nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
 
 if executable('ag')
@@ -296,6 +296,19 @@ call unite#custom#profile('default', 'context', {
 
 """ vim-sort-motion
 let g:sort_motion_flags = "ui"
+
+""" fzf.vim
+" switch to a different panel if running fzf from within nerdtree
+nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
+nnoremap <Leader>b :Buffers<cr>
+
+" jump to existing buffers rather than open a new one
+let g:fzf_buffers_jump = 1
+let g:fzf_layout = {
+    \ 'down': '~25%',
+\}
+
+" let g:fzf_launcher = 'nop %s'
 
 """"""""""""""""
 " IT'S NOT 1970

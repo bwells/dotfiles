@@ -2,7 +2,7 @@
 	name = Bradford Wells
 	email = bwells@altalang.com
 [push]
-	default = current
+	default = upstream
 [core]
 	editor = vim
 	excludesfile = /Users/kremlan/.gitignore
