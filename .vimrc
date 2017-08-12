@@ -298,6 +298,9 @@ call unite#custom#profile('default', 'context', {
 let g:sort_motion_flags = "ui"
 
 """ fzf.vim
+" set the default FZF default feed command here because it's
+" not set in zsh, which is the shell vim actually uses.
+let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
 " switch to a different panel if running fzf from within nerdtree
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 nnoremap <Leader>b :Buffers<cr>
