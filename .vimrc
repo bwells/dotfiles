@@ -571,7 +571,7 @@ augroup filetypes
     autocmd FileType dosini set commentstring=#%s
 	autocmd Filetype gitcommit setlocal spell
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-	autocmd BufNewFile,BufRead *.jsx setlocal ft=html ft=javascript tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
 " change the comment character for .ini files
