@@ -13,6 +13,7 @@ Plug 'tpope/vim-sensible'
 " git integration. seems to have the most mindshare
 Plug 'tpope/vim-fugitive'
 
+" github support for fugative
 Plug 'tpope/vim-rhubarb'
 
 " sneek - simpler alternative to easymotion
@@ -37,8 +38,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 
 " motions/text objects for surrounding selections with chars
-" not super happy this this one,
-" explore configuration or alternatives
 Plug 'tpope/vim-surround'
 
 " extend the power of . to more complex objects
@@ -433,6 +432,10 @@ augroup END
 """""""
 " MAPS
 """""""
+
+" Skip any internal matching pairs and jump to the match of the line end match
+" works well, but the delay in single % use is too annoying
+nnoremap <leader>% $%
 
 " vim-tmux-navigator adds ctrl-hjkl and / for pane navigation
 
