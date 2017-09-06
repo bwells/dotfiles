@@ -514,11 +514,11 @@ noremap q: <NOP>
 " nnoremap ' `
 " nnoremap ` '
 
+" map tab and shift-tab to completion menu navigation
+" map return to exit popup menu
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <C-f> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <C-F> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
 " change next mapping from
 " http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
