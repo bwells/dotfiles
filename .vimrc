@@ -92,6 +92,9 @@ Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
 " mako support
 Plug 'sophacles/vim-bundle-mako'
 
+" elm support
+Plug 'ElmCast/elm-vim'
+
 " color scheme
 Plug 'tomasr/molokai'
 
