@@ -137,6 +137,10 @@ call plug#end()
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
 
+""" netrw
+let g:netrw_liststyle = 3
+let g:netrw_altv = 1
+
 """ molokai
 " instruct the molokai colorscheme to use the new fancy version
 let g:rehash256=1
