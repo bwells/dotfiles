@@ -504,6 +504,12 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
+" map ctrl-j/k to completion menu navigation
+" if not in a completion menu, then dump out of insert mode
+" and navigiate down/up between panes
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<esc><c-w><c-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<esc><c-w><c-k>"
+
 " change next mapping from
 " http://www.kevinli.co/posts/2017-01-19-multiple-cursors-in-500-bytes-of-vimscript/
 nnoremap cn *``cgn
