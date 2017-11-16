@@ -34,8 +34,7 @@ brew install --HEAD universal-ctags
 brew tap caskroom/cask
 
 # install apps
-brew cask install firefox iterm2 adium \
-	          mysqlworkbench \
+brew cask install adium
 
 # optional installs
 # brew cask install vagrant vmware-fusion
@@ -70,7 +69,6 @@ ln -s ~/workspace/go/src/github.com ~/workspace/bwells
 # login to dropbox
 # setup 1password - install from app store
 # setup work vpn
-# download menucalanderclock
 # setup adium accounts?
 
 # install menlo for powerline font
