@@ -592,7 +592,7 @@ endif
 " let's do some whitspace highlighting
 " set listchars=tab:▶ ,space:.,trail:.
 
-" because fuck these are annoying
+" because fuck vim turds are annoying
 set nobackup
 set nowritebackup
 set noswapfile
