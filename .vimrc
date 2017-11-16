@@ -50,11 +50,10 @@ Plug 'tpope/vim-scriptease'
 " provides mixed case abbreviations and searches
 Plug 'tpope/vim-abolish'
 
-" do everything interface library
-Plug 'Shougo/unite.vim'
+" wrapper around ag for project wide search
+Plug 'mileszs/ack.vim'
 
-" vimproc - required for Unite /async modes
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" Plug 'tpope/vim-unimpaired'
 
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -266,35 +265,13 @@ let g:sneak#absolute_dir = 1
 """ vim-argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
 
-""" unite.vim
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-call unite#custom#source('file,file_rec,file_rec/async',
-            \ 'ignore_pattern',
-            \ join(['data/', '.git', 'node_modules/'], '\|'))
-
-" if has('nvim')
-"     nnoremap <Leader>f :Unite -start-insert file_rec/neovim<CR>
-" else
-"     nnoremap <Leader>f :Unite -start-insert file_rec/async<CR>
-" endif
-" nnoremap <Leader>b :Unite -start-insert buffer<CR>
-nnoremap <Leader>/ :Unite grep:. -buffer-name=search-buffer<CR>
-
+""" ack.vim
 if executable('ag')
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-                \ '-i --vimgrep --hidden --ignore ' .
-                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-    let g:unite_source_grep_recursive_opt = ''
+  let g:ackprg = 'ag --vimgrep'
 endif
 
-call unite#custom#profile('default', 'context', {
-            \   'start_insert': 1,
-            \   'winheight': 15,
-            \   'direction': 'botright',
-            \ })
+" <left> leaves the cursor position in between the quotes
+nnoremap <Leader>/ :Ack!<space>""<left>
 
 """ vim-sort-motion
 let g:sort_motion_flags = "ui"
