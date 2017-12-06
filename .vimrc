@@ -476,6 +476,44 @@ nnoremap [m [m:call <SID>CenterView()<cr>
 nnoremap ]] ]]:call <SID>CenterView()<cr>
 nnoremap [[ [[:call <SID>CenterView()<cr>
 
+" resize vertical column into current window takes 1/2, 1/3, 1/4 of available
+" height
+nnoremap <c-w>2 :call <SID>ResizeActive(0.5)<cr>
+nnoremap <c-w>3 :call <SID>ResizeActive(0.67)<cr>
+nnoremap <c-w>4 :call <SID>ResizeActive(0.75)<cr>
+
+function! s:ResizeActive(percentage)
+	let l:data = s:find_parallel_windows(winnr())
+	let l:current_window = winnr()
+
+	let l:height_remainder = &lines * (1 - a:percentage)
+	let l:leftover_per_window = l:height_remainder / len(l:data.height)
+
+	exec printf("resize %f", l:height_remainder)
+
+	for window in l:data.height
+		" set active window to <window>
+		exec window . "wincmd w"
+
+		exec printf("resize %f", l:leftover_per_window)
+	endfor
+
+	" restore the active window
+	exec l:current_window . "wincmd w"
+endfunction
+
+" copied from github.com/roman/golden-ratio
+" returns separate lists of windows that are parallel to the argument window
+" on the horizontal plane and on the vertical plane
+function! s:find_parallel_windows(current_window)
+	return {
+		\ 'width' : filter(reverse(range(1, winnr('$'))),
+		\                  'winheight(v:val) == winheight(a:current_window) ' . '&& v:val != a:current_window'),
+		\ 'height': filter(reverse(range(1, winnr('$'))),
+		\                  'winwidth(v:val) == winwidth(a:current_window) ' . '&& v:val != a:current_window')
+		\}
+endfunction
+
 " scroll current line to middle if it is within two of the window edge
 function! s:CenterView()
 	if winline() <= 2  || winline() >= winheight(0) - 1
