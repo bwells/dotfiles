@@ -215,7 +215,7 @@ let g:lightline = {
 	\ },
 	\ 'component': {
 	\  'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-	\  'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+	\  'modified': '%{&filetype=="help"?"":&modified?"[+]":&modifiable?"":"-"}',
 	\ },
 	\ 'component_visible_condition': {
 	\   'readonly': '(&filetype!="help"&& &readonly)',
