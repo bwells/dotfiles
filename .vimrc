@@ -244,6 +244,10 @@ let g:gitgutter_sign_added = '✚'
 let g:gitgutter_sign_modified = '➜'
 let g:gitgutter_sign_removed = '✘'
 
+""" tcomment_vim
+" change the comment character for .ini files
+call tcomment#DefineType('dosini', '#%s')
+
 """ vim-wordmotion
 let g:wordmotion_prefix = "<leader>"
 
@@ -569,9 +573,6 @@ augroup filetypes
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
     autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
-
-" change the comment character for .ini files
-call tcomment#DefineType('dosini', '#%s')
 
 " files to hide from netrw
 let g:netrw_list_hide = '.*\.pyc$,'
