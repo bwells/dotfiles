@@ -121,7 +121,7 @@ Plug 'bwells/vim-named-sessions'
 " Plug 'bwells/simplysublime'
 
 " punish yourself for repeat hjkl too much
-Plug 'takac/vim-hardtime'
+" Plug 'takac/vim-hardtime'
 
 Plug 'FooSoft/vim-argwrap'
 
@@ -129,6 +129,11 @@ Plug 'FooSoft/vim-argwrap'
 Plug 'christoomey/vim-sort-motion'
 
 Plug 'neoclide/vim-jsx-improve'
+
+Plug 'machakann/vim-highlightedyank'
+
+" improves terminal support - adds insert mode cursor
+Plug 'wincent/terminus'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -146,15 +151,15 @@ let g:netrw_altv = 1
 let g:rehash256=1
 
 """ vim-hardtime
-let g:hardtime_default_on = 1
-let g:list_of_normal_keys = ["h", "j", "k", "l"]
-let g:list_of_visual_keys = ["h", "j", "k", "l"]
-let g:list_of_insert_keys = []
-let g:list_of_disabled_keys = []
-let g:hardtime_timeout = 1000
-let g:hardtime_maxcount = 8
-let g:hardtime_ignore_buffer_patterns = ["NERD.*", ".*Location List.*"]
-let g:hardtime_ignore_quickfix = 1
+" let g:hardtime_default_on = 1
+" let g:list_of_normal_keys = ["h", "j", "k", "l"]
+" let g:list_of_visual_keys = ["h", "j", "k", "l"]
+" let g:list_of_insert_keys = []
+" let g:list_of_disabled_keys = []
+" let g:hardtime_timeout = 1000
+" let g:hardtime_maxcount = 8
+" let g:hardtime_ignore_buffer_patterns = ["NERD.*", ".*Location List.*"]
+" let g:hardtime_ignore_quickfix = 1
 
 " TODO: idea: add command for jumping up or down when you meant the opposite
 " -> 10j, shit i meant to 10k. rather than have to hit 20k, hit K and it
@@ -287,7 +292,12 @@ let g:sort_motion_flags = "ui"
 """ fzf.vim
 " set the default FZF default feed command here because it's
 " not set in zsh, which is the shell vim actually uses.
-let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+if executable('rg')
+    let $FZF_DEFAULT_COMMAND = 'rg --files'
+elseif executable('ag')
+    let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+endif
+
 " switch to a different panel if running fzf from within nerdtree
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 nnoremap <Leader>b :Buffers<cr>
@@ -299,6 +309,13 @@ let g:fzf_layout = {
 \}
 
 " let g:fzf_launcher = 'nop %s'
+
+""" vim-highlightedyank
+" number of miliseconds to highlight the yank
+let g:highlightedyank_highlight_duration = 200
+
+" update the highlight to a color that does not obscure the cursor
+" highlight HighlightedyankRegion guibg=#af005f cterm=125
 
 """"""""""""""""
 " IT'S NOT 1970
@@ -343,7 +360,7 @@ set number
 set relativenumber
 
 " set ruler at 81 chars
-set colorcolumn=81
+set colorcolumn=81,101
 
 " highlight the line the cursor is on
 set cursorline
@@ -416,6 +433,8 @@ augroup fuck_folding
 	autocmd!
 	autocmd BufEnter * set nofoldenable
 augroup END
+
+set grepprg=rg\ --vimgrep
 
 """""""
 " MAPS
@@ -528,7 +547,9 @@ endfunction
 map <f5> :setlocal cursorline! relativenumber!<cr>
 
 " get help on word under cursor
-nnoremap K :help <cword><cr>
+" TODO: figure out how to set keywordprg on vim source if necessary
+" presumably that is why i had this
+" nnoremap K :help <cword><cr>
 
 " disable command history window
 " really tired of triggering it instead of :q
@@ -608,6 +629,7 @@ augroup filetypes
     autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType dosini set commentstring=#%s
 	autocmd Filetype gitcommit setlocal spell
+    autocmd Filetype Dockerfile set tabstop=4 shiftwidth=4 expandtab
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
     autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
@@ -636,7 +658,7 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-if !has('nvim') && has('python')
+if has('python')
 " python with virtualenv support
 py << EOF
 import os
@@ -648,7 +670,7 @@ if 'VIRTUAL_ENV' in os.environ:
 EOF
 endif
 
-if !has('nvim') && has('python3')
+if has('python3')
 " python with virtualenv support
 py3 << EOF
 import os
