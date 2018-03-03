@@ -24,11 +24,7 @@ set -gx PATH $PATH /usr/local/sbin
 
 # set fzf default intput ag becuase ag respects ignored file settings
 # set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
-
-# add the brew internal path to python2
-# this is required because brew now installs the python executable
-# as 'python2' instead of 'python' within /usr/local/bin
-set -gx PATH "/usr/local/opt/python/libexec/bin" $PATH
+export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
