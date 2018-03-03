@@ -4,6 +4,8 @@ abbr -a resource source ~/.config/fish/config.fish
 
 alias vimr="vimr -s"
 
+alias dbimport="~/workspace/ERP/erp/scripts/dbimport.py"
+
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
@@ -35,6 +37,9 @@ set -gx VIRTUALFISH_HOME ~/environments
 
 # import ssh keys on boot
 ssh-add -A 2>/dev/null;
+
+# completion for ccdecrypt
+complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
 
 # activate a virtualenv on entry
 # also deactivates on project exit
