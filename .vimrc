@@ -251,7 +251,7 @@ let g:gitgutter_sign_removed = '✘'
 
 """ tcomment_vim
 " change the comment character for .ini files
-call tcomment#DefineType('dosini', '#%s')
+call tcomment#type#Define('dosini', '#%s')
 
 """ vim-wordmotion
 let g:wordmotion_prefix = "<leader>"
