@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # setup SSH
-ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
+#ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
 # add to github
 
 # TODO: remap capslock to ctrl
@@ -22,8 +22,8 @@ ln -s ~/dotfiles/fish ~/.config/fish
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install fish zsh tmux vim macvim git go mysql nmap node
-	     sqlite python python3 fzf the_silver_searcher
+brew install fish zsh tmux vim macvim git go mysql nmap node \
+	     sqlite python python3 fzf ripgrep the_silver_searcher
 
 brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
