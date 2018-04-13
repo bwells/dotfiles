@@ -53,7 +53,7 @@ Plug 'tpope/vim-abolish'
 " wrapper around ag for project wide search
 Plug 'mileszs/ack.vim'
 
-" Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -122,7 +122,7 @@ Plug 'bwells/vim-named-sessions'
 
 " Plug 'bwells/simplysublime'
 
-" punish yourself for repeat hjkl too much
+" punish yourself for repeating hjkl too much
 " Plug 'takac/vim-hardtime'
 
 Plug 'FooSoft/vim-argwrap'
@@ -218,7 +218,8 @@ let g:lightline = {
 	\ 	           [ 'percent' ] ]
 	\ },
 	\ 'component_function': {
-	\	'fugitive': 'LightLineFugitive'
+	\	'fugitive': 'LightLineFugitive',
+	\   'filename': 'LightLineFilename'
 	\ },
 	\ 'component': {
 	\  'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
@@ -239,6 +240,10 @@ function! LightLineFugitive()
     return strlen(_) ? ' '._ : ''
   endif
   return ''
+endfunction
+
+function! LightLineFilename()
+	return expand('%')
 endfunction
 
 " TODO: this gets added to the statusline on each vimrc reload. figure out
@@ -268,6 +273,9 @@ let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
 
+let g:ale_python_pylint_options = '--rcfile ~/.pylintrc'
+let g:ale_python_pylint_use_global = 0
+
 nmap <silent> [e <Plug>(ale_previous_wrap)
 nmap <silent> ]e <Plug>(ale_next_wrap)
 
@@ -281,8 +289,10 @@ let g:sneak#absolute_dir = 1
 nnoremap <silent> <leader>a :ArgWrap<CR>
 
 """ ack.vim
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+if executable('rg')
+	let g:ackprg = 'rg --vimgrep'
+elseif executable('ag')
+	let g:ackprg = 'ag --vimgrep'
 endif
 
 " <left> leaves the cursor position in between the quotes
@@ -447,7 +457,10 @@ augroup fuck_folding
 	autocmd BufEnter * set nofoldenable
 augroup END
 
-set grepprg=rg\ --vimgrep
+" use rg for grep
+if executable('rg')
+	set grepprg=rg\ --vimgrep
+endif
 
 """""""
 " MAPS
@@ -603,6 +616,10 @@ nnoremap <leader>O mzO<esc>`z
 " scroll the screen faster while keeping the cursor line in the same visual spot
 nnoremap <C-e> 2j2<C-e>
 nnoremap <C-y> 2k2<C-y>
+
+" shortcut for reviewing staged git changes
+" command Greview :Git! diff --staged
+" nnoremap <leader>gr :Greview<cr>
 
 """""""""""""
 " OTHER STUFF
