@@ -97,6 +97,8 @@ Plug 'ElmCast/elm-vim'
 " color scheme
 Plug 'tomasr/molokai'
 
+Plug 'TroyFletcher/vim-colors-synthwave'
+
 " Async lint runner
 Plug 'w0rp/ale'
 
@@ -201,7 +203,7 @@ set noshowmode
 " uses menlo for powerline from
 " https://gist.github.com/justinmayer/7537418#file-menlo-for-powerline-zip
 let g:lightline = {
-	\ 'colorscheme': 'wombat',
+	\ 'colorscheme': 'nord',
 	\ 'active': {
 	\ 	'left': [ [ 'mode', 'paste' ],
 	\       	  [ 'fugitive' ],
@@ -424,9 +426,20 @@ set clipboard^=unnamed
 " enable syntax highlighting
 syntax enable
 
-colors molokai
+" colors molokai
 " update the matched search background to a color that does not obscure the cursor
-highlight Search guibg=#af005f ctermbg=125
+" highlight Search guibg=#af005f ctermbg=125
+
+colors synthwave
+" hi ColorColumn guifg=NONE guibg=#db93c8 guisp=#db93c8 ctermfg=235 ctermbg=248 cterm=NONE
+" hi ColorColumn guifg=NONE guibg=#6cddf1 guisp=#db93c8 ctermfg=235 ctermbg=248 cterm=NONE
+" hi ColorColumn guifg=NONE guibg=#bd0065 guisp=NONE ctermfg=NONE ctermbg=248 cterm=NONE
+hi ColorColumn guifg=NONE guibg=#536991 guisp=NONE ctermfg=NONE ctermbg=60 cterm=NONE
+hi Function guifg=#ff00bb guibg=NONE guisp=NONE gui=NONE ctermfg=199 ctermbg=NONE cterm=bold
+hi String guifg=#dd00ff guibg=#181615 guisp=#000000 gui=NONE ctermfg=165 ctermbg=NONE cterm=NONE
+hi Comment guifg=#9c38bd guibg=#181615 guisp=NONE gui=italic ctermfg=5 ctermbg=0 cterm=NONE
+hi Exception guifg=#bd0065 guibg=#181615 guisp=#000000 gui=bold ctermfg=5 ctermbg=NONE cterm=bold
+hi Normal guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
 
 " disable fucking folding
 augroup fuck_folding
