@@ -296,7 +296,7 @@ elseif executable('ag')
 endif
 
 " <left> leaves the cursor position in between the quotes
-nnoremap <Leader>/ :Ack!<space>""<left>
+nnoremap <Leader>/ :Ack!<space>-F<space>""<left>
 
 """ vim-sort-motion
 let g:sort_motion_flags = "ui"
