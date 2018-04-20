@@ -669,9 +669,12 @@ let g:netrw_list_hide = '.*\.pyc$,'
 let g:netrw_list_hide.= '__pycache__/,'
 let g:netrw_list_hide.='\.DS_Store,'
 let g:netrw_list_hide.= '\.git,'
+let g:netrw_list_hide.= 'tags,'
+let g:netrw_list_hide.= 'test.db,'
+let g:netrw_list_hide.= '\.pytest_cache,'
 
 " sane files to ignore
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,__pycache__,*/tags,*/tags.lock,*/tags.temp,*/node_modules
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,__pycache__,*/tags,*/tags.lock,*/tags.temp,*/node_modules,*/tests.db*,
 
 " fish doesn't play posix
 " tell vim to use a regular shell
