@@ -32,9 +32,12 @@ brew install --HEAD universal-ctags
 
 # setup cask
 brew tap caskroom/cask
+brew tap caskroom/fonts
 
 # install apps
 brew cask install adium
+
+brew cask install font-menlo-for-powerline
 
 # optional installs
 # brew cask install vagrant vmware-fusion
