@@ -19,6 +19,8 @@ set -gx PATH $GOPATH/bin $PATH
 # add brew sbin to path
 set -gx PATH $PATH /usr/local/sbin
 
+set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
+
 # add mvim install location to path
 # set -gx PATH $PATH /Applications/MacVim.app/Contents/bin
 
