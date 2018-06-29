@@ -26,7 +26,7 @@ set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
 
 # set fzf default intput ag becuase ag respects ignored file settings
 # set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
-export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
+# export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
 eval (python -m virtualfish)
