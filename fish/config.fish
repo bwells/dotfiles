@@ -2,7 +2,11 @@
 abbr -a fe vim ~/.config/fish/config.fish
 abbr -a resource source ~/.config/fish/config.fish
 
+alias forget="sudo killall -HUP mDNSResponder; sudo killall mDNSResponderHelper; sudo dscacheutil -flushcach"
+
 alias vimr="vimr -s"
+
+alias vim nvim
 
 alias dbimport="~/workspace/ERP/erp/scripts/dbimport.py"
 
@@ -11,6 +15,8 @@ set -U CDPATH . ~ ~/workspace
 
 # set docker host
 # set -x DOCKER_HOST localhost:2375
+
+set -gx EDITOR nvim
 
 # setup gopath
 set -gx GOPATH ~/workspace/go
@@ -38,6 +44,9 @@ ssh-add -A 2>/dev/null;
 
 # completion for ccdecrypt
 complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
+
+# completion for pip-compile
+# complete -c pip-compile -x -a " ( __fish_complete_suffix .in ) "
 
 # activate a virtualenv on entry
 # also deactivates on project exit
