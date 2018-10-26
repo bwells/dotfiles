@@ -35,7 +35,9 @@ Plug 'tomtom/tcomment_vim'
 Plug 'itchyny/lightline.vim'
 
 " auto quote/bracket/paren matching
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
+" Plug 'Townk/vim-autoclose'
+Plug 'Raimondi/delimitMate'
 
 " motions/text objects for surrounding selections with chars
 Plug 'tpope/vim-surround'
