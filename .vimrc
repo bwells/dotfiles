@@ -55,7 +55,7 @@ Plug 'tpope/vim-abolish'
 " wrapper around ag for project wide search
 Plug 'mileszs/ack.vim'
 
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'
 
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
