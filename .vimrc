@@ -78,8 +78,12 @@ Plug 'wellle/targets.vim'
 " adds indent level as an object
 Plug 'michaeljsmith/vim-indent-object'
 
-Plug 'kana/vim-textobj-user'
-Plug 'bps/vim-textobj-python'
+" Plug 'kana/vim-textobj-user'
+" Plug 'bps/vim-textobj-python'
+
+" adds text objects for class (ac/ic), function (af/if), and docstring (ad/id)
+" also adds g: normaal mode map to specify context of cursor location
+Plug 'jeetsukumaran/vim-pythonsense'
 
 " IDE level vim/go integration
 Plug 'fatih/vim-go', { 'for': 'go' }
