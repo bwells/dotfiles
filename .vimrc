@@ -37,6 +37,9 @@ Plug 'itchyny/lightline.vim'
 " auto quote/bracket/paren matching
 Plug 'jiangmiao/auto-pairs'
 
+" modernize %
+Plug 'andymass/vim-matchup'
+
 " motions/text objects for surrounding selections with chars
 Plug 'tpope/vim-surround'
 
@@ -118,7 +121,7 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'hynek/vim-python-pep8-indent'
 
-Plug 'bwells/vim-named-sessions'
+" Plug 'bwells/vim-named-sessions'
 
 " Plug 'bwells/simplysublime'
 
@@ -136,6 +139,9 @@ Plug 'machakann/vim-highlightedyank'
 
 " improves terminal support - adds insert mode cursor
 Plug 'wincent/terminus'
+
+" integrated test running
+Plug 'janko-m/vim-test'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -319,8 +325,6 @@ let g:fzf_buffers_jump = 1
 let g:fzf_layout = {
     \ 'down': '~25%',
 \}
-
-" let g:fzf_launcher = 'nop %s'
 
 """ vim-highlightedyank
 " number of miliseconds to highlight the yank
@@ -621,6 +625,8 @@ nnoremap <C-y> 2k2<C-y>
 " command Greview :Git! diff --staged
 " nnoremap <leader>gr :Greview<cr>
 
+onoremap ge :!rev<cr>
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
@@ -690,6 +696,9 @@ endif
 set nobackup
 set nowritebackup
 set noswapfile
+
+" decrease CursorHold
+set updatetime=10
 
 if has('python')
 " python with virtualenv support
