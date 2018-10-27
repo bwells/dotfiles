@@ -35,7 +35,9 @@ Plug 'tomtom/tcomment_vim'
 Plug 'itchyny/lightline.vim'
 
 " auto quote/bracket/paren matching
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
+" Plug 'Townk/vim-autoclose'
+Plug 'Raimondi/delimitMate'
 
 " modernize %
 Plug 'andymass/vim-matchup'
@@ -56,7 +58,7 @@ Plug 'tpope/vim-abolish'
 " wrapper around ag for project wide search
 Plug 'mileszs/ack.vim'
 
-Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-unimpaired'
 
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
@@ -79,8 +81,12 @@ Plug 'wellle/targets.vim'
 " adds indent level as an object
 Plug 'michaeljsmith/vim-indent-object'
 
-Plug 'kana/vim-textobj-user'
-Plug 'bps/vim-textobj-python'
+" Plug 'kana/vim-textobj-user'
+" Plug 'bps/vim-textobj-python'
+
+" adds text objects for class (ac/ic), function (af/if), and docstring (ad/id)
+" also adds g: normaal mode map to specify context of cursor location
+Plug 'jeetsukumaran/vim-pythonsense'
 
 " IDE level vim/go integration
 Plug 'fatih/vim-go', { 'for': 'go' }
@@ -684,10 +690,10 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/*.pyc,__pycach
 
 " fish doesn't play posix
 " tell vim to use a regular shell
-if &shell =~# 'fish$'
-    " disable all zsh files while we're at it
-    set shell=zsh
-endif
+" if &shell =~# 'fish$'
+"     " disable all zsh files while we're at it
+"     set shell=zsh
+" endif
 
 " let's do some whitspace highlighting
 " set listchars=tab:▶ ,space:.,trail:.

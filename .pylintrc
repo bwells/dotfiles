@@ -89,16 +89,7 @@ disable=
 	# identifier to fit our code style. eg: "log" at the module level
 	# is an invalid constant identifier.
 	# invalid-name
-
 	protected-access
-
-# removed while converting from codes to full names
-# E0213 - no-self-argument
-# E1126 - invalid-sequence-index
-# W0201 - attribute-defined-outside-init
-# C0411 - wrong-import-order
-# C0412 - ungrouped-imports
-# I0011 - locally-disabled
 
 [REPORTS]
 
