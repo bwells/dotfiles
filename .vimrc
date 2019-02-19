@@ -490,7 +490,7 @@ nnoremap <s-tab> :bprev<cr>
 " jump to mru buffer
 nnoremap <leader><tab> :b#<cr>
 
-" clear highlight with <esc> after a search
+" clear highlight with <esc><esc> after a search
 nnoremap <esc><esc> :noh<return><esc>
 
 " disable arrow keys in normal mode
@@ -533,6 +533,7 @@ nnoremap [[ [[:call <SID>CenterView()<cr>
 
 " resize vertical column into current window takes 1/2, 1/3, 1/4 of available
 " height
+" Kinda buggy, sometimes repeated calls to 3 or 4 are necessary
 nnoremap <c-w>2 :call <SID>ResizeActive(0.5)<cr>
 nnoremap <c-w>3 :call <SID>ResizeActive(0.67)<cr>
 nnoremap <c-w>4 :call <SID>ResizeActive(0.75)<cr>
