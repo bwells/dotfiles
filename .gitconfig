@@ -4,5 +4,5 @@
 [push]
 	default = upstream
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = /Users/kremlan/.gitignore
