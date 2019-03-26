@@ -6,3 +6,5 @@
 [core]
 	editor = nvim
 	excludesfile = /Users/kremlan/.gitignore
+[tag]
+	sort = version:refname
