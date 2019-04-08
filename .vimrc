@@ -85,7 +85,7 @@ Plug 'michaeljsmith/vim-indent-object'
 " Plug 'bps/vim-textobj-python'
 
 " adds text objects for class (ac/ic), function (af/if), and docstring (ad/id)
-" also adds g: normaal mode map to specify context of cursor location
+" also adds g: normal mode map to specify context of cursor location
 Plug 'jeetsukumaran/vim-pythonsense'
 
 " IDE level vim/go integration
