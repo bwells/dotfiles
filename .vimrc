@@ -707,28 +707,42 @@ set noswapfile
 " decrease CursorHold
 set updatetime=10
 
-if has('python')
-" python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  env_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(env_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
+" TODO: add setup of this in bootstrap.sh
+if filereadable(expand('~') . '/environments/nvim_python/bin/python')
+	let g:python_host_prog = expand('~') . '/environments/nvim_python/bin/python'
+endif
+if filereadable(expand('~') . '/environments/nvim_python3/bin/python')
+	let g:python3_host_prog = expand('~') . '/environments/nvim_python3/bin/python'
 endif
 
-if has('python3')
-" python with virtualenv support
-py3 << EOF
-import os
-import sys
+" TODO: activating a virutal env does not change the path and thus currently
+" requires setting an explicit path for pylint. otoh we finally have pylint
+" working correctly in each of multiple projects open at once
+if has('nvim') && !empty($WORKON_HOME)
+	if has('python')
+py << EOS
+import os, vim
+env_base_dir = None
 if 'VIRTUAL_ENV' in os.environ:
 	env_base_dir = os.environ['VIRTUAL_ENV']
+elif '.git' in os.listdir(os.curdir):
+	workon_home = os.environ['WORKON_HOME']
+	env = os.path.join(workon_home, os.path.basename(os.path.abspath(os.curdir)))
+	if os.path.exists(env):
+		env_base_dir = env
+if env_base_dir:
+	# TODO: try not using the python version of activate
+	# our problem seems to be that the shell enviornments of `echo $PATH`
+	# and `:!echo $PATH` are not the same
 	activate_this = os.path.join(env_base_dir, 'bin/activate_this.py')
 	exec(open(activate_this).read(), dict(__file__=activate_this))
-EOF
+
+	# setup an explicit pylint executable location
+	pylint_path = os.path.join(env_base_dir, 'bin', 'pylint')
+	cmd = "let g:ale_python_pylint_executable='{}'".format(pylint_path)
+	vim.command(cmd)
+EOS
+	endif
 endif
 
 function! SwapTest()
