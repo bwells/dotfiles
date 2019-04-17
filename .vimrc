@@ -215,36 +215,36 @@ set noshowmode
 " uses menlo for powerline from
 " https://gist.github.com/justinmayer/7537418#file-menlo-for-powerline-zip
 let g:lightline = {
-	\ 'colorscheme': 'nord',
-	\ 'active': {
-	\ 	'left': [ [ 'mode', 'paste' ],
-	\       	  [ 'fugitive' ],
-	\		  [ 'readonly', 'filename', 'modified' ] ],
-	\	 'right': [ [ 'lineinfo' ],
-	\                   [ 'percent' ],
-	\                   [ 'filetype', 'fileformat', 'fileencoding' ] ]
-	\ },
-	\ 'inactive': {
-	\ 	'left': [ [ 'filename' ] ],
-	\ 	'right': [ [ 'lineinfo' ],
-	\ 	           [ 'percent' ] ]
-	\ },
-	\ 'component_function': {
-	\	'fugitive': 'LightLineFugitive',
-	\   'filename': 'LightLineFilename'
-	\ },
-	\ 'component': {
-	\  'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-	\  'modified': '%{&filetype=="help"?"":&modified?"[+]":&modifiable?"":"-"}',
-	\ },
-	\ 'component_visible_condition': {
-	\   'readonly': '(&filetype!="help"&& &readonly)',
-	\   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-	\   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-	\ },
-	\ 'separator': { 'left': '', 'right': '' },
-	\ 'subseparator': { 'left': '', 'right': '' }
-	\ }
+    \ 'colorscheme': 'nord',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'fugitive' ],
+    \         [ 'readonly', 'filename', 'modified' ] ],
+    \    'right': [ [ 'lineinfo' ],
+    \                   [ 'percent' ],
+    \                   [ 'filetype', 'fileformat', 'fileencoding' ] ]
+    \ },
+    \ 'inactive': {
+    \   'left': [ [ 'filename' ] ],
+    \   'right': [ [ 'lineinfo' ],
+    \              [ 'percent' ] ]
+    \ },
+    \ 'component_function': {
+    \   'fugitive': 'LightLineFugitive',
+    \   'filename': 'LightLineFilename'
+    \ },
+    \ 'component': {
+    \  'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
+    \  'modified': '%{&filetype=="help"?"":&modified?"[+]":&modifiable?"":"-"}',
+    \ },
+    \ 'component_visible_condition': {
+    \   'readonly': '(&filetype!="help"&& &readonly)',
+    \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+    \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+    \ },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' }
+    \ }
 
 function! LightLineFugitive()
   if exists("*fugitive#head")
@@ -255,7 +255,7 @@ function! LightLineFugitive()
 endfunction
 
 function! LightLineFilename()
-	return expand('%')
+    return expand('%')
 endfunction
 
 set statusline=
@@ -301,9 +301,9 @@ nnoremap <silent> <leader>a :ArgWrap<CR>
 
 """ ack.vim
 if executable('rg')
-	let g:ackprg = 'rg --vimgrep'
+    let g:ackprg = 'rg --vimgrep'
 elseif executable('ag')
-	let g:ackprg = 'ag --vimgrep'
+    let g:ackprg = 'ag --vimgrep'
 endif
 
 " <left> leaves the cursor position in between the quotes
@@ -352,7 +352,7 @@ set ttyfast
 if has('mouse')
     set mouse=a
     if !has('nvim')
-		set ttymouse=xterm2
+        set ttymouse=xterm2
     endif
 endif
 
@@ -361,17 +361,17 @@ endif
 """""""""""""""""""""""""
 
 if has('nvim')
-	" ctrl-h == backspace in basic shell.
-	" override this in nvim's case to get correct split navigation back
-	" nmap <BS> <C-W>h
-	nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
+    " ctrl-h == backspace in basic shell.
+    " override this in nvim's case to get correct split navigation back
+    " nmap <BS> <C-W>h
+    nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 
-	" map esc to switch-to-normal-mode in a terminal
-	tnoremap <Esc> <C-\><C-n>
+    " map esc to switch-to-normal-mode in a terminal
+    tnoremap <Esc> <C-\><C-n>
 endif
 
 if exists('&guifont')
-	set guifont=Menlo\ Regular\ for\ Powerline:h11
+    set guifont=Menlo\ Regular\ for\ Powerline:h11
 endif
 
 " turn on line numbers
@@ -462,13 +462,13 @@ hi Normal guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=
 
 " disable fucking folding
 augroup fuck_folding
-	autocmd!
-	autocmd BufEnter * set nofoldenable
+    autocmd!
+    autocmd BufEnter * set nofoldenable
 augroup END
 
 " use rg for grep
 if executable('rg')
-	set grepprg=rg\ --vimgrep
+    set grepprg=rg\ --vimgrep
 endif
 
 """""""
@@ -532,48 +532,51 @@ nnoremap [[ [[:call <SID>CenterView()<cr>
 
 " resize vertical column into current window takes 1/2, 1/3, 1/4 of available
 " height
-" Kinda buggy, sometimes repeated calls to 3 or 4 are necessary
+" Kinda buggy, sometimes repeated calls to 3 or 4 are necessary - buggy when
+" splits were not already evenly sized. Reproduce by setting 3 split layout
+" to .25, .5, .25, then c-w3 on the bottom split.
+" try adding set windows equal at some point? <c-w>=
 nnoremap <c-w>2 :call <SID>ResizeActive(0.5)<cr>
 nnoremap <c-w>3 :call <SID>ResizeActive(0.67)<cr>
 nnoremap <c-w>4 :call <SID>ResizeActive(0.75)<cr>
 
 function! s:ResizeActive(percentage)
-	let l:data = s:find_parallel_windows(winnr())
-	let l:current_window = winnr()
+    let l:data = s:find_parallel_windows(winnr())
+    let l:current_window = winnr()
 
-	let l:height_remainder = &lines * (1 - a:percentage)
-	let l:leftover_per_window = l:height_remainder / len(l:data.height)
+    let l:height_remainder = &lines * (1 - a:percentage)
+    let l:leftover_per_window = l:height_remainder / len(l:data.height)
 
-	exec printf("resize %f", l:height_remainder)
+    exec printf("resize %f", l:height_remainder)
 
-	for window in l:data.height
-		" set active window to <window>
-		exec window . "wincmd w"
+    for window in l:data.height
+        " set active window to <window>
+        exec window . "wincmd w"
 
-		exec printf("resize %f", l:leftover_per_window)
-	endfor
+        exec printf("resize %f", l:leftover_per_window)
+    endfor
 
-	" restore the active window
-	exec l:current_window . "wincmd w"
+    " restore the active window
+    exec l:current_window . "wincmd w"
 endfunction
 
 " copied from github.com/roman/golden-ratio
 " returns separate lists of windows that are parallel to the argument window
 " on the horizontal plane and on the vertical plane
 function! s:find_parallel_windows(current_window)
-	return {
-		\ 'width' : filter(reverse(range(1, winnr('$'))),
-		\                  'winheight(v:val) == winheight(a:current_window) ' . '&& v:val != a:current_window'),
-		\ 'height': filter(reverse(range(1, winnr('$'))),
-		\                  'winwidth(v:val) == winwidth(a:current_window) ' . '&& v:val != a:current_window')
-		\}
+    return {
+        \ 'width' : filter(reverse(range(1, winnr('$'))),
+        \                  'winheight(v:val) == winheight(a:current_window) ' . '&& v:val != a:current_window'),
+        \ 'height': filter(reverse(range(1, winnr('$'))),
+        \                  'winwidth(v:val) == winwidth(a:current_window) ' . '&& v:val != a:current_window')
+        \}
 endfunction
 
 " scroll current line to middle if it is within two of the window edge
 function! s:CenterView()
-	if winline() <= 2  || winline() >= winheight(0) - 1
-		normal! zz
-	endif
+    if winline() <= 2  || winline() >= winheight(0) - 1
+        normal! zz
+    endif
 endfunction
 
 " easyclip provides Y - yank to end of line to match D and C
@@ -633,44 +636,60 @@ nnoremap <C-y> 2k2<C-y>
 
 onoremap ge :!rev<cr>
 
+" so much TODO:
+" make detection of submodules automatic and include changed files within the
+" submodules.
+nnoremap <silent>gtd :lgetexpr system('rg --vimgrep -g "\!*/model/*" -g "\!*/utilities/*" -g "\!*/altaUtils/*" -g "\!*/reports/*" "TODO" (git diff --name-only --diff-filter=d)')<CR>:bot lopen<CR>
+
+" replace the current buffer's content converted from raw markdown to parsed markdown
+" mostly useful for populating numbered lists et al.
+" augroup markdown
+" 	autocmd!
+" 	autocmd FileType markdown nnoremap <silent><leader>md :%!pandoc -r markdown -w markdown<cr>
+" 	autocmd FileType markdown nnoremap <silent><leader>gfm :%!pandoc -r markdown -w gfm<cr>
+" augroup END
+nnoremap <silent><leader>md :%!pandoc -r markdown -w markdown<cr>
+nnoremap <silent><leader>gfm :%!pandoc -r markdown -w gfm<cr>
+
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
 
 function! TrimTrailingWhitespace()
-	" save cursor position and last search
-	let pos = getpos(".")
-	let _s = @/
+    " save cursor position and last search
+    let pos = getpos(".")
+    let _s = @/
 
-	" trim trailling whitespace
-	%s/\s\+$//e
+    " trim trailling whitespace
+    %s/\s\+$//e
 
-	" restore cursor position and last search
-	call setpos(".", pos)
-	let @/ = _s
+    " restore cursor position and last search
+    call setpos(".", pos)
+    let @/ = _s
 endfunction
 
 " remove trailing whitespace on save
 augroup trim_whitespace
-	autocmd!
-	" trims whitespace and restores cursor position
-	autocmd BufWritePre * call TrimTrailingWhitespace()
+    autocmd!
+    " trims whitespace and restores cursor position
+    autocmd BufWritePre * call TrimTrailingWhitespace()
 augroup END
 
 " auto source vimrc on write
 augroup reload_vimrc
-	autocmd!
-	autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+    autocmd!
+    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
 augroup END
 
 " customizations for filetypes
 augroup filetypes
-	autocmd!
-	autocmd FileType vim set tabstop=4 shiftwidth=4
-	autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
+    autocmd!
+    autocmd FileType vim set tabstop=4 shiftwidth=4
+    autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType dosini set commentstring=#%s
-	autocmd Filetype gitcommit setlocal spell
+    autocmd Filetype gitcommit setlocal spell
     autocmd Filetype Dockerfile set tabstop=4 shiftwidth=4 expandtab
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
     autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -708,70 +727,77 @@ set updatetime=10
 
 " TODO: add setup of this in bootstrap.sh
 if filereadable(expand('~') . '/environments/nvim_python/bin/python')
-	let g:python_host_prog = expand('~') . '/environments/nvim_python/bin/python'
+    let g:python_host_prog = expand('~') . '/environments/nvim_python/bin/python'
 endif
 if filereadable(expand('~') . '/environments/nvim_python3/bin/python')
-	let g:python3_host_prog = expand('~') . '/environments/nvim_python3/bin/python'
+    let g:python3_host_prog = expand('~') . '/environments/nvim_python3/bin/python'
 endif
 
-" TODO: activating a virutal env does not change the path and thus currently
+" TODO: activating a virutal env does not change PATH and thus currently
 " requires setting an explicit path for pylint. otoh we finally have pylint
-" working correctly in each of multiple projects open at once
+" working correctly in each of multiple projects open at once.
+" TODO: try modifying os.environ from within python to add venv/bin python
+" path so pylint et al can be found
+"
 if has('nvim') && !empty($WORKON_HOME)
-	if has('python')
+    if has('python')
 py << EOS
 import os, vim
 env_base_dir = None
-if 'VIRTUAL_ENV' in os.environ:
-	env_base_dir = os.environ['VIRTUAL_ENV']
-elif '.git' in os.listdir(os.curdir):
-	workon_home = os.environ['WORKON_HOME']
-	env = os.path.join(workon_home, os.path.basename(os.path.abspath(os.curdir)))
-	if os.path.exists(env):
-		env_base_dir = env
+#if 'VIRTUAL_ENV' in os.environ:
+#     env_base_dir = os.environ['VIRTUAL_ENV']
+if '.git' in os.listdir(os.curdir):
+    workon_home = os.environ['WORKON_HOME']
+    env = os.path.join(workon_home, os.path.basename(os.path.abspath(os.curdir)))
+    if os.path.exists(env):
+        env_base_dir = env
 if env_base_dir:
-	# TODO: try not using the python version of activate
-	# our problem seems to be that the shell enviornments of `echo $PATH`
-	# and `:!echo $PATH` are not the same
-	activate_this = os.path.join(env_base_dir, 'bin/activate_this.py')
-	exec(open(activate_this).read(), dict(__file__=activate_this))
+    # TODO: try not using the python version of activate
+    # our problem seems to be that the shell enviornments of `echo $PATH`
+    # and `:!echo $PATH` are not the same
+    activate_this = os.path.join(env_base_dir, 'bin/activate_this.py')
+    exec(open(activate_this).read(), dict(__file__=activate_this))
 
-	# setup an explicit pylint executable location
-	pylint_path = os.path.join(env_base_dir, 'bin', 'pylint')
-	cmd = "let g:ale_python_pylint_executable='{}'".format(pylint_path)
-	vim.command(cmd)
+    # set path
+    #bin_path = os.path.join(env_base_dir, 'bin')
+    #os.environ['PATH'] = bin_path + ':' + os.environ['PATH']
+
+    # setup an explicit pylint executable location
+    pylint_path = os.path.join(env_base_dir, 'bin', 'pylint')
+    cmd = "let g:ale_python_pylint_executable='{}'".format(pylint_path)
+    vim.command(cmd)
 EOS
-	endif
+    endif
 endif
 
 function! SwapTest()
-	" TODO: figure out why this doesn't work for test->impl
-	" for training/contact_roles
-	" Searches for test or implementation files and swaps
-	" the current buffer to the alternate.
+    " TODO: figure out why this doesn't work for test->impl
+    " for training/contact_roles
+    " Searches for test or implementation files and swaps
+    " the current buffer to the alternate.
 
-	let l:filename = tolower(expand('%:t'))
-	let l:cwd = getcwd()
+    let l:filename = tolower(expand('%:t'))
+    let l:cwd = getcwd()
 
-	" if currently in a test file
-	" we'll look for the implementation file
-	if filename =~ "^test_"
-		" chop that off before searching
-		let l:filename = join(split(l:filename, '_')[1:], '_')
-		let l:pattern = '**/' . l:filename
-	else
-		" otherwise look for the test file
-		let l:pattern = '**/test_' . l:filename
-	endif
+    " if currently in a test file
+    " we'll look for the implementation file
+    if filename =~ "^test_"
+        " chop that off before searching
+        let l:filename = join(split(l:filename, '_')[1:], '_')
+        let l:pattern = '**/' . l:filename
+    else
+        " otherwise look for the test file
+        let l:pattern = '**/test_' . l:filename
+    endif
 
-	" recursively search CWD for files matching the pattern
-	" 0 is leaves wildingore and suffixes enabled
-	" 1 specifies to return results as a list
-	let l:matches = globpath(l:cwd, l:pattern, 0, 1)
+    " recursively search CWD for files matching the pattern
+    " 0 is leaves wildingore and suffixes enabled
+    " 1 specifies to return results as a list
+    let l:matches = globpath(l:cwd, l:pattern, 0, 1)
 
-	if len(l:matches) == 1
-		execute 'edit ' . l:matches[0]
-	endif
+    if len(l:matches) == 1
+        execute 'edit ' . l:matches[0]
+    endif
 endfunction
 
 command! SwapTest call SwapTest()
@@ -779,106 +805,106 @@ command! SwapTest call SwapTest()
 nnoremap <silent> <leader>t :SwapTest<cr>
 
 function! SetupBuffer()
-	syn match WinNormal /  .*/
-	syn match WinSelected /> .*/hs=s+1
+    syn match WinNormal /  .*/
+    syn match WinSelected /> .*/hs=s+1
 
-	hi def link WinNormal   PMenu
-	hi def link WinSelected PMenuSel
+    hi def link WinNormal   PMenu
+    hi def link WinSelected PMenuSel
 
-	" noautocmd botright pedit __Potion_Bytecode__
-	split __mybuff__
+    " noautocmd botright pedit __Potion_Bytecode__
+    split __mybuff__
 
-	" select previous window
-	" noautocmd wincmd P
+    " select previous window
+    " noautocmd wincmd P
 
-	setlocal nomodifiable
+    setlocal nomodifiable
 
-	setlocal nobuflisted
-	setlocal nowrap
-	setlocal nonumber
-	if exists('+relativenumber')
-		setlocal norelativenumber
-	endif
-	setlocal nocursorcolumn
-	setlocal colorcolumn=0
-	" setlocal nocursorline
-	setlocal cursorline
-	setlocal nospell
-	setlocal nolist
+    setlocal nobuflisted
+    setlocal nowrap
+    setlocal nonumber
+    if exists('+relativenumber')
+        setlocal norelativenumber
+    endif
+    setlocal nocursorcolumn
+    setlocal colorcolumn=0
+    " setlocal nocursorline
+    setlocal cursorline
+    setlocal nospell
+    setlocal nolist
 
-	" setlocal noshowmode
-	" setlocal noruler
-	" setlocal laststatus=0
-	" setlocal noshowcmd
+    " setlocal noshowmode
+    " setlocal noruler
+    " setlocal laststatus=0
+    " setlocal noshowcmd
 
-	set modifiable
-	" clear the buffer
-	normal! ggdG
+    set modifiable
+    " clear the buffer
+    normal! ggdG
 
-	setlocal buftype=nofile
+    setlocal buftype=nofile
 
-	setlocal winfixheight
+    setlocal winfixheight
 
-	resize 5
+    resize 5
 
-	" map a-z and A-Z to our key echo loop
-	let ranges = range(65, 90) + range(97, 122)
-	for n in ranges
-		execute 'nnoremap <buffer> ' . nr2char(n) . ' :call MyLoop("' . nr2char(n) . '")<cr>'
-	endfor
-	execute 'nnoremap <buffer> <space> :call MyLoop(" ")<cr>'
+    " map a-z and A-Z to our key echo loop
+    let ranges = range(65, 90) + range(97, 122)
+    for n in ranges
+        execute 'nnoremap <buffer> ' . nr2char(n) . ' :call MyLoop("' . nr2char(n) . '")<cr>'
+    endfor
+    execute 'nnoremap <buffer> <space> :call MyLoop(" ")<cr>'
 
-	" map keys to navigate the results list
-	nnoremap <silent> <buffer> <down> :normal! j<cr>
-	nnoremap <silent> <buffer> <up> :normal! k<cr>
-	nnoremap <silent> <buffer> <c-j> :normal! j<cr>
-	nnoremap <silent> <buffer> <c-k> :normal! k<cr>
+    " map keys to navigate the results list
+    nnoremap <silent> <buffer> <down> :normal! j<cr>
+    nnoremap <silent> <buffer> <up> :normal! k<cr>
+    nnoremap <silent> <buffer> <c-j> :normal! j<cr>
+    nnoremap <silent> <buffer> <c-k> :normal! k<cr>
 
-	nnoremap <esc> normal! <c-w><c-k><cr>
+    nnoremap <esc> normal! <c-w><c-k><cr>
 
- 	let s:input_so_far = ''
-	set nomodifiable
-	call MyLoop('')
+    let s:input_so_far = ''
+    set nomodifiable
+    call MyLoop('')
 endfunction
 
 function! MyLoop(char)
 
-	setlocal modifiable
+    setlocal modifiable
 
-	let s:input_so_far .= a:char
-	echom "so far: '" . s:input_so_far "'"
+    let s:input_so_far .= a:char
+    echom "so far: '" . s:input_so_far "'"
 
-	if a:char ==# " "
-		echom "got a space"
-	endif
+    if a:char ==# " "
+        echom "got a space"
+    endif
 
-	" draw main content
-	let content = ["  result 1", "  result 2", "> result 3", "  result 4"]
+    " draw main content
+    let content = ["  result 1", "  result 2", "> result 3", "  result 4"]
 
-	silent! normal! ggdG
+    silent! normal! ggdG
 
-	" add content to the window
-	silent! call append(0, content)
+    " add content to the window
+    silent! call append(0, content)
 
-	" silent! call cursor(3, 1)
+    " silent! call cursor(3, 1)
 
-	" draw statusline
-	setlocal statusline=""
+    " draw statusline
+    setlocal statusline=""
 
-	redraw
+    redraw
 
-	" draw prompt
-	echon '> ' . s:input_so_far . '_'
+    " draw prompt
+    echon '> ' . s:input_so_far . '_'
 
-	setlocal nomodifiable
+    setlocal nomodifiable
 
-	" general pattern for drawing a prompt
-	" 1. draw your actaul content
-	" 2. set setatusline
-	" 3. map all valid keys to a custom handliner including a-zA-Z0-9
-	" 4. echoh out a prompt + saved previous input
-	" 5. in that handler add your new input and
-	" 6. redraw everything
+    " general pattern for drawing a prompt
+    " 1. draw your actaul content
+    " 2. set setatusline
+    " 3. map all valid keys to a custom handliner including a-zA-Z0-9
+    " 4. echoh out a prompt + saved previous input
+    " 5. in that handler add your new input and
+    " 6. redraw everything
 
 endfunction
 
