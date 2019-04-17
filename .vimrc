@@ -258,8 +258,7 @@ function! LightLineFilename()
 	return expand('%')
 endfunction
 
-" TODO: this gets added to the statusline on each vimrc reload. figure out
-" how to clear it then add these blocks
+set statusline=
 set statusline+=%#warningmsg#
 set statusline+=%*
 
