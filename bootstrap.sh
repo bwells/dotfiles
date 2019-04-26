@@ -22,8 +22,7 @@ ln -s ~/dotfiles/fish ~/.config/fish
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install fish zsh tmux vim macvim git go mysql nmap node \
-	     sqlite python python3 fzf ripgrep the_silver_searcher
+brew install fish zsh tmux vim neovim git go mysql@5.7 nmap node sqlite python@2 python fzf ripgrep curl ccrypt
 
 brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
@@ -76,3 +75,5 @@ ln -s ~/workspace/go/src/github.com ~/workspace/bwells
 
 # install menlo for powerline font
 # setup Terminal.app and iTerm2 to use that font
+
+# install docker
