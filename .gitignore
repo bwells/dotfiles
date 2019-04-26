@@ -12,3 +12,4 @@ fishd.*
 tags
 tags.lock
 tags.temp
+.pytest_cache
