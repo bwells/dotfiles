@@ -324,6 +324,7 @@ endif
 " switch to a different panel if running fzf from within nerdtree
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 nnoremap <Leader>b :Buffers<cr>
+nnoremap <Leader>t :Tags<cr>
 
 " jump to existing buffers rather than open a new one
 let g:fzf_buffers_jump = 1
@@ -807,7 +808,7 @@ endfunction
 
 command! SwapTest call SwapTest()
 
-nnoremap <silent> <leader>t :SwapTest<cr>
+" nnoremap <silent> <leader>t :SwapTest<cr>
 
 function! SetupBuffer()
     syn match WinNormal /  .*/
