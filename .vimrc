@@ -651,6 +651,11 @@ nnoremap <silent>gtd :lgetexpr system('rg --vimgrep -g "\!*/model/*" -g "\!*/uti
 nnoremap <silent><leader>md :%!pandoc -r markdown -w markdown<cr>
 nnoremap <silent><leader>gfm :%!pandoc -r markdown -w gfm<cr>
 
+" d= to delete from here to the end of whitespace after a '=' character
+" intended for removing the assignemnt before an expression
+nnoremap d= df=dw
+nnoremap c= df=cw
+
 
 """""""""""""
 " OTHER STUFF
