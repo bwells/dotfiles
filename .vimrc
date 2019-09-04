@@ -308,6 +308,18 @@ endif
 
 " <left> leaves the cursor position in between the quotes
 nnoremap <Leader>/ :Ack!<space>-F<space>""<left>
+" xnoremap <leader>/ y:Ack -F "<c-r>""
+xnoremap <leader>/ :<c-u>Ack -F "<c-r>=<SID>GetVisualSelection()<cr>"
+
+function! s:GetVisualSelection()
+  try
+    let a_save = @a
+    normal! gv"ay
+    return @a
+  finally
+    let @a = a_save
+  endtry
+endfunction
 
 """ vim-sort-motion
 let g:sort_motion_flags = "ui"
