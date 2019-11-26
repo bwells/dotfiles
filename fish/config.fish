@@ -10,6 +10,8 @@ alias vim nvim
 
 alias dbimport="~/workspace/ERP/erp/scripts/dbimport.py"
 
+alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.write(zlib.decompress(sys.stdin.buffer.read()))'"
+
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
@@ -21,6 +23,8 @@ set -gx EDITOR nvim
 # setup gopath
 set -gx GOPATH ~/workspace/go
 set -gx PATH $GOPATH/bin $PATH
+
+set -gx PATH /Library/Frameworks/Python.framework/Versions/2.7/bin /Library/Frameworks/Python.framework/Versions/3.8/bin $PATH
 
 # add brew sbin to path
 set -gx PATH $PATH /usr/local/sbin
