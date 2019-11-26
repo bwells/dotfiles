@@ -22,7 +22,7 @@ ln -s ~/dotfiles/fish ~/.config/fish
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install fish zsh tmux vim neovim git go mysql@5.7 nmap node sqlite python@2 python fzf ripgrep curl ccrypt
+brew install fish zsh tmux vim neovim git go mysql@5.7 nmap node sqlite fzf ripgrep curl ccrypt kubernetes-cli kops
 
 brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
@@ -31,7 +31,7 @@ brew install --HEAD universal-ctags
 
 # setup cask
 brew tap caskroom/cask
-brew tap caskroom/fonts
+brew tap homebrew/cask-fonts
 
 # install apps
 brew cask install adium
