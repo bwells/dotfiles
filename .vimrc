@@ -333,6 +333,18 @@ endif
 
 " <left> leaves the cursor position in between the quotes
 nnoremap <Leader>/ :Ack!<space>-F<space>""<left>
+" xnoremap <leader>/ y:Ack -F "<c-r>""
+xnoremap <leader>/ :<c-u>Ack -F "<c-r>=<SID>GetVisualSelection()<cr>"
+
+function! s:GetVisualSelection()
+  try
+    let a_save = @a
+    normal! gv"ay
+    return @a
+  finally
+    let @a = a_save
+  endtry
+endfunction
 
 """ vim-sort-motion
 let g:sort_motion_flags = "ui"
@@ -349,6 +361,7 @@ endif
 " switch to a different panel if running fzf from within nerdtree
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 nnoremap <Leader>b :Buffers<cr>
+nnoremap <Leader>t :Tags<cr>
 
 " jump to existing buffers rather than open a new one
 let g:fzf_buffers_jump = 1
@@ -690,6 +703,11 @@ nnoremap <buffer> <leader>ad :ArduinoUploadAndSerial<CR>
 nnoremap <buffer> <leader>ab :ArduinoChooseBoard<CR>
 nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
 
+" d= to delete from here to the end of whitespace after a '=' character
+" intended for removing the assignemnt before an expression
+nnoremap d= df=dw
+nnoremap c= df=cw
+
 
 """""""""""""
 " OTHER STUFF
@@ -841,7 +859,7 @@ endfunction
 
 command! SwapTest call SwapTest()
 
-nnoremap <silent> <leader>t :SwapTest<cr>
+" nnoremap <silent> <leader>t :SwapTest<cr>
 
 function! SetupBuffer()
     syn match WinNormal /  .*/

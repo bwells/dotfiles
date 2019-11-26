@@ -2,7 +2,7 @@
 abbr -a fe vim ~/.config/fish/config.fish
 abbr -a resource source ~/.config/fish/config.fish
 
-alias forget="sudo killall -HUP mDNSResponder; sudo killall mDNSResponderHelper; sudo dscacheutil -flushcach"
+alias forget="sudo killall -HUP mDNSResponder; sudo killall mDNSResponderHelper; sudo dscacheutil -flushcache"
 
 alias vimr="vimr -s"
 
@@ -30,6 +30,12 @@ set -gx PATH /Library/Frameworks/Python.framework/Versions/2.7/bin /Library/Fram
 set -gx PATH $PATH /usr/local/sbin
 
 set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
+
+set -gx PATH $PATH /usr/local/Cellar/icu4c/64.2/bin
+
+set -gx PATH /Library/Frameworks/Python.framework/Versions/2.7/bin /Library/Frameworks/Python.framework/Versions/3.7/bin $PATH
+
+
 
 # add mvim install location to path
 # set -gx PATH $PATH /Applications/MacVim.app/Contents/bin

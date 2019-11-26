@@ -22,7 +22,7 @@ ln -s ~/dotfiles/fish ~/.config/fish
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install fish zsh tmux vim neovim git mercurial go mysql nmap node sqlite fzf ripgrep
+brew install ccrypt curl fish fzf git go mercurial kops kubernetes-cli mysql@5.7 neovim nmap node ripgrep sqlite tmux vim zsh
 
 brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
@@ -31,7 +31,7 @@ brew install --HEAD universal-ctags
 
 # setup cask
 brew tap caskroom/cask
-brew tap caskroom/fonts
+brew tap homebrew/cask-fonts
 
 # install apps
 brew cask install adium
@@ -75,3 +75,5 @@ ln -s ~/workspace/go/src/github.com ~/workspace/bwells
 
 # install menlo for powerline font
 # setup Terminal.app and iTerm2 to use that font
+
+# install docker
