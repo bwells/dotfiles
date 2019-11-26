@@ -13,8 +13,14 @@ Plug 'tpope/vim-sensible'
 " git integration. seems to have the most mindshare
 Plug 'tpope/vim-fugitive'
 
+" disabled for now for performance reasons
+" Plug 'jreybert/vimagit'
+
 " github support for fugative
 Plug 'tpope/vim-rhubarb'
+
+" git branch viewer
+" Plug 'rbong/vim-flog'
 
 " sneek - simpler alternative to easymotion
 " or a better f
@@ -108,7 +114,14 @@ Plug 'tomasr/molokai'
 
 Plug 'TroyFletcher/vim-colors-synthwave'
 
-" Async lint runner
+" Plug 'jaredgorski/SpaceCamp'
+
+" Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+
+" required before ale is loaded
+" let g:ale_completion_enabled = 1
+
+" Async lint runner and LSP client
 Plug 'w0rp/ale'
 
 " adds gS and gJ to syntactically aware split/join constructs
@@ -148,6 +161,12 @@ Plug 'wincent/terminus'
 
 " integrated test running
 Plug 'janko-m/vim-test'
+
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'ryanolsonx/vim-lsp-python'
+
+Plug 'stevearc/vim-arduino'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -283,6 +302,12 @@ let g:ale_linters = {
 \   'python': ['pylint'],
 \   'javascript': ['eslint'],
 \}
+
+" let g:ale_fixers = {
+" \   'python': ['black', 'isort']
+" \}
+
+" let g:ale_fix_on_save = 1
 
 let g:ale_python_pylint_options = '--rcfile ~/.pylintrc'
 let g:ale_python_pylint_use_global = 0
@@ -471,6 +496,8 @@ if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
 
+" set completeopt=menuone,noinsert,noselect
+
 """""""
 " MAPS
 """""""
@@ -650,6 +677,18 @@ nnoremap <silent>gtd :lgetexpr system('rg --vimgrep -g "\!*/model/*" -g "\!*/uti
 " augroup END
 nnoremap <silent><leader>md :%!pandoc -r markdown -w markdown<cr>
 nnoremap <silent><leader>gfm :%!pandoc -r markdown -w gfm<cr>
+
+" run the most recent macro
+nnoremap Q @@
+
+nnoremap <leader>e :exe getline(line('.'))<cr>
+
+" Arduino development
+nnoremap <buffer> <leader>am :ArduinoVerify<CR>
+nnoremap <buffer> <leader>au :ArduinoUpload<CR>
+nnoremap <buffer> <leader>ad :ArduinoUploadAndSerial<CR>
+nnoremap <buffer> <leader>ab :ArduinoChooseBoard<CR>
+nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
 
 
 """""""""""""
