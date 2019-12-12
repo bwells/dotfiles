@@ -1,6 +1,8 @@
 function fish_right_prompt
   function _k8s_context
-    echo (kubectl config current-context)
+	  if type -q kubectl
+      kubectl config current-context
+    end
   end
 
   set -l grey (set_color -o grey)
