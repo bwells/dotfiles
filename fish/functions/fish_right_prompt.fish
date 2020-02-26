@@ -1,6 +1,6 @@
 function fish_right_prompt
   function _k8s_context
-	  if type -q kubectl
+    if type -q kubectl
       kubectl config current-context
     end
   end
