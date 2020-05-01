@@ -708,6 +708,7 @@ nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
 nnoremap d= df=dw
 nnoremap c= df=cw
 
+nnoremap GR :Ack! -F "<c-r><c-w>"<CR>
 
 """""""""""""
 " OTHER STUFF
