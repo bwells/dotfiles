@@ -24,7 +24,7 @@ set -gx EDITOR nvim
 set -gx GOPATH ~/workspace/go
 set -gx PATH $GOPATH/bin $PATH
 
-set -gx PATH /Library/Frameworks/Python.framework/Versions/2.7/bin /Library/Frameworks/Python.framework/Versions/3.8/bin $PATH
+set -gx PATH /usr/local/opt/python@3.8/bin $PATH
 
 # add brew sbin to path
 set -gx PATH $PATH /usr/local/sbin
@@ -32,9 +32,6 @@ set -gx PATH $PATH /usr/local/sbin
 set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
 
 set -gx PATH $PATH /usr/local/Cellar/icu4c/64.2/bin
-
-set -gx PATH /Library/Frameworks/Python.framework/Versions/2.7/bin /Library/Frameworks/Python.framework/Versions/3.7/bin $PATH
-
 
 
 # add mvim install location to path
