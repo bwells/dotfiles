@@ -708,6 +708,7 @@ nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
 nnoremap d= df=dw
 nnoremap c= df=cw
 
+" grep project for word under cursor
 nnoremap GR :Ack! -F "<c-r><c-w>"<CR>
 
 """""""""""""
