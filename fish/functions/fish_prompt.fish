@@ -1,73 +1,63 @@
+# Options
+# set __fish_git_prompt_show_informative_status
+set __fish_git_prompt_showcolorhints
+set __fish_git_prompt_showdirtystate
+set __fish_git_prompt_showstashstate
+set __fish_git_prompt_showupstream "auto"
+
+# Colors
+set normal (set_color normal)
+set green (set_color green)
+set magenta (set_color magenta)
+set red (set_color red)
+set yellow (set_color yellow)
+set cyan (set_color cyan)
+set blue (set_color blue)
+
+set __fish_git_prompt_color_branch red --bold
+set __fish_git_prompt_color_merging yellow
+
+set __fish_git_prompt_char_stateseparator '|'
+
+set __fish_git_prompt_color_cleanstate green
+set __fish_git_prompt_char_cleanstate '✔'
+
+# set __fish_git_prompt_char_untrackedfiles '🔍'
+#
+set __fish_git_prompt_color_upstream_ahead green
+set __fish_git_prompt_char_upstream_ahead '☝️ '
+
+set __fish_git_prompt_color_upstream_behind red
+set __fish_git_prompt_char_upstream_behind '👇'
+set __fish_git_prompt_char_upstream_diverged '🚧'
+set __fish_git_prompt_char_upstream_equal '💯'
+
+# set __fish_git_prompt_char_conflictedstate '✖'
+set __fish_git_prompt_char_conflictedstate '🖕'
+
+set __fish_git_prompt_color_dirtystate green
+# set __fish_git_prompt_char_dirtystate '✚'
+set __fish_git_prompt_char_dirtystate '✍️ '
+
+set __fish_git_prompt_color_invalidstate red
+# set __fish_git_prompt_char_invalidstate '✖'
+set __fish_git_prompt_char_invalidstate '👎'
+
+set __fish_git_prompt_color_stagedstate yellow
+set __fish_git_prompt_char_stagedstate '●'
+
+set __fish_git_prompt_char_stashstate '📦'
+
+# 🤘 🖕 👌 🖖
+
+set fish_color_cwd cyan
+
 function fish_prompt
-	if not set -q -g __fish_robbyrussell_functions_defined
-    set -g __fish_robbyrussell_functions_defined
-    function _git_branch_name
-      echo (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
-    end
+  set last_status $status
 
-    function _is_git_dirty
-      echo (git status -s --ignore-submodules=dirty ^/dev/null)
-    end
+  set_color $fish_color_cwd
+  printf '%s' (basename (prompt_pwd))
+  set_color normal
 
-    function _is_git_repo
-      git status -s >/dev/null ^/dev/null
-    end
-
-    # function _hg_branch_name
-    #   echo (hg branch ^/dev/null)
-    # end
-
-    # function _is_hg_dirty
-    #   echo (hg status -mard ^/dev/null)
-    # end
-
-    # function _is_hg_repo
-    #   hg summary >/dev/null ^/dev/null
-    # end
-
-    function _repo_branch_name
-      eval "_$argv[1]_branch_name"
-    end
-
-    function _is_repo_dirty
-      eval "_is_$argv[1]_dirty"
-    end
-
-    function _repo_type
-      # if _is_hg_repo
-      #   echo 'hg'
-      # else if _is_git_repo
-      #   echo 'git'
-      # end
-      if _is_git_repo
-        echo 'git'
-      end
-    end
-  end
-
-  set -l cyan (set_color -o cyan)
-  set -l yellow (set_color -o yellow)
-  set -l red (set_color -o red)
-  set -l blue (set_color -o blue)
-  set -l normal (set_color normal)
-
-  set -l arrow "$red➜ "
-  if [ $USER = 'root' ]
-    set arrow "$red# "
-  end
-
-  set -l cwd $cyan(basename (prompt_pwd))
-
-  set -l repo_type (_repo_type)
-  if [ $repo_type ]
-   set -l repo_branch $red(_repo_branch_name $repo_type)
-    set repo_info "$blue $repo_type:($repo_branch$blue)"
-
-    if [ (_is_repo_dirty $repo_type) ]
-      set -l dirty "$yellow ✗"
-      set repo_info "$repo_info$dirty"
-    end
-  end
-
-  echo -n -s $arrow ' '$cwd $repo_info $normal ' '
+  printf '%s' (__fish_git_prompt)
 end

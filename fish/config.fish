@@ -15,9 +15,6 @@ alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.wr
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-# set docker host
-# set -x DOCKER_HOST localhost:2375
-
 set -gx EDITOR nvim
 
 # setup gopath
@@ -32,10 +29,6 @@ set -gx PATH $PATH /usr/local/sbin
 set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
 
 set -gx PATH $PATH /usr/local/Cellar/icu4c/64.2/bin
-
-
-# add mvim install location to path
-# set -gx PATH $PATH /Applications/MacVim.app/Contents/bin
 
 # set fzf default intput ag becuase ag respects ignored file settings
 # set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
