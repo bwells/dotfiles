@@ -168,6 +168,8 @@ Plug 'janko-m/vim-test'
 
 Plug 'stevearc/vim-arduino'
 
+Plug 'romainl/vim-qf'
+
 " Add plugins to &runtimepath
 call plug#end()
 
