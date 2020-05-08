@@ -59,5 +59,5 @@ function fish_prompt
   printf '%s' (basename (prompt_pwd))
   set_color normal
 
-  printf '%s' (__fish_git_prompt)
+  printf '%s ' (__fish_git_prompt)
 end
