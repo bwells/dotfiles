@@ -28,7 +28,7 @@ set -gx PATH $PATH /usr/local/sbin
 
 set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
 
-set -gx PATH $PATH /usr/local/Cellar/icu4c/64.2/bin
+set -gx PATH $PATH /usr/local/opt/icu4c/bin /usr/local/opt/icu4c/sbin
 
 # set fzf default intput ag becuase ag respects ignored file settings
 # set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
