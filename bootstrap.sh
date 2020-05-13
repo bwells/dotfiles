@@ -12,7 +12,7 @@ ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # brew install basic packages
-brew install ccrypt curl fish fzf git go mercurial kops kubernetes-cli mysql@5.7 neovim nmap node ripgrep sqlite tmux vim zsh python@3.8
+brew install ccrypt curl fish fzf git go mercurial kops kubernetes-cli mysql@5.7 neovim nmap node ripgrep sqlite tmux vim zsh python@3.8 stern
 
 # change default shell to fish
 sudo chsh -s /usr/local/bin/fish kremlan
