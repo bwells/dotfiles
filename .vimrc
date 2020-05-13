@@ -168,7 +168,11 @@ Plug 'janko-m/vim-test'
 
 Plug 'stevearc/vim-arduino'
 
+" quickfix list helpers
 Plug 'romainl/vim-qf'
+
+" base64 encoding
+Plug 'christianrondeau/vim-base64'
 
 " Add plugins to &runtimepath
 call plug#end()
