@@ -1,7 +1,10 @@
 function fish_right_prompt
   function _k8s_context
     if type -q kubectl
-      kubectl config current-context
+      set context (kubectl config current-context 2>&1)
+      if test $status -eq 0
+        echo $context
+      end
     end
   end
 
