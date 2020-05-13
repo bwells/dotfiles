@@ -711,6 +711,9 @@ nnoremap c= df=cw
 " grep project for word under cursor
 nnoremap GR :Ack! -F "<c-r><c-w>"<CR>
 
+" relies on python module sqlformat
+vnoremap <leader>q :'<'>!sqlformat --reindent --keywords upper --identifiers lower - <CR>
+
 """""""""""""
 " OTHER STUFF
 """""""""""""
