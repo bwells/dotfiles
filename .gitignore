@@ -9,6 +9,7 @@ __pycache__
 fish_history
 fish_read_history
 fish/fish_variables
+fish/conf.d/
 fishd.*
 tags
 tags.lock
