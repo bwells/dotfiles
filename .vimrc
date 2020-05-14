@@ -539,6 +539,7 @@ hi String guifg=#dd00ff guibg=#181615 guisp=#000000 gui=NONE ctermfg=165 ctermbg
 hi Comment guifg=#9c38bd guibg=#181615 guisp=NONE gui=italic ctermfg=5 ctermbg=0 cterm=NONE
 hi Exception guifg=#bd0065 guibg=#181615 guisp=#000000 gui=bold ctermfg=5 ctermbg=NONE cterm=bold
 hi Normal guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
+hi SignColumn guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
 
 " disable fucking folding
 augroup fuck_folding
