@@ -305,7 +305,7 @@ let g:wordmotion_mappings = { 'b': '<M-b>' }
 
 """ ale
 let g:ale_linters = {
-\   'python': ['pyflakes', 'flake8'],
+\   'python': ['flake8', 'pylint'],
 \   'javascript': ['eslint'],
 \}
 
@@ -870,10 +870,6 @@ if env_base_dir:
     # setup an explicit pylint executable location
     pylint_path = os.path.join(bin_path, 'pylint')
     cmd = "let g:ale_python_pylint_executable='{}'".format(pylint_path)
-    vim.command(cmd)
-
-    pyflakes_path = os.path.join(bin_path, 'pyflakes')
-    cmd = "let g:ale_python_pyflakes_executable='{}'".format(pyflakes_path)
     vim.command(cmd)
 
     flake8_path = os.path.join(bin_path, 'flake8')
