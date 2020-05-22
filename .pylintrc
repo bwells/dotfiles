@@ -89,7 +89,23 @@ disable=
 	# identifier to fit our code style. eg: "log" at the module level
 	# is an invalid constant identifier.
 	# invalid-name
-	protected-access
+	protected-access,
+
+        # sqlalchemy syntax like filter(m.Sale.voided_at!=None) can't
+        # use singleton comparison syntax filter(m.Sale.voided_at is not None)
+        # so this warning creates 99% false positives for us
+	singleton-comparison,
+
+        # sqlalchemy syntax like filter(m.Account.name=='Bananas Inc.')
+        # is normalized to avoid spaces the comparisons. pylint can only count
+        # this syntax in the entire bad-whitespace bucket resulting in too
+        # many false positives. Flake8 is more fine grained so we'll use that
+        bad-whitespace,
+
+        # pylint can't tell that our json response objects are dicts
+        # and constantly complains that indexing into them is an error
+        invalid-sequence-index
+
 
 [REPORTS]
 
@@ -143,10 +159,10 @@ function-rgx=[a-z_][a-z0-9_]{2,35}$
 function-name-hint=[a-z_][a-z0-9_]{2,35}$
 
 # Regular expression matching correct variable names
-variable-rgx=[a-z_][a-z0-9_]{1,35}$
+variable-rgx=[a-z_][a-z0-9_]{1,45}$
 
 # Naming hint for variable names
-variable-name-hint=[a-z_][a-z0-9_]{1,35}$
+variable-name-hint=[a-z_][a-z0-9_]{1,45}$
 
 # Regular expression matching correct constant names
 const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__)|log)$
