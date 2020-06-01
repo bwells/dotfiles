@@ -152,7 +152,8 @@ Plug 'FooSoft/vim-argwrap'
 " defines a sort motion
 Plug 'christoomey/vim-sort-motion'
 
-Plug 'neoclide/vim-jsx-improve'
+" no longer needed
+" Plug 'neoclide/vim-jsx-improve'
 
 Plug 'machakann/vim-highlightedyank'
 
