@@ -173,6 +173,7 @@ Plug 'stevearc/vim-arduino'
 Plug 'romainl/vim-qf'
 
 " base64 encoding
+" <leader>btoa and <leader>atob in visual
 Plug 'christianrondeau/vim-base64'
 
 " Add plugins to &runtimepath
