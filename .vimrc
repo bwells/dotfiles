@@ -346,7 +346,11 @@ xnoremap <leader>/ :<c-u>Ack -F "<c-r>=<SID>GetVisualSelection()<cr>"
 function! s:GetVisualSelection()
   try
     let a_save = @a
+
+	" select the last visual selection again
+	" and then yank it to register a
     normal! gv"ay
+
     return @a
   finally
     let @a = a_save
