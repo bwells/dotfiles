@@ -17,6 +17,8 @@ set -U CDPATH . ~ ~/workspace
 
 set -gx EDITOR nvim
 
+set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config
+
 # setup gopath
 set -gx GOPATH ~/workspace/go
 set -gx PATH $GOPATH/bin $PATH

@@ -155,7 +155,8 @@ Plug 'FooSoft/vim-argwrap'
 " defines a sort motion
 Plug 'christoomey/vim-sort-motion'
 
-Plug 'neoclide/vim-jsx-improve'
+" no longer needed
+" Plug 'neoclide/vim-jsx-improve'
 
 Plug 'machakann/vim-highlightedyank'
 
@@ -175,6 +176,7 @@ Plug 'stevearc/vim-arduino'
 Plug 'romainl/vim-qf'
 
 " base64 encoding
+" <leader>btoa and <leader>atob in visual
 Plug 'christianrondeau/vim-base64'
 
 " Add plugins to &runtimepath
@@ -348,7 +350,11 @@ xnoremap <leader>/ :<c-u>Ack -F "<c-r>=<SID>GetVisualSelection()<cr>"
 function! s:GetVisualSelection()
   try
     let a_save = @a
+
+	" select the last visual selection again
+	" and then yank it to register a
     normal! gv"ay
+
     return @a
   finally
     let @a = a_save
