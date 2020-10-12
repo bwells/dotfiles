@@ -97,6 +97,9 @@ Plug 'jeetsukumaran/vim-pythonsense'
 " IDE level vim/go integration
 Plug 'fatih/vim-go', { 'for': 'go' }
 
+" Comprehensive Rust plugin
+Plug 'rust-lang/rust.vim'
+
 " fish shell syntax etc
 Plug 'dag/vim-fish', { 'for': 'fish' }
 
@@ -417,6 +420,9 @@ let g:highlightedyank_highlight_duration = 200
 
 " update the highlight to a color that does not obscure the cursor
 " highlight HighlightedyankRegion guibg=#af005f cterm=125
+
+""" vim-qf
+let g:qf_shorten_path = 0
 
 """"""""""""""""
 " IT'S NOT 1970
