@@ -62,20 +62,25 @@ complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
 
 # activate a virtualenv on entry
 # also deactivates on project exit
+#
 # requires project root directory and virtualenv directory have the same name
-# TODO: if no virtualfix is found try busting out of a venv
 function chpwd --on-variable PWD --description "Activate Python virtualenvs on entry"
-	set GIT_TOPLEVEL (git rev-parse --show-toplevel 2> /dev/null)
+    set GIT_TOPLEVEL (git rev-parse --show-toplevel 2> /dev/null)
 
-	# if we are in a git repo
-	if test -n "$GIT_TOPLEVEL"
-		set PROJECT (basename $GIT_TOPLEVEL)
-		if test -d "$VIRTUALFISH_HOME/$PROJECT"
-			vf activate $PROJECT
-		end
-	else
-		if test -n "$VIRTUAL_ENV"
-			vf deactivate
-		end
-	end
+    # if we are in a git repo
+    if test -n "$GIT_TOPLEVEL"
+        set PROJECT (basename $GIT_TOPLEVEL)
+
+        # if a VENV is not active but does exist
+        if test -z "$VIRTUAL_ENV" && test -d "$VIRTUALFISH_HOME/$PROJECT"
+            vf activate $PROJECT
+        # if a VENV is active but it is not the right one and the new one does exist
+        else if [ "$VIRTUAL_ENV" != "$PROJECT" ] && test -d "$VIRTUALFISH_HOME/$PROJECT"
+            vf activate $PROJECT
+        end
+    else
+        if test -n "$VIRTUAL_ENV"
+            vf deactivate
+        end
+    end
 end
