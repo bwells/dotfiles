@@ -22,8 +22,6 @@ alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.wr
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-#set -gx EDITOR nvim
-
 set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config
 
 # setup gopath
@@ -49,9 +47,7 @@ set -gx PATH /opt/homebrew/bin $PATH
 # set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
 # export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
 
-# import virtualfish: https://github.com/adambrenecki/virtualfish
-#eval (python3 -m virtualfish)
-# vf install
+# virtualfish/venv config
 set -gx WORKON_HOME ~/environments
 set -gx VIRTUALFISH_HOME ~/environments
 
