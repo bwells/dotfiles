@@ -5,14 +5,36 @@ ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
 # add to github
 
 # TODO: remap capslock to ctrl
+# update keyboard repeat rate
 
 # install command line tools and/or xcode
 
 # install brew
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # brew install basic packages
-brew install ccrypt curl fish fzf git go mercurial kops kubernetes-cli mysql@5.7 neovim nmap node ripgrep sqlite tmux vim zsh python@3.8 stern
+brew install ccrypt
+             curl
+	     fish
+	     fzf
+	     git
+	     go
+	     mercurial
+	     kops
+	     kubernetes-cli
+	     mysql
+             nmap
+             node
+             ripgrep
+             sqlite
+             tmux
+             vim
+             python
+             stern
+
+brew install --HEAD tree-sitter
+brew install --HEAD luajit
+brew install --HEAD neovim
 
 # change default shell to fish
 sudo chsh -s /usr/local/bin/fish kremlan
@@ -22,7 +44,7 @@ brew install --HEAD universal-ctags
 
 # setup cask
 brew tap homebrew/cask-fonts
-brew cask install font-menlo-for-powerline
+brew install font-menlo-for-powerline
 # set font in Terminal Settings
 
 # install vim-plug and plugins for vim
