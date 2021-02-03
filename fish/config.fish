@@ -6,7 +6,14 @@ alias forget="sudo killall -HUP mDNSResponder; sudo killall mDNSResponderHelper;
 
 alias vimr="vimr -s"
 
-alias vim nvim
+if type -q nvim
+    echo "no nvim"
+    set -gx EDITOR vim
+else
+    echo "has nvim"
+    alias vim nvim
+    set -gx EDITOR nvim
+end
 
 alias dbimport="~/workspace/ERP/erp/scripts/dbimport.py"
 
@@ -15,33 +22,36 @@ alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.wr
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-set -gx EDITOR nvim
+#set -gx EDITOR nvim
 
 set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config
 
 # setup gopath
-set -gx GOPATH ~/workspace/go
-set -gx PATH $GOPATH/bin $PATH
+# set -gx GOPATH ~/workspace/go
+# set -gx PATH $GOPATH/bin $PATH
 
-set -gx PATH /usr/local/opt/openjdk@11/bin $PATH
+# set -gx PATH /usr/local/opt/openjdk@11/bin $PATH
 
-set -gx PATH /usr/local/opt/python@3.8/bin $PATH
+#set -gx PATH /usr/local/opt/python@3.8/bin $PATH
 
 # add brew sbin to path
-set -gx PATH $PATH /usr/local/sbin
+#set -gx PATH $PATH /usr/local/sbin
 
-set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
+#set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
 
-set -gx PATH $PATH /usr/local/opt/icu4c/bin /usr/local/opt/icu4c/sbin
+#set -gx PATH $PATH /usr/local/opt/icu4c/bin /usr/local/opt/icu4c/sbin
 
-set -gx PATH $PATH ~/.cargo/bin
+#set -gx PATH $PATH ~/.cargo/bin
+
+set -gx PATH /opt/homebrew/bin $PATH
 
 # set fzf default intput ag becuase ag respects ignored file settings
 # set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
 # export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
 
 # import virtualfish: https://github.com/adambrenecki/virtualfish
-eval (python -m virtualfish)
+#eval (python3 -m virtualfish)
+# vf install
 set -gx WORKON_HOME ~/environments
 set -gx VIRTUALFISH_HOME ~/environments
 
