@@ -179,12 +179,43 @@ Plug 'romainl/vim-qf'
 " <leader>btoa and <leader>atob in visual
 Plug 'christianrondeau/vim-base64'
 
+if has('nvim-0.5')
+	" Treesitter configs and parsers
+	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+	" LSP configs and servers
+	Plug 'neovim/nvim-lspconfig'
+
+	" Telescope
+	Plug 'nvim-lua/popup.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+
+    " Plug 'zegervdv/nrpattern.nvim'
+endif
+
 " Add plugins to &runtimepath
 call plug#end()
 
 """""""""""""""""""""""
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
+
+if has('nvim-0.5')
+
+" configure treesitter
+"   installs all parsers and enables treesitter for all of those
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+	enable = true, -- false will disable the whole extension
+	disable = {},  -- list of language that will be disabled
+  },
+}
+EOF
+
+endif
 
 """ netrw
 let g:netrw_liststyle = 3
@@ -374,6 +405,15 @@ elseif executable('ag')
 endif
 
 " switch to a different panel if running fzf from within nerdtree
+" if has('nvim-0.5')
+" 	nnoremap <Leader>f <cmd>Telescope find_files<cr>
+" 	nnoremap <Leader>b <cmd>Telescope buffers<cr>
+" 	nnoremap <Leader>t <cmd>Telescope tags<cr>
+" else
+" 	nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
+" 	nnoremap <Leader>b :Buffers<cr>
+" 	nnoremap <Leader>t :Tags<cr>
+" endif
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 nnoremap <Leader>b :Buffers<cr>
 nnoremap <Leader>t :Tags<cr>
