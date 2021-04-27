@@ -110,7 +110,7 @@ Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
 Plug 'sophacles/vim-bundle-mako'
 
 " elm support
-Plug 'ElmCast/elm-vim'
+Plug 'Zaptic/elm-vim'
 
 " color scheme
 Plug 'tomasr/molokai'
