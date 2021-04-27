@@ -113,7 +113,7 @@ Plug 'sophacles/vim-bundle-mako'
 Plug 'Zaptic/elm-vim'
 
 " color scheme
-Plug 'tomasr/molokai'
+" Plug 'tomasr/molokai'
 
 Plug 'TroyFletcher/vim-colors-synthwave'
 
