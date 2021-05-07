@@ -375,13 +375,18 @@ endif
 
 function! GetFileType()
 	" map vim filetype values to those accepted by rg's -t option
-	let l:type_remaps = {'python': 'py'}
+	let l:type_remaps = {
+		\ 'mako': 'html',
+		\ 'python': 'py',
+		\}
+
+	" fetch filetype overrides, defaulting to vim's filetype value
 	return get(l:type_remaps, &filetype, &filetype)
 endfunction
 
 " <left> leaves the cursor position in between the quotes
 nnoremap <leader>/ :Ack!<space>-F<space>""<left>
-nnoremap <expr> <leader>l ':Ack! -F -t' . GetFileType() . ' ""<left>'
+nnoremap <expr> <leader>l ':Ack! -F -t ' . GetFileType() . ' ""<left>'
 
 " xnoremap <leader>/ y:Ack -F "<c-r>""
 xnoremap <leader>/ :<c-u>Ack -F "<c-r>=<SID>GetVisualSelection()<cr>"
