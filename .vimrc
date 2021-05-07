@@ -373,8 +373,16 @@ elseif executable('ag')
     let g:ackprg = 'ag --vimgrep'
 endif
 
+function! GetFileType()
+	" map vim filetype values to those accepted by rg's -t option
+	let l:type_remaps = {'python': 'py'}
+	return get(l:type_remaps, &filetype, &filetype)
+endfunction
+
 " <left> leaves the cursor position in between the quotes
-nnoremap <Leader>/ :Ack!<space>-F<space>""<left>
+nnoremap <leader>/ :Ack!<space>-F<space>""<left>
+nnoremap <expr> <leader>l ':Ack! -F -t' . GetFileType() . ' ""<left>'
+
 " xnoremap <leader>/ y:Ack -F "<c-r>""
 xnoremap <leader>/ :<c-u>Ack -F "<c-r>=<SID>GetVisualSelection()<cr>"
 
