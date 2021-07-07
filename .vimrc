@@ -10,6 +10,9 @@ call plug#begin()
 " basic setup for all vim
 Plug 'tpope/vim-sensible'
 
+" extend the power of . to more complex objects
+Plug 'tpope/vim-repeat'
+
 " git integration. seems to have the most mindshare
 Plug 'tpope/vim-fugitive'
 
@@ -24,13 +27,15 @@ Plug 'tpope/vim-rhubarb'
 
 " sneek - simpler alternative to easymotion
 " or a better f
-Plug 'justinmk/vim-sneak'
+" Plug 'justinmk/vim-sneak'
+Plug 'ggandor/lightspeed.nvim'
 
 " sanity to copy/paste
 Plug 'svermeulen/vim-easyclip'
 
 " git gutter. []c to navigate change hunks
 " <leader>hs to stage hunk
+" Consider mhinz/vim-signify as a future better maintained alternative
 Plug 'airblade/vim-gitgutter'
 
 " gcc to toggle comment current line
@@ -50,9 +55,6 @@ Plug 'andymass/vim-matchup'
 
 " motions/text objects for surrounding selections with chars
 Plug 'tpope/vim-surround'
-
-" extend the power of . to more complex objects
-Plug 'tpope/vim-repeat'
 
 " plugin management QOL from tpope
 " zS to show active syntax highlight group
@@ -76,6 +78,8 @@ Plug 'moll/vim-bbye'
 
 " gave in and using nerdtree rather than netrw
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" consider this as a replacement for NERDTree
+" Plug 'kyazdani42/nvim-tree.lua'
 
 " add motions for word hunks in camel or underscore case
 Plug 'chaoren/vim-wordmotion'
@@ -115,11 +119,16 @@ Plug 'Zaptic/elm-vim'
 " color scheme
 " Plug 'tomasr/molokai'
 
-Plug 'TroyFletcher/vim-colors-synthwave'
+" Plug 'TroyFletcher/vim-colors-synthwave'
+
+" Plug 'shaunsingh/moonlight.nvim'
+Plug 'marko-cerovac/material.nvim'
+
+Plug 'rafamadriz/neon'
+
+Plug 'ful1e5/onedark.nvim'
 
 " Plug 'jaredgorski/SpaceCamp'
-
-" Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " required before ale is loaded
 " let g:ale_completion_enabled = 1
@@ -146,9 +155,6 @@ Plug 'hynek/vim-python-pep8-indent'
 " Plug 'bwells/vim-named-sessions'
 
 " Plug 'bwells/simplysublime'
-
-" punish yourself for repeating hjkl too much
-" Plug 'takac/vim-hardtime'
 
 Plug 'FooSoft/vim-argwrap'
 
@@ -185,11 +191,17 @@ if has('nvim-0.5')
 
 	" LSP configs and servers
 	Plug 'neovim/nvim-lspconfig'
+    Plug 'kabouzeid/nvim-lspinstall'
 
 	" Telescope
 	Plug 'nvim-lua/popup.nvim'
 	Plug 'nvim-lua/plenary.nvim'
 	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+	Plug 'nvim-telescope/telescope-fzy-native.nvim'
+    Plug 'kyazdani42/nvim-web-devicons'
+
+	Plug'camspiers/snap'
 
     " Plug 'zegervdv/nrpattern.nvim'
 endif
@@ -206,6 +218,11 @@ if has('nvim-0.5')
 " configure treesitter
 "   installs all parsers and enables treesitter for all of those
 lua <<EOF
+
+--
+-- TreeSitter
+--
+
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
@@ -213,7 +230,128 @@ require'nvim-treesitter.configs'.setup {
 	disable = {},  -- list of language that will be disabled
   },
 }
+
+--
+-- LSP
+--
+
+local nvim_lsp = require('lspconfig')
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[e', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']e', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  -- if client.resolved_capabilities.document_formatting then
+  --   buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  -- end
+  -- if client.resolved_capabilities.document_range_formatting then
+  --   buf_set_keymap("v", "<leader>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  -- end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
+end
+
+-- Use a loop to conveniently both setup defined servers
+-- and map buffer local keybindings when the language server attaches
+local servers = { "elmls" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup { on_attach = on_attach }
+end
+
+--
+-- Telescope
+--
+
+local actions = require('telescope.actions')
+require('telescope').setup{
+  defaults = {
+    -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+      },
+      n = { },
+    },
+  },
+  extensions = {
+    fzf = {
+      override_generic_sorter = false, -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+    }
+  }
+}
+
+require('telescope').load_extension('fzf')
+-- require('telescope').load_extension('fzy_native')
+
+---
+--- Lightspeed
+---
+
+-- restore ; and , functionality for repeating jumps after FfTt
+function repeat_ft(reverse)
+  local ls = require'lightspeed'
+  ls.ft['instant-repeat?'] = true
+  ls.ft:to(reverse, ls.ft['prev-t-like?'])
+end
+vim.api.nvim_set_keymap('n', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('x', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
+
 EOF
+
+
+" nnoremap gD <Cmd>lua vim.lsp.buf.declaration()<CR>
+" nnoremap gd <Cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap K <Cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap gi <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <leader>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
+" nnoremap <leader>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
+" nnoremap <leader>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
+" nnoremap <leader>D <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
+" nnoremap <leader>ca <cmd>lua vim.lsp.buf.code_action()<CR>
+" nnoremap gr <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <leader>e <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+" nnoremap [e <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+" nnoremap ]e <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+" nnoremap <leader>q <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 
 endif
 
@@ -223,18 +361,7 @@ let g:netrw_altv = 1
 
 """ molokai
 " instruct the molokai colorscheme to use the new fancy version
-let g:rehash256=1
-
-""" vim-hardtime
-" let g:hardtime_default_on = 1
-" let g:list_of_normal_keys = ["h", "j", "k", "l"]
-" let g:list_of_visual_keys = ["h", "j", "k", "l"]
-" let g:list_of_insert_keys = []
-" let g:list_of_disabled_keys = []
-" let g:hardtime_timeout = 1000
-" let g:hardtime_maxcount = 8
-" let g:hardtime_ignore_buffer_patterns = ["NERD.*", ".*Location List.*"]
-" let g:hardtime_ignore_quickfix = 1
+" let g:rehash256=1
 
 " TODO: idea: add command for jumping up or down when you meant the opposite
 " -> 10j, shit i meant to 10k. rather than have to hit 20k, hit K and it
@@ -343,6 +470,7 @@ let g:wordmotion_mappings = { 'b': '<M-b>' }
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint'],
 \   'javascript': ['eslint'],
+\   'elm': []
 \}
 
 " let g:ale_fixers = {
@@ -376,6 +504,7 @@ endif
 function! GetFileType()
 	" map vim filetype values to those accepted by rg's -t option
 	let l:type_remaps = {
+        \ 'javascript': 'js',
 		\ 'mako': 'html',
 		\ 'python': 'py',
 		\}
@@ -418,18 +547,44 @@ elseif executable('ag')
 endif
 
 " switch to a different panel if running fzf from within nerdtree
-" if has('nvim-0.5')
-" 	nnoremap <Leader>f <cmd>Telescope find_files<cr>
-" 	nnoremap <Leader>b <cmd>Telescope buffers<cr>
-" 	nnoremap <Leader>t <cmd>Telescope tags<cr>
-" else
-" 	nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
-" 	nnoremap <Leader>b :Buffers<cr>
-" 	nnoremap <Leader>t :Tags<cr>
-" endif
-nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
-nnoremap <Leader>b :Buffers<cr>
-nnoremap <Leader>t :Tags<cr>
+if has('nvim-0.5')
+	nnoremap <Leader>pp :lua require'telescope.builtin'.planets{}<cr>
+
+	" builtin.file_browser
+	" builtin.grep_string
+	" builtin.live_grep
+
+	nnoremap <leader>fb <cmd>Telescope file_browser<cr>
+	nnoremap <leader>gs <cmd>Telescope grep_string<cr>
+	nnoremap <leader>lg <cmd>Telescope live_grep<cr>
+
+	nnoremap <leader>ts <cmd>Telescope treesitter<cr>
+
+	nnoremap <Leader>f <cmd>Telescope find_files<cr>
+	nnoremap <Leader>b <cmd>Telescope buffers<cr>
+	nnoremap <Leader>t <cmd>Telescope tags<cr>
+
+" lua <<EOF
+" local snap = require'snap'
+" snap.register.map({"n"}, {"<Leader>f"}, function ()
+" 	snap.run {
+" 		producer = snap.get'consumer.fzf'(snap.get'producer.ripgrep.file'),
+" 		select = snap.get'select.file'.select,
+" 		multiselect = snap.get'select.file'.multiselect,
+" 		views = {snap.get'preview.file'},
+" 		layout = snap.get('snap.layouts.bottom')
+" 	}
+" end)
+" EOF
+
+else
+	nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
+	nnoremap <Leader>b :Buffers<cr>
+	nnoremap <Leader>t :Tags<cr>
+endif
+" nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
+" nnoremap <Leader>b :Buffers<cr>
+" nnoremap <Leader>t :Tags<cr>
 
 " jump to existing buffers rather than open a new one
 let g:fzf_buffers_jump = 1
@@ -504,6 +659,9 @@ endif
 """""""""""""""""""""""""
 " BASE VIM CONFIGURATION
 """""""""""""""""""""""""
+if (has('termguicolors'))
+  set termguicolors
+endif
 
 if has('nvim')
     " ctrl-h == backspace in basic shell.
@@ -590,21 +748,42 @@ set clipboard^=unnamed
 " enable syntax highlighting
 syntax enable
 
-" colors molokai
-" update the matched search background to a color that does not obscure the cursor
-" highlight Search guibg=#af005f ctermbg=125
+" colors synthwave
+" hi ColorColumn guifg=NONE guibg=#536991 guisp=NONE ctermfg=NONE ctermbg=60 cterm=NONE
+" hi Function guifg=#ff00bb guibg=NONE guisp=NONE gui=NONE ctermfg=199 ctermbg=NONE cterm=bold
+" hi String guifg=#dd00ff guibg=#181615 guisp=#000000 gui=NONE ctermfg=165 ctermbg=NONE cterm=NONE
+" hi Comment guifg=#9c38bd guibg=#181615 guisp=NONE gui=italic ctermfg=5 ctermbg=0 cterm=NONE
+" hi Exception guifg=#bd0065 guibg=#181615 guisp=#000000 gui=bold ctermfg=5 ctermbg=NONE cterm=bold
+" hi Normal guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
+" hi SignColumn guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
 
-colors synthwave
 " hi ColorColumn guifg=NONE guibg=#db93c8 guisp=#db93c8 ctermfg=235 ctermbg=248 cterm=NONE
 " hi ColorColumn guifg=NONE guibg=#6cddf1 guisp=#db93c8 ctermfg=235 ctermbg=248 cterm=NONE
 " hi ColorColumn guifg=NONE guibg=#bd0065 guisp=NONE ctermfg=NONE ctermbg=248 cterm=NONE
-hi ColorColumn guifg=NONE guibg=#536991 guisp=NONE ctermfg=NONE ctermbg=60 cterm=NONE
-hi Function guifg=#ff00bb guibg=NONE guisp=NONE gui=NONE ctermfg=199 ctermbg=NONE cterm=bold
-hi String guifg=#dd00ff guibg=#181615 guisp=#000000 gui=NONE ctermfg=165 ctermbg=NONE cterm=NONE
-hi Comment guifg=#9c38bd guibg=#181615 guisp=NONE gui=italic ctermfg=5 ctermbg=0 cterm=NONE
-hi Exception guifg=#bd0065 guibg=#181615 guisp=#000000 gui=bold ctermfg=5 ctermbg=NONE cterm=bold
-hi Normal guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
-hi SignColumn guifg=#f9fcfc guibg=#181615 guisp=#181615 gui=NONE ctermfg=15 ctermbg=234 cterm=NONE
+
+lua <<EOF
+vim.g.material_style = 'palenight'
+vim.g.material_terminal_italics = false
+vim.g.material_italic_comments = false
+vim.g.material_italic_keywords = false
+vim.g.material_italic_functions = false
+vim.g.material_italic_variables = false
+EOF
+" colorscheme material
+
+lua <<EOF
+vim.g.neon_style = "doom"
+vim.g.neon_italic_comment = false
+vim.g.neon_italic_keyword = false
+vim.g.neon_italic_boolean = false
+vim.g.neon_italic_function = false
+vim.g.neon_italic_variable = false
+EOF
+
+colorscheme neon
+
+let s:mycolors = ['material', 'neon', 'onedark']
+nnoremap <leader>c :call NextColor(1)<CR>
 
 " disable fucking folding
 augroup fuck_folding
@@ -618,6 +797,8 @@ if executable('rg')
 endif
 
 " set completeopt=menuone,noinsert,noselect
+
+set timeoutlen=500
 
 """""""
 " MAPS
@@ -859,6 +1040,7 @@ augroup filetypes
     autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
     autocmd FileType dosini set commentstring=#%s
+	autocmd Filetype elm set tabstop=4 shiftwidth=4 expandtab
     autocmd Filetype gitcommit setlocal spell
     autocmd Filetype Dockerfile set tabstop=4 shiftwidth=4 expandtab
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
@@ -897,10 +1079,10 @@ set updatetime=10
 
 " TODO: add setup of this in bootstrap.sh
 if filereadable(expand('~') . '/environments/nvim_python/bin/python')
-    let g:python_host_prog = expand('~') . '/environments/nvim_python/bin/python'
+	let g:python_host_prog = expand('~') . '/environments/nvim_python/bin/python'
 endif
 if filereadable(expand('~') . '/environments/nvim_python3/bin/python')
-    let g:python3_host_prog = expand('~') . '/environments/nvim_python3/bin/python'
+	let g:python3_host_prog = expand('~') . '/environments/nvim_python3/bin/python'
 endif
 
 " TODO: activating a virutal env does not change PATH and thus currently
@@ -1082,4 +1264,58 @@ function! MyLoop(char)
 
 endfunction
 
-nnoremap <leader>s :call SetupBuffer()<cr>
+" nnoremap <leader>s :call SetupBuffer()<cr>
+
+" Set next/previous/random (how = 1/-1/0) color from our list of colors.
+" The 'random' index is actually set from the current time in seconds.
+" Global (no 's:') so can easily call from command line.
+function! NextColor(how)
+  call s:NextColor(a:how, 1)
+endfunction
+
+" Helper function for NextColor(), allows echoing of the color name to be
+" disabled.
+function! s:NextColor(how, echo_color)
+  if len(s:mycolors) == 0
+    return
+  endif
+  if exists('g:colors_name')
+    let current = index(s:mycolors, g:colors_name)
+  else
+    let current = -1
+  endif
+  let missing = []
+  let how = a:how
+  for i in range(len(s:mycolors))
+    if how == 0
+      let current = localtime() % len(s:mycolors)
+      let how = 1  " in case random color does not exist
+    else
+      let current += how
+      if !(0 <= current && current < len(s:mycolors))
+        let current = (how>0 ? 0 : len(s:mycolors)-1)
+      endif
+    endif
+    try
+      execute 'colorscheme '.s:mycolors[current]
+      break
+    catch /E185:/
+      call add(missing, s:mycolors[current])
+    endtry
+  endfor
+  redraw
+  if len(missing) > 0
+    echo 'Error: colorscheme not found:' join(missing)
+  endif
+  if (a:echo_color)
+    echo g:colors_name
+  endif
+endfunction
+
+" nnoremap <F8> :call NextColor(1)<CR>
+" nnoremap <S-F8> :call NextColor(-1)<CR>
+" nnoremap <A-F8> :call NextColor(0)<CR>
+
+nnoremap <S-F8> :call NextColor(-1)<CR>
+nnoremap <A-F8> :call NextColor(0)<CR>
+
