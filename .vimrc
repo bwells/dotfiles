@@ -22,16 +22,23 @@ Plug 'tpope/vim-fugitive'
 " github support for fugative
 Plug 'tpope/vim-rhubarb'
 
-" git branch viewer
-" Plug 'rbong/vim-flog'
+" map s so that vim-cutlass doesn't override it
+nmap s <nop>
 
-" sneek - simpler alternative to easymotion
-" or a better f
+" sanity to copy/paste
+Plug 'svermeulen/vim-cutlass'
+Plug 'svermeulen/vim-yoink'
+" Plug 'svermeulen/vim-subversive'
+
+" unmap s so that lightspeed now WILL override it
+unmap s
+
+" sneek - simpler alternative to easymotion or a better f
 " Plug 'justinmk/vim-sneak'
 Plug 'ggandor/lightspeed.nvim'
 
-" sanity to copy/paste
-Plug 'svermeulen/vim-easyclip'
+nmap s <Plug>Lightspeed_s
+nmap S <Plug>Lightspeed_S
 
 " git gutter. []c to navigate change hunks
 " <leader>hs to stage hunk
@@ -66,8 +73,6 @@ Plug 'tpope/vim-abolish'
 " wrapper around ag for project wide search
 Plug 'mileszs/ack.vim'
 
-" Plug 'tpope/vim-unimpaired'
-
 " allow vim<->tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -96,7 +101,7 @@ Plug 'michaeljsmith/vim-indent-object'
 
 " adds text objects for class (ac/ic), function (af/if), and docstring (ad/id)
 " also adds g: normal mode map to specify context of cursor location
-Plug 'jeetsukumaran/vim-pythonsense'
+" Plug 'jeetsukumaran/vim-pythonsense'
 
 " IDE level vim/go integration
 Plug 'fatih/vim-go', { 'for': 'go' }
@@ -117,21 +122,17 @@ Plug 'sophacles/vim-bundle-mako'
 Plug 'Zaptic/elm-vim'
 
 " color scheme
-" Plug 'tomasr/molokai'
 
 " Plug 'TroyFletcher/vim-colors-synthwave'
 
 " Plug 'shaunsingh/moonlight.nvim'
+
 Plug 'marko-cerovac/material.nvim'
-
 Plug 'rafamadriz/neon'
-
 Plug 'ful1e5/onedark.nvim'
-
-" Plug 'jaredgorski/SpaceCamp'
-
-" required before ale is loaded
-" let g:ale_completion_enabled = 1
+Plug 'yashguptaz/calvera-dark.nvim'
+Plug 'folke/tokyonight.nvim'
+Plug 'seanjbl/tonight.nvim'
 
 " Async lint runner and LSP client
 Plug 'w0rp/ale'
@@ -146,10 +147,6 @@ Plug 'osyo-manga/vim-over'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-" finally something to give vertical spacing alignment bars?
-" Disabling for now. Kills scroll performance once the viewport is moving
-" Plug 'Yggdroot/indentLine'
-
 Plug 'hynek/vim-python-pep8-indent'
 
 " Plug 'bwells/vim-named-sessions'
@@ -161,9 +158,6 @@ Plug 'FooSoft/vim-argwrap'
 " defines a sort motion
 Plug 'christoomey/vim-sort-motion'
 
-" no longer needed
-" Plug 'neoclide/vim-jsx-improve'
-
 Plug 'machakann/vim-highlightedyank'
 
 " improves terminal support - adds insert mode cursor
@@ -171,10 +165,6 @@ Plug 'wincent/terminus'
 
 " integrated test running
 Plug 'janko-m/vim-test'
-
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'ryanolsonx/vim-lsp-python'
 
 Plug 'stevearc/vim-arduino'
 
@@ -188,6 +178,7 @@ Plug 'christianrondeau/vim-base64'
 if has('nvim-0.5')
 	" Treesitter configs and parsers
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 	" LSP configs and servers
 	Plug 'neovim/nvim-lspconfig'
@@ -198,16 +189,21 @@ if has('nvim-0.5')
 	Plug 'nvim-lua/plenary.nvim'
 	Plug 'nvim-telescope/telescope.nvim'
 	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-	Plug 'nvim-telescope/telescope-fzy-native.nvim'
     Plug 'kyazdani42/nvim-web-devicons'
 
-	Plug'camspiers/snap'
+	Plug 'camspiers/snap'
 
     " Plug 'zegervdv/nrpattern.nvim'
 endif
 
 " Add plugins to &runtimepath
 call plug#end()
+
+" tell vim that your terminal supports 256 colors
+let base16colorspace=256
+" set t_8f=^[[38;2;%lu;%lu;%lum
+" set t_8b=^[[48;2;%lu;%lu;%lum
+set t_Co=256
 
 """""""""""""""""""""""
 " PLUGIN CONFIGURATION
@@ -270,26 +266,32 @@ local on_attach = function(client, bufnr)
   -- end
 
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
+  -- if client.resolved_capabilities.document_highlight then
+  --   vim.api.nvim_exec([[
+  --     hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+  --     hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+  --     hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+  --     augroup lsp_document_highlight
+  --       autocmd! * <buffer>
+  --       autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+  --       autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+  --     augroup END
+  --   ]], false)
+  -- end
 end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "elmls" }
+local servers = { "elmls", "jedi_language_server" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
+
+-- require'lspconfig'.jedi_language_server.setup{
+--     cmd = { "jedi-language-server" },
+--     filetypes = { "python" }
+-- }
+--root_dir = vim's starting directory
 
 --
 -- Telescope
@@ -323,18 +325,96 @@ require('telescope').load_extension('fzf')
 ---
 
 -- restore ; and , functionality for repeating jumps after FfTt
-function repeat_ft(reverse)
-  local ls = require'lightspeed'
-  ls.ft['instant-repeat?'] = true
-  ls.ft:to(reverse, ls.ft['prev-t-like?'])
-end
-vim.api.nvim_set_keymap('n', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('x', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
+-- function repeat_ft(reverse)
+--   local ls = require'lightspeed'
+--   ls.ft['instant-repeat?'] = true
+--   ls.ft:to(reverse, ls.ft['prev-t-like?'])
+-- end
+-- vim.api.nvim_set_keymap('n', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('x', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
+
+-- treesitter objects
+require'nvim-treesitter.configs'.setup {
+  textobjects = {
+    select = {
+      enable = true,
+
+      -- Automatically jump forward to textobj, similar to targets.vim
+      lookahead = true,
+
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        -- ["ac"] = "@class.outer",
+        -- ["ic"] = "@class.inner",
+        ["ac"] = "@comment.outer",
+        ["ic"] = "@comment.outer",
+		["al"] = "@loop.outer",
+		["il"] = "@loop.inner",
+
+        -- Or you can define your own textobjects like this
+        -- ["iF"] = {
+        --   python = "(function_definition) @function",
+        --   cpp = "(function_definition) @function",
+        --   c = "(function_definition) @function",
+        --   java = "(method_declaration) @function",
+        -- },
+      },
+    },
+    -- lsp_interop = {
+    --   enable = true,
+    --   border = 'none',
+    --   peek_definition_code = {
+    --     ["df"] = "@function.outer",
+    --     ["dF"] = "@class.outer",
+    --   },
+    -- },
+    -- move = {
+    --   enable = true,
+    --   set_jumps = true, -- whether to set jumps in the jumplist
+    --   goto_next_start = {
+    --     ["]m"] = "@function.outer",
+    --     ["]]"] = "@class.outer",
+    --   },
+    --   goto_next_end = {
+    --     ["]M"] = "@function.outer",
+    --     ["]["] = "@class.outer",
+    --   },
+    --   goto_previous_start = {
+    --     ["[m"] = "@function.outer",
+    --     ["[["] = "@class.outer",
+    --   },
+    --   goto_previous_end = {
+    --     ["[M"] = "@function.outer",
+    --     ["[]"] = "@class.outer",
+    --   },
+    -- },
+  },
+}
+
+-- colorscheme material
+vim.g.material_style = "deep ocean"
+vim.g.material_terminal_italics = false
+vim.g.material_italic_comments = false
+vim.g.material_italic_keywords = false
+vim.g.material_italic_functions = false
+vim.g.material_italic_variables = false
+
+-- neon colorscheme
+vim.g.neon_style = "doom"
+vim.g.neon_italic_comment = false
+vim.g.neon_italic_keyword = false
+vim.g.neon_italic_boolean = false
+vim.g.neon_italic_function = false
+vim.g.neon_italic_variable = false
+
+-- tokyonight colorscheme
+vim.g.tokyonight_style = "storm"
 
 EOF
-
 
 " nnoremap gD <Cmd>lua vim.lsp.buf.declaration()<CR>
 " nnoremap gd <Cmd>lua vim.lsp.buf.definition()<CR>
@@ -359,10 +439,6 @@ endif
 let g:netrw_liststyle = 3
 let g:netrw_altv = 1
 
-""" molokai
-" instruct the molokai colorscheme to use the new fancy version
-" let g:rehash256=1
-
 " TODO: idea: add command for jumping up or down when you meant the opposite
 " -> 10j, shit i meant to 10k. rather than have to hit 20k, hit K and it
 " calculates that your last jump was 10 down, so go up 20.
@@ -381,13 +457,28 @@ let g:NERDTreeRespectWildIgnore = 1
 " use goimports instead of gofmt on save
 let g:go_fmt_command = "goimports"
 
-""" vim-easyclip
-" remap mark to gm as easyclip adds Move operator on m
+""" cutlass.vim
+nnoremap m d
+xnoremap m d
 nnoremap gm m
 
-" enable auto reformating on paste
-" leader-p to paste w/ disabled
-let g:EasyClipAutoFormat = 1
+nnoremap mm dd
+nnoremap M D
+
+""" yoink.vim
+let g:yoinkIncludeDeleteOperations = 1
+
+nmap <c-p> <plug>(YoinkPostPasteSwapBack)
+nmap <c-n> <plug>(YoinkPostPasteSwapForward)
+
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(YoinkPaste_P)
+
+" Also replace the default gp with yoink paste so we can toggle paste in this case too
+nmap gp <plug>(YoinkPaste_gp)
+nmap gP <plug>(YoinkPaste_gP)
+
+nnoremap Y y$
 
 """ vim-bbye
 " alias Bdelete to Bclose
@@ -482,14 +573,14 @@ let g:ale_linters = {
 let g:ale_python_pylint_options = '--rcfile ~/.pylintrc'
 let g:ale_python_pylint_use_global = 0
 
-nmap <silent> [e <Plug>(ale_previous_wrap)
-nmap <silent> ]e <Plug>(ale_next_wrap)
+nmap <silent> [E <Plug>(ale_previous_wrap)
+nmap <silent> ]E <Plug>(ale_next_wrap)
 
 """ vim-sneak
 " add easymotion like arbitrary key for global movement to sneak
-let g:sneak#streak = 1
-let g:sneak#s_next = 1
-let g:sneak#absolute_dir = 1
+" let g:sneak#streak = 1
+" let g:sneak#s_next = 1
+" let g:sneak#absolute_dir = 1
 
 """ vim-argwrap
 nnoremap <silent> <leader>a :ArgWrap<CR>
@@ -548,13 +639,7 @@ endif
 
 " switch to a different panel if running fzf from within nerdtree
 if has('nvim-0.5')
-	nnoremap <Leader>pp :lua require'telescope.builtin'.planets{}<cr>
-
-	" builtin.file_browser
-	" builtin.grep_string
-	" builtin.live_grep
-
-	nnoremap <leader>fb <cmd>Telescope file_browser<cr>
+	" nnoremap <leader>fb <cmd>Telescope file_browser<cr>
 	nnoremap <leader>gs <cmd>Telescope grep_string<cr>
 	nnoremap <leader>lg <cmd>Telescope live_grep<cr>
 
@@ -642,9 +727,11 @@ let g:qf_shorten_path = 0
 " IT'S NOT 1970
 """"""""""""""""
 
-" tell vim that your terminal supports 256 colors
-let base16colorspace=256
-set t_Co=256
+" " tell vim that your terminal supports 256 colors
+" let base16colorspace=256
+" " set t_8f=^[[38;2;%lu;%lu;%lum
+" " set t_8b=^[[48;2;%lu;%lu;%lum
+" set t_Co=256
 
 set ttyfast
 
@@ -761,29 +848,15 @@ syntax enable
 " hi ColorColumn guifg=NONE guibg=#6cddf1 guisp=#db93c8 ctermfg=235 ctermbg=248 cterm=NONE
 " hi ColorColumn guifg=NONE guibg=#bd0065 guisp=NONE ctermfg=NONE ctermbg=248 cterm=NONE
 
-lua <<EOF
-vim.g.material_style = 'palenight'
-vim.g.material_terminal_italics = false
-vim.g.material_italic_comments = false
-vim.g.material_italic_keywords = false
-vim.g.material_italic_functions = false
-vim.g.material_italic_variables = false
-EOF
-" colorscheme material
+let g:calvera_contrast = 1
+let g:calvera_lighter_contrast = 1
 
-lua <<EOF
-vim.g.neon_style = "doom"
-vim.g.neon_italic_comment = false
-vim.g.neon_italic_keyword = false
-vim.g.neon_italic_boolean = false
-vim.g.neon_italic_function = false
-vim.g.neon_italic_variable = false
-EOF
+" 'onedark' seems to be broken
+let s:mycolors = ['material', 'neon', 'calvera', 'tokyonight', 'tonight']
 
-colorscheme neon
-
-let s:mycolors = ['material', 'neon', 'onedark']
 nnoremap <leader>c :call NextColor(1)<CR>
+
+colorscheme material
 
 " disable fucking folding
 augroup fuck_folding
@@ -907,8 +980,6 @@ function! s:CenterView()
         normal! zz
     endif
 endfunction
-
-" easyclip provides Y - yank to end of line to match D and C
 
 " toggle key for cursorline and relativenumber
 " both of which slow down screen renders horribly on occasion
