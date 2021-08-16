@@ -1,3 +1,5 @@
+source ~/.iterm2_shell_integration.(basename $SHELL)
+
 # create an alias to edit fish config
 abbr -a fe vim ~/.config/fish/config.fish
 abbr -a resource source ~/.config/fish/config.fish
@@ -6,11 +8,13 @@ alias forget="sudo killall -HUP mDNSResponder; sudo killall mDNSResponderHelper;
 
 alias vimr="vimr -s"
 
+alias brewi="arch -x86_64 /usr/local/bin/brew"
+
+alias ks="kubectl -n kube-system"
+
 if type -q nvim
-    echo "no nvim"
     set -gx EDITOR vim
 else
-    echo "has nvim"
     alias vim nvim
     set -gx EDITOR nvim
 end
@@ -22,7 +26,7 @@ alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.wr
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config
+set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
 
 # setup gopath
 # set -gx GOPATH ~/workspace/go
@@ -30,22 +34,13 @@ set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-conf
 
 # set -gx PATH /usr/local/opt/openjdk@11/bin $PATH
 
-#set -gx PATH /usr/local/opt/python@3.8/bin $PATH
+set -gx PATH /usr/local/Cellar/elm/0.19.1/bin $PATH
 
-# add brew sbin to path
-#set -gx PATH $PATH /usr/local/sbin
-
-#set -gx PATH $PATH /usr/local/opt/mysql@5.7/bin
-
-#set -gx PATH $PATH /usr/local/opt/icu4c/bin /usr/local/opt/icu4c/sbin
-
-#set -gx PATH $PATH ~/.cargo/bin
+set -gx PATH /opt/homebrew/opt/python@3.8/bin $PATH
 
 set -gx PATH /opt/homebrew/bin $PATH
 
-# set fzf default intput ag becuase ag respects ignored file settings
-# set -gx FZF_DEFAULT_COMMAND 'ag -g ""'
-# export PATH="/usr/local/opt/python@2/libexec/bin:$PATH"
+set -gx PATH $PATH /opt/homebrew/opt/mysql@5.7/bin
 
 # virtualfish/venv config
 set -gx WORKON_HOME ~/environments
@@ -56,9 +51,6 @@ ssh-add -A 2>/dev/null;
 
 # completion for ccdecrypt
 complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
-
-# completion for pip-compile
-# complete -c pip-compile -x -a " ( __fish_complete_suffix .in ) "
 
 # activate a virtualenv on entry
 # also deactivates on project exit
