@@ -175,6 +175,10 @@ Plug 'romainl/vim-qf'
 " <leader>btoa and <leader>atob in visual
 Plug 'christianrondeau/vim-base64'
 
+" completion and snippets
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+
 if has('nvim-0.5')
 	" Treesitter configs and parsers
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -722,6 +726,13 @@ let g:highlightedyank_highlight_duration = 200
 
 """ vim-qf
 let g:qf_shorten_path = 0
+
+""" coq
+set completeopt=menuone,noselect,noinsert
+set shortmess+=c
+
+let g:coq_settings = { 'auto_start': v:true }
+
 
 """"""""""""""""
 " IT'S NOT 1970
