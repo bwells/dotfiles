@@ -28,23 +28,30 @@ set -U CDPATH . ~ ~/workspace
 
 set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
 
-# setup gopath
-# set -gx GOPATH ~/workspace/go
-# set -gx PATH $GOPATH/bin $PATH
+# Paths we want to add before system default paths
+set -l PREPEND_PATHS /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.8/bin /opt/homebrew/bin
 
-# set -gx PATH /usr/local/opt/openjdk@11/bin $PATH
+for p in $PREPEND_PATHS
+    if not contains $p $PATH
+        set -gx PATH $p $PATH
+    end
+end
 
-set -gx PATH /usr/local/Cellar/elm/0.19.1/bin $PATH
+# Paths we want to add after system default paths
 
-set -gx PATH /opt/homebrew/opt/python@3.8/bin $PATH
+set -l APPEND_PATHS /opt/homebrew/opt/mysql@5.7/bin /Library/Frameworks/Python.framework/Versions/2.7/bin
 
-set -gx PATH /opt/homebrew/bin $PATH
-
-set -gx PATH $PATH /opt/homebrew/opt/mysql@5.7/bin
+for p in $APPEND_PATHS
+    if not contains $p $PATH
+        set -gx PATH $PATH $p
+    end
+end
 
 # virtualfish/venv config
 set -gx WORKON_HOME ~/environments
 set -gx VIRTUALFISH_HOME ~/environments
+
+set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
 
 # import ssh keys on boot
 ssh-add -A 2>/dev/null;
