@@ -42,12 +42,7 @@ nmap S <Plug>Lightspeed_S
 
 " git gutter. []c to navigate change hunks
 " <leader>hs to stage hunk
-" Consider mhinz/vim-signify as a future better maintained alternative
 Plug 'airblade/vim-gitgutter'
-
-" gcc to toggle comment current line
-" gc to toggle comment selected line(s)
-Plug 'tomtom/tcomment_vim'
 
 " lightweight and independent statusline plugin
 Plug 'itchyny/lightline.vim'
@@ -128,13 +123,14 @@ Plug 'Zaptic/elm-vim'
 " Plug 'shaunsingh/moonlight.nvim'
 
 Plug 'marko-cerovac/material.nvim'
-Plug 'rafamadriz/neon'
-Plug 'ful1e5/onedark.nvim'
-Plug 'yashguptaz/calvera-dark.nvim'
-Plug 'folke/tokyonight.nvim'
-Plug 'seanjbl/tonight.nvim'
+" Plug 'rafamadriz/neon'
+" Plug 'ful1e5/onedark.nvim'
+" Plug 'yashguptaz/calvera-dark.nvim'
+" Plug 'folke/tokyonight.nvim'
+" Plug 'seanjbl/tonight.nvim'
+Plug 'wuelnerdotexe/vim-enfocado'
 
-" Async lint runner and LSP client
+" Async lint runner
 Plug 'w0rp/ale'
 
 " adds gS and gJ to syntactically aware split/join constructs
@@ -175,18 +171,14 @@ Plug 'romainl/vim-qf'
 " <leader>btoa and <leader>atob in visual
 Plug 'christianrondeau/vim-base64'
 
-" completion and snippets
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-
-if has('nvim-0.5')
+if has('nvim')
 	" Treesitter configs and parsers
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 	" LSP configs and servers
 	Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall'
+	Plug 'williamboman/nvim-lsp-installer'
 
 	" Telescope
 	Plug 'nvim-lua/popup.nvim'
@@ -195,9 +187,34 @@ if has('nvim-0.5')
 	Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
     Plug 'kyazdani42/nvim-web-devicons'
 
-	Plug 'camspiers/snap'
+	" alternative file finder to Telescope.
+	" Plug 'camspiers/snap'
 
-    " Plug 'zegervdv/nrpattern.nvim'
+	" completion and snippets
+	" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+	" Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+
+	Plug 'hrsh7th/cmp-nvim-lsp'
+	Plug 'hrsh7th/cmp-buffer'
+	Plug 'hrsh7th/cmp-path'
+	Plug 'hrsh7th/cmp-cmdline'
+	Plug 'hrsh7th/nvim-cmp'
+	Plug 'hrsh7th/cmp-vsnip'
+	Plug 'hrsh7th/vim-vsnip'
+
+	Plug 'onsails/lspkind-nvim'
+
+	" build system, still not mapped
+    Plug 'pianocomposer321/yabs.nvim'
+
+    Plug 'numToStr/Comment.nvim'
+
+    " colorscheme switcher
+	Plug 'metalelf0/witch-nvim'
+else
+    " gcc to toggle comment current line
+    " gc to toggle comment selected line(s)
+	Plug 'tomtom/tcomment_vim'
 endif
 
 " Add plugins to &runtimepath
@@ -213,11 +230,11 @@ set t_Co=256
 " PLUGIN CONFIGURATION
 """""""""""""""""""""""
 
-if has('nvim-0.5')
+if has('nvim')
 
 " configure treesitter
 "   installs all parsers and enables treesitter for all of those
-lua <<EOF
+lua << EOF
 
 --
 -- TreeSitter
@@ -229,118 +246,6 @@ require'nvim-treesitter.configs'.setup {
 	enable = true, -- false will disable the whole extension
 	disable = {},  -- list of language that will be disabled
   },
-}
-
---
--- LSP
---
-
-local nvim_lsp = require('lspconfig')
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[e', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']e', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-  -- Set some keybinds conditional on server capabilities
-  -- if client.resolved_capabilities.document_formatting then
-  --   buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  -- end
-  -- if client.resolved_capabilities.document_range_formatting then
-  --   buf_set_keymap("v", "<leader>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  -- end
-
-  -- Set autocommands conditional on server_capabilities
-  -- if client.resolved_capabilities.document_highlight then
-  --   vim.api.nvim_exec([[
-  --     hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-  --     hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-  --     hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-  --     augroup lsp_document_highlight
-  --       autocmd! * <buffer>
-  --       autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-  --       autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-  --     augroup END
-  --   ]], false)
-  -- end
-end
-
--- Use a loop to conveniently both setup defined servers
--- and map buffer local keybindings when the language server attaches
-local servers = { "elmls", "jedi_language_server" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
-end
-
--- require'lspconfig'.jedi_language_server.setup{
---     cmd = { "jedi-language-server" },
---     filetypes = { "python" }
--- }
---root_dir = vim's starting directory
-
---
--- Telescope
---
-
-local actions = require('telescope.actions')
-require('telescope').setup{
-  defaults = {
-    -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
-    mappings = {
-      i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-      },
-      n = { },
-    },
-  },
-  extensions = {
-    fzf = {
-      override_generic_sorter = false, -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-    }
-  }
-}
-
-require('telescope').load_extension('fzf')
--- require('telescope').load_extension('fzy_native')
-
----
---- Lightspeed
----
-
--- restore ; and , functionality for repeating jumps after FfTt
--- function repeat_ft(reverse)
---   local ls = require'lightspeed'
---   ls.ft['instant-repeat?'] = true
---   ls.ft:to(reverse, ls.ft['prev-t-like?'])
--- end
--- vim.api.nvim_set_keymap('n', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('x', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('n', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
--- vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
-
--- treesitter objects
-require'nvim-treesitter.configs'.setup {
   textobjects = {
     select = {
       enable = true,
@@ -368,14 +273,14 @@ require'nvim-treesitter.configs'.setup {
         -- },
       },
     },
-    -- lsp_interop = {
-    --   enable = true,
-    --   border = 'none',
-    --   peek_definition_code = {
-    --     ["df"] = "@function.outer",
-    --     ["dF"] = "@class.outer",
-    --   },
-    -- },
+    lsp_interop = {
+      enable = true,
+      border = 'none',
+      peek_definition_code = {
+        ["df"] = "@function.outer",
+        ["dF"] = "@class.outer",
+      },
+    },
     -- move = {
     --   enable = true,
     --   set_jumps = true, -- whether to set jumps in the jumplist
@@ -399,6 +304,112 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+--
+-- LSP
+--
+
+local nvim_lsp = require('lspconfig')
+
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[e', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']e', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+end
+
+local lsp_installer = require("nvim-lsp-installer")
+
+lsp_installer.on_server_ready(function(server)
+  local opts = {}
+
+  -- disable python diagnostics for now
+  if server.name == "pylsp" then
+     opts.handlers = {
+         ["textDocument/publishDiagnostics"] = function() end
+     }
+  end
+
+  if server.name == 'elmls' then
+    opts['capabilities'] = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  end
+
+  opts.on_attach = on_attach
+
+  nvim_lsp[server.name].setup(opts)
+end)
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    signs = {
+      severity_limit = "Hint",
+    },
+    virtual_text = {
+      severity_limit = "Warning",
+    },
+  }
+)
+
+
+--
+-- Telescope
+--
+
+local actions = require('telescope.actions')
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+      },
+      n = { },
+    },
+  },
+  extensions = {
+    fzf = {
+      override_generic_sorter = true, -- override the generic sorter
+      override_file_sorter = true,    -- override the file sorter
+    }
+  }
+}
+
+require('telescope').load_extension('fzf')
+
+require("yabs"):setup {
+    languages = {  -- List of languages in vim `filetype` format
+        elm = {
+            default_task = "build_and_run",
+            tasks = {
+                build = {
+                    command = "cd elm; find src/Entry -name '*.elm'  | xargs elm make --output ../portal/public/scripts/elm.js --debug",
+                    output = "echo",
+                }
+            }
+        }
+    }
+}
+
+vim.api.nvim_set_keymap('n', '<Leader>y', '<cmd>Telescope yabs tasks<cr>', {noremap = true})
+
 -- colorscheme material
 vim.g.material_style = "deep ocean"
 vim.g.material_terminal_italics = false
@@ -407,35 +418,7 @@ vim.g.material_italic_keywords = false
 vim.g.material_italic_functions = false
 vim.g.material_italic_variables = false
 
--- neon colorscheme
-vim.g.neon_style = "doom"
-vim.g.neon_italic_comment = false
-vim.g.neon_italic_keyword = false
-vim.g.neon_italic_boolean = false
-vim.g.neon_italic_function = false
-vim.g.neon_italic_variable = false
-
--- tokyonight colorscheme
-vim.g.tokyonight_style = "storm"
-
 EOF
-
-" nnoremap gD <Cmd>lua vim.lsp.buf.declaration()<CR>
-" nnoremap gd <Cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap K <Cmd>lua vim.lsp.buf.hover()<CR>
-" nnoremap gi <cmd>lua vim.lsp.buf.implementation()<CR>
-" nnoremap <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-" nnoremap <leader>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
-" nnoremap <leader>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
-" nnoremap <leader>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
-" nnoremap <leader>D <cmd>lua vim.lsp.buf.type_definition()<CR>
-" nnoremap <leader>rn <cmd>lua vim.lsp.buf.rename()<CR>
-" nnoremap <leader>ca <cmd>lua vim.lsp.buf.code_action()<CR>
-" nnoremap gr <cmd>lua vim.lsp.buf.references()<CR>
-" nnoremap <leader>e <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
-" nnoremap [e <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-" nnoremap ]e <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-" nnoremap <leader>q <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 
 endif
 
@@ -552,7 +535,18 @@ let g:gitgutter_sign_removed = '✘'
 
 """ tcomment_vim
 " change the comment character for .ini files
-call tcomment#type#Define('dosini', '#%s')
+if exists("tcomment")
+	call tcomment#type#Define('dosini', '#%s')
+endif
+
+""" Comment.nvim
+if has('nvim')
+lua << EOF
+	require('Comment').setup()
+	local ft = require('Comment.ft')
+	ft.text = '# %s'
+EOF
+endif
 
 """ vim-wordmotion
 let g:wordmotion_prefix = "<leader>"
@@ -629,6 +623,13 @@ function! s:GetVisualSelection()
   endtry
 endfunction
 
+""" lightspeed
+lua << EOF
+require'lightspeed'.setup {
+  grey_out_search_area = true
+}
+EOF
+
 """ vim-sort-motion
 let g:sort_motion_flags = "ui"
 
@@ -642,30 +643,21 @@ elseif executable('ag')
 endif
 
 " switch to a different panel if running fzf from within nerdtree
-if has('nvim-0.5')
+if has('nvim')
 	" nnoremap <leader>fb <cmd>Telescope file_browser<cr>
 	nnoremap <leader>gs <cmd>Telescope grep_string<cr>
 	nnoremap <leader>lg <cmd>Telescope live_grep<cr>
+	nnoremap <leader>/ <cmd>Telescope live_grep<cr>
 
 	nnoremap <leader>ts <cmd>Telescope treesitter<cr>
 
 	nnoremap <Leader>f <cmd>Telescope find_files<cr>
 	nnoremap <Leader>b <cmd>Telescope buffers<cr>
 	nnoremap <Leader>t <cmd>Telescope tags<cr>
+	nnoremap <Leader>q <cmd>Telescope quickfix<cr>
 
-" lua <<EOF
-" local snap = require'snap'
-" snap.register.map({"n"}, {"<Leader>f"}, function ()
-" 	snap.run {
-" 		producer = snap.get'consumer.fzf'(snap.get'producer.ripgrep.file'),
-" 		select = snap.get'select.file'.select,
-" 		multiselect = snap.get'select.file'.multiselect,
-" 		views = {snap.get'preview.file'},
-" 		layout = snap.get('snap.layouts.bottom')
-" 	}
-" end)
-" EOF
-
+	" imap c-/ to see picker actions help
+	" map ? to see picker actions help
 else
 	nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 	nnoremap <Leader>b :Buffers<cr>
@@ -728,10 +720,96 @@ let g:highlightedyank_highlight_duration = 200
 let g:qf_shorten_path = 0
 
 """ coq
-set completeopt=menuone,noselect,noinsert
-set shortmess+=c
+" set completeopt=menuone,noselect,noinsert
+" set shortmess+=c
+"
+" let g:coq_settings = { 'auto_start': v:true }
 
-let g:coq_settings = { 'auto_start': v:true }
+""" nvim-cmp
+set completeopt=menu,menuone,noselect
+
+lua << EOF
+  -- Setup nvim-cmp.
+  local lspkind = require'lspkind'
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      end,
+    },
+    mapping = {
+      ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+      ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+      ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' },
+      { name = "buffer", keyword_length = 5 },
+    }),
+
+    -- ganked from tj's settings
+    formatting = {
+      format = lspkind.cmp_format {
+        with_text = true,
+        menu = {
+          buffer = "[buf]",
+          nvim_lsp = "[LSP]",
+          nvim_lua = "[api]",
+          path = "[path]",
+          luasnip = "[snip]",
+          gh_issues = "[issues]",
+          tn = "[TabNine]",
+        },
+      },
+    },
+
+    experimental = {
+      -- I like the new menu better! Nice work hrsh7th
+      native_menu = false,
+
+      -- Let's play with this for a day or two
+      ghost_text = true,
+    },
+
+  })
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Setup lspconfig.
+  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+  -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  -- require('lspconfig')['elmls'].setup {
+  --   capabilities = capabilities
+  -- }
+EOF
 
 
 """"""""""""""""
@@ -859,11 +937,20 @@ syntax enable
 " hi ColorColumn guifg=NONE guibg=#6cddf1 guisp=#db93c8 ctermfg=235 ctermbg=248 cterm=NONE
 " hi ColorColumn guifg=NONE guibg=#bd0065 guisp=NONE ctermfg=NONE ctermbg=248 cterm=NONE
 
-let g:calvera_contrast = 1
-let g:calvera_lighter_contrast = 1
 
-" 'onedark' seems to be broken
-let s:mycolors = ['material', 'neon', 'calvera', 'tokyonight', 'tonight']
+" original material dark CursorColumn
+" highlight cterm=underline guibg=#1A1C25
+" highlight CursorLine cterm=underline guibg=#30323A
+" highlight CursorLine cterm=underline guibg=#262830
+highlight CursorLine cterm=underline guibg=#1B1D25
+
+" 0F111A is normal material dark background
+" 262830 bump lighter
+
+
+let g:enfocado_style = "neon"
+
+let s:mycolors = ['material', 'enfocado']
 
 nnoremap <leader>c :call NextColor(1)<CR>
 
@@ -879,8 +966,6 @@ augroup END
 if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
-
-" set completeopt=menuone,noinsert,noselect
 
 set timeoutlen=500
 
@@ -930,18 +1015,18 @@ inoremap jk <esc>l
 " Keep search movements at the center of screen
 " nnoremap n nzz
 " nnoremap N Nzz
-nnoremap n n:call <SID>CenterView()<cr>
-nnoremap N N:call <SID>CenterView()<cr>
-nnoremap * *:call <SID>CenterView()<cr>
-nnoremap # #:call <SID>CenterView()<cr>
-nnoremap g* g*:call <SID>CenterView()<cr>
-nnoremap g# g#:call <SID>CenterView()<cr>
+nnoremap <silent> n n:call <SID>CenterView()<cr>
+nnoremap <silent> N N:call <SID>CenterView()<cr>
+nnoremap <silent> * *:call <SID>CenterView()<cr>
+nnoremap <silent> # #:call <SID>CenterView()<cr>
+nnoremap <silent> g* g*:call <SID>CenterView()<cr>
+nnoremap <silent> g# g#:call <SID>CenterView()<cr>
 
 " does not seem to be working...
-nnoremap ]m ]m:call <SID>CenterView()<cr>
-nnoremap [m [m:call <SID>CenterView()<cr>
-nnoremap ]] ]]:call <SID>CenterView()<cr>
-nnoremap [[ [[:call <SID>CenterView()<cr>
+nnoremap <silent> ]m ]m:call <SID>CenterView()<cr>
+nnoremap <silent> [m [m:call <SID>CenterView()<cr>
+nnoremap <silent> ]] ]]:call <SID>CenterView()<cr>
+nnoremap <silent> [[ [[:call <SID>CenterView()<cr>
 
 " resize vertical column into current window takes 1/2, 1/3, 1/4 of available
 " height
@@ -1109,11 +1194,12 @@ augroup trim_whitespace
     autocmd BufWritePre * call TrimTrailingWhitespace()
 augroup END
 
-" auto source vimrc on write
-augroup reload_vimrc
-    autocmd!
-    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
-augroup END
+" causing issues with LSP setup!?
+" " auto source vimrc on write
+" augroup reload_vimrc
+"     autocmd!
+"     autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+" augroup END
 
 " customizations for filetypes
 augroup filetypes
