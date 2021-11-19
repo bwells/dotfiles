@@ -61,9 +61,11 @@ ln -s ~/dotfiles/.gitignore ~/.gitignore
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/.pylintrc ~/.pylintrc
 ln -s ~/dotfiles/.vimrc ~/.vimrc
-mkdir -p ~/.config/nvim
-ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/fish ~/.config/fish
+mkdir -p ~/.config/nvim
+ln -s ~/dotfiles/nvim/init.lua ~/.config/nvim/init.lua
+ln -s ~/dotfiles/nvim/ftplugin ~/.config/nvim/ftplugin
+ln -s ~/dotfiles/nvim/lua ~/.config/nvim/lua
 
 # setup repo checkouts root
 mkdir ~/workspace
