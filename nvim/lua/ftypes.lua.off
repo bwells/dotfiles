@@ -1,0 +1,22 @@
+vim.cmd([[
+augroup filetypes
+    autocmd!
+
+    autocmd FileType vim set tabstop=4 shiftwidth=4
+
+    autocmd FileType html,javascript set tabstop=4 shiftwidth=4 expandtab
+
+    autocmd FileType mako set tabstop=4 shiftwidth=4 expandtab
+
+    autocmd FileType dosini set commentstring="# %s"
+
+    autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+    autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 shiftwidth=2 softtabstop=2
+
+    autocmd Filetype gitcommit setlocal spell
+
+    autocmd Filetype Dockerfile set tabstop=4 shiftwidth=4 expandtab
+augroup END
+]])
+
+-- autocmd Filetype elm set tabstop=4 shiftwidth=4 expandtab

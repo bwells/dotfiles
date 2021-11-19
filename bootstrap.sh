@@ -23,6 +23,7 @@ brew install ccrypt
 	     kops
 	     kubernetes-cli
 	     mysql
+	     neovim
              nmap
              node
              ripgrep
@@ -32,10 +33,6 @@ brew install ccrypt
              python
              stern
 
-brew install --HEAD tree-sitter
-brew install --HEAD luajit
-brew install --HEAD neovim
-
 # change default shell to fish
 sudo chsh -s /usr/local/bin/fish kremlan
 
@@ -43,9 +40,12 @@ brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
 
 # setup cask
-brew tap homebrew/cask-fonts
-brew install font-menlo-for-powerline
+# brew tap homebrew/cask-fonts
+# brew install font-menlo-for-powerline
 # set font in Terminal Settings
+# Instal Meslo from nerdfonts.com
+# maybe
+# brew install font-meslo-lg-nerd-font
 
 # install vim-plug and plugins for vim
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
