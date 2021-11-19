@@ -29,7 +29,7 @@ set -U CDPATH . ~ ~/workspace
 set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
 
 # Paths we want to add before system default paths
-set -l PREPEND_PATHS /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.8/bin /opt/homebrew/bin
+set -l PREPEND_PATHS /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.8/bin /opt/homebrew/opt/python@3.9/bin /opt/homebrew/opt/python@3.10/bin /opt/homebrew/bin
 
 for p in $PREPEND_PATHS
     if not contains $p $PATH
