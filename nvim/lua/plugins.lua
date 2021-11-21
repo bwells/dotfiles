@@ -182,6 +182,26 @@ require('telescope').setup{
       n = { },
     },
   },
+  pickers = {
+    live_grep = {
+      additional_args = function(opts)
+        if opts.search_all == true then
+          return {}
+        end
+        local args_for_ext = {
+          ["rs"]     = "-trust",
+          ["lua"]    = "-tlua",
+          ["python"] = "-tpy",
+          ["elm"]    = "-telm"
+        }
+        if args_for_ext[vim.bo.filetype] ~= nil then
+            return { args_for_ext[vim.bo.filetype] }
+        else
+            return { "-t" .. vim.bo.filetype }
+        end
+      end
+    }
+  },
   extensions = {
     fzf = {
       override_generic_sorter = true, -- override the generic sorter
@@ -194,12 +214,11 @@ require('telescope').load_extension('fzf')
 
 -- map("n", "<leader>fb", "<cmd>Telescope file_browser<cr>", defaults)
 map("n", "<leader>gs", "<<cmd>Telescope grep_string<cr>", defaults)
-map("n", "<leader>lg", "<cmd>Telescope live_grep<cr>", defaults)
-map("n", "<leader>/", "<cmd>Telescope live_grep<cr>", defaults)
+map("n", "<leader>/", "<cmd>lua require('telescope.builtin').live_grep({search_all = true})<cr>", defaults)
+map("n", "<leader>t", "<cmd>lua require('telescope.builtin').live_grep()<cr>", defaults)
 map("n", "<leader>ts", "<cmd>Telescope treesitter<cr>", defaults)
 map("n", "<Leader>f", "<cmd>Telescope find_files<cr>", defaults)
 map("n", "<Leader>b", "<cmd>Telescope buffers<cr>", defaults)
-map("n", "<Leader>t", "<cmd>Telescope tags<cr>", defaults)
 map("n", "<Leader>q", "<cmd>Telescope quickfix<cr>", defaults)
 
 ------------
