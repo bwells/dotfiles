@@ -4,11 +4,14 @@ require('opts')
 -- load keymaps
 require('maps')
 
--- TODO: get nvim-tree to not create an empty buffer
+-- TODO: improve cursorline contrast
+-- TODO: mega improve visual selection contrast
 -- TODO: explore different auto pairs plugins
--- TODO tags managment via LSP? maybe working?
--- TODO figure out how to edit config files from anywhere
+-- TODO: tags managment via LSP? maybe working?
 -- TODO: get elm formatting on save without elm-vim package
+--
+-- TODO: explore diffview.nvim
+-- TODO: explore orgmode.nvim or nvim-neorg
 
 
 local Plug = vim.fn['plug#']
@@ -134,7 +137,7 @@ Plug 'hynek/vim-python-pep8-indent'
 Plug 'Zaptic/elm-vim'
 -- Plug 'dag/vim-fish', { 'for': 'fish' }
 -- Plug 'fatih/vim-go', { 'for': 'go' }
--- Plug 'sophacles/vim-bundle-mako'
+Plug 'sophacles/vim-bundle-mako'
 -- Plug 'rust-lang/rust.vim'
 
 vim.call('plug#end')

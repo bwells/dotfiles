@@ -217,7 +217,7 @@ require'nvim-tree'.setup {
   hijack_cursor       = true,
   update_cwd          = false,
   update_to_buf_dir   = {
-    enable = true,
+    enable = false,
     auto_open = false,
   },
   diagnostics = {
@@ -410,7 +410,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
--- null-lsp
+-- null-ls
 local null_ls = require("null-ls")
 null_ls.config({
     -- debug = true,
