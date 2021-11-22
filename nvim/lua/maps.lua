@@ -74,6 +74,23 @@ map("n", "<leader>vo", ":lua vim.cmd(':edit ' .. GetConfigPath('opts.lua'))<cr>"
 map("n", "<leader>vc", ":lua vim.cmd(':edit ' .. GetConfigPath('colors.lua'))<cr>" , defaults)
 
 
+function ReloadConfig()
+  local reload = require('plenary.reload')
+
+  reload.reload_module('opts', true)
+  reload.reload_module('maps', true)
+  reload.reload_module('plugins', true)
+  reload.reload_module('colors', true)
+
+  require('opts')
+  require('maps')
+  require('plugins')
+  require('colors')
+end
+
+map("n", "<leader>vr", ":lua ReloadConfig()<cr>", defaults)
+
+
 -- TODO: put this somewhere?
 -- scroll current line to middle if it is within two of the window edge
 function CenterView ()

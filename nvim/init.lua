@@ -4,14 +4,13 @@ require('opts')
 -- load keymaps
 require('maps')
 
--- TODO: improve cursorline contrast
--- TODO: mega improve visual selection contrast
--- TODO: explore different auto pairs plugins
+-- TODO: explore different auto pairs plugins, nvim-autopairs so far
 -- TODO: tags managment via LSP? maybe working?
 -- TODO: get elm formatting on save without elm-vim package
 --
 -- TODO: explore diffview.nvim
 -- TODO: explore orgmode.nvim or nvim-neorg
+-- TODO: move plugin install to separate files
 
 
 local Plug = vim.fn['plug#']
@@ -58,9 +57,9 @@ Plug 'christianrondeau/vim-base64'
 Plug 'numToStr/Comment.nvim'
 
 -- auto quote/bracket/paren matching
-Plug 'Raimondi/delimitMate'
+-- Plug 'Raimondi/delimitMate'
 -- Plug 'tmsvg/pear-tree'
--- Plug 'windwp/nvim-autopairs'
+Plug 'windwp/nvim-autopairs'
 
 -- provides mixed case abbreviations and searches
 Plug 'tpope/vim-abolish'
@@ -123,8 +122,13 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 -- statusline
 Plug 'nvim-lualine/lualine.nvim'
 
+-- highlights color codes with that color as the background
+Plug 'norcalli/nvim-colorizer.lua'
+
 -- material colorscheme
 Plug 'marko-cerovac/material.nvim'
+Plug('folke/tokyonight.nvim', {['branch'] = 'main' })
+
 
 -----------------
 -- Language Packs
@@ -147,5 +151,3 @@ require('plugins')
 
 -- setup colorschemes
 require('colors')
-
--- TODO: move plugin install to separate files

@@ -50,6 +50,25 @@ require('Comment').setup()
 local ft = require('Comment.ft')
 ft.text = '# %s'
 
+
+------------
+-- Pear Tree
+------------
+vim.g.pear_tree_smart_openers =1
+vim.g.pear_tree_smart_closers =1
+vim.g.pear_tree_smart_backspace =1
+
+-----------------
+-- nvim-autopairs
+-----------------
+require('nvim-autopairs').setup{}
+
+-- If you want insert `(` after select function or method item
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local cmp = require('cmp')
+cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
+
+
 --------------
 -- vim-argwrap
 --------------
@@ -220,6 +239,10 @@ map("n", "<leader>ts", "<cmd>Telescope treesitter<cr>", defaults)
 map("n", "<Leader>f", "<cmd>Telescope find_files<cr>", defaults)
 map("n", "<Leader>b", "<cmd>Telescope buffers<cr>", defaults)
 map("n", "<Leader>q", "<cmd>Telescope quickfix<cr>", defaults)
+map("n", "<Leader>r", "<cmd>Telescope resume<cr>", defaults)
+
+
+-- TODO: map for git_bcommit - commit history of current buffer
 
 ------------
 -- nvim-tree
