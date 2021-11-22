@@ -2,22 +2,30 @@
 -- Material
 -----------
 vim.g.material_style = "deep ocean"
-vim.g.material_terminal_italics = false
-vim.g.material_italic_comments = false
-vim.g.material_italic_keywords = false
-vim.g.material_italic_functions = false
-vim.g.material_italic_variables = false
 
--- original material dark CursorColumn
--- highlight cterm=underline guibg=#1A1C25
--- highlight CursorLine cterm=underline guibg=#30323A
--- highlight CursorLine cterm=underline guibg=#262830
-vim.cmd([[highlight CursorLine cterm=underline guibg=#1B1D25]])
-
--- 0F111A is normal material dark background
--- 262830 bump lighter
+local material = require('material')
+material.setup{
+	italics = {
+		comments = false,
+    keywords = false,
+		functions = false,
+		strings = false,
+		variables = false
+	},
+  custom_highlights = {
+    CursorLine = { fg = material.none, bg = '#1B1D25' },
+    Selection = { fg = material.none, bg = '#8E97C4' }
+  }
+}
 
 vim.cmd([[colorscheme material]])
+
+
+------------
+-- Colorizer
+------------
+require'colorizer'.setup()
+
 
 ----------
 -- Lualine
