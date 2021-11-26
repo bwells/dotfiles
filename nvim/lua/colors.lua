@@ -52,3 +52,9 @@ require('lualine').setup {
   },
   extensions = {'quickfix', 'nvim-tree'}
 }
+
+--------------
+-- virt-column
+--------------
+require("virt-column").setup()
+vim.cmd([[highlight clear ColorColumn]])

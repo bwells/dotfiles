@@ -54,9 +54,10 @@ ft.text = '# %s'
 ------------
 -- Pear Tree
 ------------
-vim.g.pear_tree_smart_openers =1
-vim.g.pear_tree_smart_closers =1
+vim.g.pear_tree_smart_openers = 1
+vim.g.pear_tree_smart_closers = 1
 vim.g.pear_tree_smart_backspace =1
+
 
 -----------------
 -- nvim-autopairs
@@ -66,7 +67,7 @@ require('nvim-autopairs').setup{}
 -- If you want insert `(` after select function or method item
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local cmp = require('cmp')
-cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
+cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '', elm = '' } }))
 
 
 --------------
@@ -126,8 +127,8 @@ require('gitsigns').setup()
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
-	enable = true, -- false will disable the whole extension
-	disable = {},  -- list of language that will be disabled
+    enable = true, -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
   },
   textobjects = {
     select = {
@@ -144,8 +145,8 @@ require'nvim-treesitter.configs'.setup {
         -- ["ic"] = "@class.inner",
         ["ac"] = "@comment.outer",
         ["ic"] = "@comment.outer",
-		["al"] = "@loop.outer",
-		["il"] = "@loop.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
 
         -- Or you can define your own textobjects like this
         -- ["iF"] = {
@@ -159,9 +160,37 @@ require'nvim-treesitter.configs'.setup {
     lsp_interop = {
       enable = true,
       border = 'none',
-      peek_definition_code = {
-        ["df"] = "@function.outer",
-        ["dF"] = "@class.outer",
+      -- TODO: reenable, but explore if this is causing problems with normal df functionality
+      -- peek_definition_code = {
+      --   ["df"] = "@function.outer",
+      --   ["dF"] = "@class.outer",
+      -- },
+    },
+    playground = {
+      enable = true,
+      disable = {},
+      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+      persist_queries = false, -- Whether the query persists across vim sessions
+      keybindings = {
+        toggle_query_editor = 'o',
+        toggle_hl_groups = 'i',
+        toggle_injected_languages = 't',
+        toggle_anonymous_nodes = 'a',
+        toggle_language_display = 'I',
+        focus_language = 'f',
+        unfocus_language = 'F',
+        update = 'R',
+        goto_node = '<cr>',
+        show_help = '?',
+      },
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "gnn",
+        node_incremental = "grn",
+        scope_incremental = "grc",
+        node_decremental = "grm",
       },
     },
     -- move = {

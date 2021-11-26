@@ -18,6 +18,8 @@ vim.o.relativenumber = true
 -- vim.o.ruler at 81 chars
 vim.o.colorcolumn = "81,101"
 
+vim.o.signcolumn = 'yes'
+
 -- highlight the line the cursor is on
 vim.o.cursorline = true
 

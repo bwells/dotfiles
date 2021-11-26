@@ -55,6 +55,11 @@ map("n", "<leader><tab>", ":b#<cr>", defaults)
 -- map("i", "<C-j>", "<esc><c-w><c-j>", defaults)
 -- map("i", "<C-k>", "<esc><c-w><c-k>", defaults)
 
+vim.cmd([[
+tnoremap jk <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
+]])
+
 
 --------------------
 -- Global Management

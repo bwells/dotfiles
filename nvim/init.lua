@@ -4,10 +4,15 @@ require('opts')
 -- load keymaps
 require('maps')
 
--- TODO: explore different auto pairs plugins, nvim-autopairs so far
+-- TODO: explore different auto pairs plugins, nvim-autopairs so far, but seems to have the same problems
 -- TODO: tags managment via LSP? maybe working?
 -- TODO: get elm formatting on save without elm-vim package
+-- TODO: check on mhartington video usage of treesitter? + comments to comment per local language correctly.
+-- TODO: fix default comments for text file types that aren't working (requirements files?)
+-- TODO: check that one youtube video for hwo to search -> Telescope -> refine
 --
+-- TODO: check out harpoon for buffer management workflow improvements
+-- TODO: check out neogit, ala magit
 -- TODO: explore diffview.nvim
 -- TODO: explore orgmode.nvim or nvim-neorg
 -- TODO: move plugin install to separate files
@@ -117,10 +122,14 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 -- Display
 ------------------------------
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
-Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug('nvim-treesitter/nvim-treesitter-textobjects')
+Plug 'nvim-treesitter/playground'
 
 -- statusline
 Plug 'nvim-lualine/lualine.nvim'
+
+-- line for color column
+Plug 'lukas-reineke/virt-column.nvim'
 
 -- highlights color codes with that color as the background
 Plug 'norcalli/nvim-colorizer.lua'
