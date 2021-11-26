@@ -13,10 +13,10 @@ alias brewi="arch -x86_64 /usr/local/bin/brew"
 alias ks="kubectl -n kube-system"
 
 if type -q nvim
-    set -gx EDITOR vim
+    set -x EDITOR vim
 else
     alias vim nvim
-    set -gx EDITOR nvim
+    set -x EDITOR nvim
 end
 
 alias dbimport="~/workspace/ERP/erp/scripts/dbimport.py"
@@ -26,14 +26,14 @@ alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.wr
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-set -gx KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
+set -x KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
 
 # Paths we want to add before system default paths
 set -l PREPEND_PATHS /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.8/bin /opt/homebrew/opt/python@3.9/bin /opt/homebrew/opt/python@3.10/bin /opt/homebrew/bin
 
 for p in $PREPEND_PATHS
     if not contains $p $PATH
-        set -gx PATH $p $PATH
+        set -x PATH $p $PATH
     end
 end
 
@@ -43,15 +43,15 @@ set -l APPEND_PATHS /opt/homebrew/opt/mysql@5.7/bin /Library/Frameworks/Python.f
 
 for p in $APPEND_PATHS
     if not contains $p $PATH
-        set -gx PATH $PATH $p
+        set -x PATH $PATH $p
     end
 end
 
 # virtualfish/venv config
-set -gx WORKON_HOME ~/environments
-set -gx VIRTUALFISH_HOME ~/environments
+set -x WORKON_HOME ~/environments
+set -x VIRTUALFISH_HOME ~/environments
 
-set -gx VIRTUAL_ENV_DISABLE_PROMPT 1
+set -x VIRTUAL_ENV_DISABLE_PROMPT 1
 
 # import ssh keys on boot
 ssh-add -A 2>/dev/null;
