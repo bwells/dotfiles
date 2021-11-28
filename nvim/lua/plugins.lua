@@ -35,7 +35,6 @@ map('n', 'Y', 'y$', defaults)
 -------------
 -- lightpseed
 -------------
---nvim_del_keymap
 require'lightspeed'.setup {
   grey_out_search_area = true
 }
@@ -105,6 +104,16 @@ vim.g.wordmotion_prefix = "<leader>"
 vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
 
 
+--------------
+-- targets.vim
+--------------
+vim.cmd([[
+autocmd User targets#mappings#user call targets#mappings#extend({
+    \ 'a': {},
+    \ })
+]])
+
+
 -----------
 -- vim-bbye
 -----------
@@ -147,6 +156,12 @@ require'nvim-treesitter.configs'.setup {
         ["ic"] = "@comment.outer",
         ["al"] = "@loop.outer",
         ["il"] = "@loop.inner",
+        ["atc"] = "@conditional.outer",
+        ["itc"] = "@conditional.inner",
+        ["atb"] = "@block.outer",
+        ["itb"] = "@block.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
 
         -- Or you can define your own textobjects like this
         -- ["iF"] = {
@@ -276,8 +291,6 @@ map("n", "<Leader>r", "<cmd>Telescope resume<cr>", defaults)
 ------------
 -- nvim-tree
 ------------
-vim.g.nvim_tree_gitignore = 1
-
 require'nvim-tree'.setup {
   disable_netrw       = true,
   hijack_netrw        = true,
@@ -290,6 +303,9 @@ require'nvim-tree'.setup {
   update_to_buf_dir   = {
     enable = false,
     auto_open = false,
+  },
+  git = {
+    ignore = true
   },
   diagnostics = {
     enable = false,
@@ -335,7 +351,6 @@ map("n", "<c-g>", ":NvimTreeToggle<CR>", defaults)
 vim.o.completeopt = 'menu,menuone,noselect'
 
 local lspkind = require'lspkind'
-local cmp = require'cmp'
 
 cmp.setup({
     snippet = {
@@ -412,7 +427,7 @@ cmp.setup.cmdline(':', {
 ------
 local nvim_lsp = require('lspconfig')
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -495,6 +510,20 @@ null_ls.config({
 require("lspconfig")["null-ls"].setup({
     on_attach = on_attach
 })
+
+
+----------
+-- Harpoon
+----------
+map('n', '<leader>hm', '<cmd>lua require("harpoon.mark").add_file(); print("Added Mark")<cr>', { noremap = true})
+map('n', '<leader>hh', '<cmd>lua require("harpoon.ui").nav_file(1)<cr>', defaults)
+map('n', '<leader>hj', '<cmd>lua require("harpoon.ui").nav_file(2)<cr>', defaults)
+map('n', '<leader>hk', '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', defaults)
+map('n', '<leader>hl', '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', defaults)
+
+map('n', '<leader>h', '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', defaults)
+
+require("telescope").load_extension('harpoon')
 
 
 -----------------

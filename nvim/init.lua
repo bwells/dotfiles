@@ -9,13 +9,14 @@ require('maps')
 -- TODO: get elm formatting on save without elm-vim package
 -- TODO: check on mhartington video usage of treesitter? + comments to comment per local language correctly.
 -- TODO: fix default comments for text file types that aren't working (requirements files?)
--- TODO: check that one youtube video for hwo to search -> Telescope -> refine
+-- TODO: check that one youtube video for how to search -> Telescope -> refine
 --
 -- TODO: check out harpoon for buffer management workflow improvements
 -- TODO: check out neogit, ala magit
 -- TODO: explore diffview.nvim
 -- TODO: explore orgmode.nvim or nvim-neorg
 -- TODO: move plugin install to separate files
+-- TODO: check out this dudes python testing workflow. https://www.reddit.com/r/neovim/comments/r312nn/whats_the_best_tool_for_testing/hm9dvmj/
 
 
 local Plug = vim.fn['plug#']
@@ -107,6 +108,9 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'onsails/lspkind-nvim'
+
+-- harpoon
+Plug 'ThePrimeagen/harpoon'
 
 
 ------
