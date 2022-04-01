@@ -12,8 +12,10 @@ alias brewi="arch -x86_64 /usr/local/bin/brew"
 
 alias ks="kubectl -n kube-system"
 
+# set -x HOMEBREW_NO_ENV_HINTS=1
+
 if type -q nvim
-    set -x EDITOR vim
+    set -x EDITOR nvim
 else
     alias vim nvim
     set -x EDITOR nvim

@@ -35,9 +35,7 @@ map('n', 'Y', 'y$', defaults)
 -------------
 -- lightpseed
 -------------
-require'lightspeed'.setup {
-  grey_out_search_area = true
-}
+require'lightspeed'.setup {}
 
 
 ---------------
@@ -92,6 +90,13 @@ require("yabs"):setup {
 }
 
 map("n", "<Leader>y", "<cmd>Telescope yabs tasks<cr>", defaults)
+
+-----------
+-- nvim-bqf
+-----------
+-- require('bqf').setup({
+--   magic_window = false
+-- })
 
 
 ----------------
@@ -231,6 +236,16 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+
+---------------------
+-- Treesitter Context
+---------------------
+require'treesitter-context'.setup{
+    enable = false -- disabled by default
+}
+
+map("n", "<Leader>c", "<cmd>TSContextToggle<cr>", defaults)
+
 ------------
 -- Telescope
 ------------
@@ -276,7 +291,7 @@ require('telescope').setup{
 require('telescope').load_extension('fzf')
 
 -- map("n", "<leader>fb", "<cmd>Telescope file_browser<cr>", defaults)
-map("n", "<leader>gs", "<<cmd>Telescope grep_string<cr>", defaults)
+map("n", "<leader>gs", "<cmd>Telescope grep_string<cr>", defaults)
 map("n", "<leader>/", "<cmd>lua require('telescope.builtin').live_grep({search_all = true})<cr>", defaults)
 map("n", "<leader>t", "<cmd>lua require('telescope.builtin').live_grep()<cr>", defaults)
 map("n", "<leader>ts", "<cmd>Telescope treesitter<cr>", defaults)
@@ -447,10 +462,6 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[e', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']e', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 end
 
 local lsp_installer = require("nvim-lsp-installer")
@@ -498,18 +509,19 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 -- null-ls
 local null_ls = require("null-ls")
-null_ls.config({
+null_ls.setup({
     -- debug = true,
     sources = {
         null_ls.builtins.diagnostics.pylint,
         null_ls.builtins.diagnostics.flake8,
-        null_ls.builtins.diagnostics.hadolint
+        null_ls.builtins.diagnostics.hadolint,
+        null_ls.builtins.diagnostics.eslint
     },
 })
 
-require("lspconfig")["null-ls"].setup({
-    on_attach = on_attach
-})
+-- require("lspconfig")["null-ls"].setup({
+--     on_attach = on_attach
+-- })
 
 
 ----------
@@ -530,3 +542,14 @@ require("telescope").load_extension('harpoon')
 -- Language Packs
 -----------------
 
+
+--
+-- vim.cmd([[
+-- nnoremap <silent> <Plug>SortMotion :<C-U>set opfunc=sort_motion#sort_motion<CR>g@
+-- xnoremap <silent> <Plug>SortMotionVisual :<C-U>call sort_motion#sort_motion(visualmode())<CR>
+-- nnoremap <silent> <Plug>SortLines :<C-U>call sort_motion#sort_lines()<CR>
+--
+-- nmap gs <Plug>SortMotion
+-- xmap gs <Plug>SortMotionVisual
+-- nmap gss <Plug>SortLines
+-- ]])

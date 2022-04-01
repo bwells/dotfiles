@@ -44,7 +44,7 @@ require('lualine').setup {
     lualine_a = {'mode'},
     -- branch, changes, diagnostics and all the rest is too wide for a 100 col split
     -- lualine_b = {'branch', 'diff', {'diagnostics', sources={'nvim_lsp'}}},
-    lualine_b = {'branch', {'diagnostics', sources={'nvim_lsp'}}},
+    lualine_b = {'branch', {'diagnostics', sources={'nvim_diagnostic'}}},
     lualine_c = {'filename'},
     lualine_x = {'filetype', 'fileformat', 'encoding'},
     lualine_y = {'progress'},
@@ -58,3 +58,9 @@ require('lualine').setup {
 --------------
 require("virt-column").setup()
 vim.cmd([[highlight clear ColorColumn]])
+
+
+---------
+-- Notify
+---------
+vim.notify = require("notify")

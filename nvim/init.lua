@@ -17,6 +17,7 @@ require('maps')
 -- TODO: explore orgmode.nvim or nvim-neorg
 -- TODO: move plugin install to separate files
 -- TODO: check out this dudes python testing workflow. https://www.reddit.com/r/neovim/comments/r312nn/whats_the_best_tool_for_testing/hm9dvmj/
+-- TODO: sort-motion isn't working, try setting up earlier or later, mapping conflict?
 
 
 local Plug = vim.fn['plug#']
@@ -76,6 +77,13 @@ Plug 'FooSoft/vim-argwrap'
 -- Build system
 Plug 'pianocomposer321/yabs.nvim'
 
+-- Install the builtin but not on by default CFilter/LFilter plugin
+-- allows filtering quickfix/llist windows via //
+vim.cmd([[packadd cfilter]])
+
+-- quickfix quality of life improvements
+-- Plug 'kevinhwang91/nvim-bqf'
+
 
 -------------
 -- Navigation
@@ -88,7 +96,7 @@ Plug 'moll/vim-bbye'
 -- git changes in the number column
 -- also provides hs to stage changes and ]c,[c to navigate to changes
 Plug 'nvim-lua/plenary.nvim'
-Plug 'lewis6991/gitsigns.nvim'
+Plug('lewis6991/gitsigns.nvim', { ['tag'] = 'v0.4' })
 
 -- Telescope
 Plug 'nvim-lua/popup.nvim'
@@ -109,7 +117,7 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'onsails/lspkind-nvim'
 
--- harpoon
+-- Harpoon
 Plug 'ThePrimeagen/harpoon'
 
 
@@ -122,12 +130,14 @@ Plug 'williamboman/nvim-lsp-installer'
 -- null-lsp
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
+
 ------------------------------
 -- Display
 ------------------------------
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
 Plug('nvim-treesitter/nvim-treesitter-textobjects')
 Plug 'nvim-treesitter/playground'
+Plug 'romgrk/nvim-treesitter-context'
 
 -- statusline
 Plug 'nvim-lualine/lualine.nvim'
@@ -141,6 +151,8 @@ Plug 'norcalli/nvim-colorizer.lua'
 -- material colorscheme
 Plug 'marko-cerovac/material.nvim'
 Plug('folke/tokyonight.nvim', {['branch'] = 'main' })
+
+Plug 'rcarriga/nvim-notify'
 
 
 -----------------
@@ -164,3 +176,4 @@ require('plugins')
 
 -- setup colorschemes
 require('colors')
+
