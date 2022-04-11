@@ -483,7 +483,6 @@ lsp_installer.on_server_ready(function(server)
   end
 
   if server.name == "sumneko_lua" then
-      opts.cmd = { "/Users/kremlan/.local/share/nvim/lsp_servers/sumneko_lua/extension/server/bin/macOS/lua-language-server" }
       opts.settings = {
           Lua = {
               diagnostics = {
@@ -494,7 +493,7 @@ lsp_installer.on_server_ready(function(server)
   end
 
   opts.on_attach = on_attach
-  nvim_lsp[server.name].setup(opts)
+  server:setup(opts)
 end)
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
