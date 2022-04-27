@@ -167,6 +167,7 @@ Plug 'Zaptic/elm-vim'
 -- Plug 'dag/vim-fish', { 'for': 'fish' }
 -- Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'sophacles/vim-bundle-mako'
+Plug 'Glench/Vim-Jinja2-Syntax'
 -- Plug 'rust-lang/rust.vim'
 
 vim.call('plug#end')
