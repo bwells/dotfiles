@@ -1,5 +1,5 @@
-local map = vim.api.nvim_set_keymap
-local defaults = { noremap = true, silent = true }
+local map = vim.keymap.set
+local defaults = { silent = true }
 
 -- disable arrow keys in normal mode
 map("", "<Up>", "<NOP>", defaults)
