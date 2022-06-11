@@ -1,3 +1,9 @@
+-- TODO: consider making this a command like :InstallPacker instead of checking on every startup
+local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  PACKER_BOOTSTRAP = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+end
+
 -- load basic vim options
 require('opts')
 
@@ -193,6 +199,12 @@ use 'Glench/Vim-Jinja2-Syntax'
 
 -- vim.call('plug#end')
 
+-- Automatically set up your configuration after cloning packer.nvim
+-- Put this at the end after all plugins
+if PACKER_BOOTSTRAP then
+  require('packer').sync()
+end
+
 end)
 
 -- setup plugin configurations
@@ -201,3 +213,10 @@ require('plugins')
 -- setup colorschemes
 require('colors')
 
+-- update packer anytime plugins may have changed
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost init.lua source <afile> | PackerCompile
+  augroup end
+]])
