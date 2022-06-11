@@ -20,40 +20,51 @@ require('maps')
 -- TODO: sort-motion isn't working, try setting up earlier or later, mapping conflict?
 
 
-local Plug = vim.fn['plug#']
+-- local Plug = vim.fn['plug#']
 
-vim.call('plug#begin', '~/.config/nvim/plugged')
+-- vim.call('plug#begin', '~/.config/nvim/plugged')
+
+require('packer').startup(function(use)
+
+-- Packer itself
+use 'wbthomason/packer.nvim'
 
 ---------------------------
 -- Motions and Text Objects
 ---------------------------
 
 -- adds . repeat to more commands
-Plug 'tpope/vim-repeat'
+use 'tpope/vim-repeat'
 
 -- more sanity to yanking
-Plug 'svermeulen/vim-cutlass'
-Plug 'svermeulen/vim-yoink'
+use 'svermeulen/vim-cutlass'
+use 'svermeulen/vim-yoink'
 
 -- best of easymotion and sneak
 -- smarter s/S and f/F
-Plug 'ggandor/lightspeed.nvim'
+use {
+  'ggandor/lightspeed.nvim',
+  config = function()
+    require('lightspeed').setup {}
+  end
+}
 
 -- add motions for word hunks in camel or underscore case
-Plug 'chaoren/vim-wordmotion'
+use 'chaoren/vim-wordmotion'
 
 -- lots of targets
 -- separators, args, etc
-Plug 'wellle/targets.vim'
+use 'wellle/targets.vim'
 
 -- motions/text objects for surrounding selections with chars
-Plug 'tpope/vim-surround'
+use 'tpope/vim-surround'
 
 -- defines a sort motion
-Plug 'christoomey/vim-sort-motion'
+use 'christoomey/vim-sort-motion'
+use 'sQVe/sort.nvim'
 
 -- base64 conversion word motion
-Plug 'christianrondeau/vim-base64'
+use 'christianrondeau/vim-base64'
 
 -----------
 -- Commands
@@ -61,21 +72,21 @@ Plug 'christianrondeau/vim-base64'
 
 -- gcc to toggle comment current line
 -- gc to toggle comment selected line(s)
-Plug 'numToStr/Comment.nvim'
+use 'numToStr/Comment.nvim'
 
 -- auto quote/bracket/paren matching
 -- Plug 'Raimondi/delimitMate'
 -- Plug 'tmsvg/pear-tree'
-Plug 'windwp/nvim-autopairs'
+use 'windwp/nvim-autopairs'
 
 -- provides mixed case abbreviations and searches
-Plug 'tpope/vim-abolish'
+use 'tpope/vim-abolish'
 
 -- <leader>a converts arg lists inline<>multiline
-Plug 'FooSoft/vim-argwrap'
+use 'FooSoft/vim-argwrap'
 
 -- Build system
-Plug 'pianocomposer321/yabs.nvim'
+use { 'pianocomposer321/yabs.nvim', tag = 'v1.0' }
 
 -- Install the builtin but not on by default CFilter/LFilter plugin
 -- allows filtering quickfix/llist windows via //
@@ -91,68 +102,78 @@ vim.cmd([[packadd cfilter]])
 
 -- better bdelete
 -- :bc to close a buffer without also closing the split
-Plug 'moll/vim-bbye'
+use 'moll/vim-bbye'
+
+-- use 'nvim-lua/plenary.nvim'
 
 -- git changes in the number column
 -- also provides hs to stage changes and ]c,[c to navigate to changes
-Plug 'nvim-lua/plenary.nvim'
-Plug('lewis6991/gitsigns.nvim', { ['tag'] = 'v0.4' })
+use { 'lewis6991/gitsigns.nvim', tag = 'v0.4' }
 
 -- Telescope
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
-Plug 'kyazdani42/nvim-web-devicons'
+use 'nvim-lua/popup.nvim'
+use {
+  'nvim-telescope/telescope.nvim',
+  requires = {
+    {'nvim-lua/plenary.nvim'},
+    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+    { 'kyazdani42/nvim-web-devicons' }
+  }
+}
 
 -- nvim-tree
-Plug 'kyazdani42/nvim-tree.lua'
+use 'kyazdani42/nvim-tree.lua'
 
 -- nvim-cmp
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'onsails/lspkind-nvim'
+use 'hrsh7th/vim-vsnip'
+use 'hrsh7th/nvim-cmp'
+use 'hrsh7th/cmp-vsnip'
+use 'hrsh7th/cmp-nvim-lsp'
+use 'hrsh7th/cmp-buffer'
+use 'hrsh7th/cmp-path'
+use 'hrsh7th/cmp-cmdline'
+use 'onsails/lspkind-nvim'
 
 -- Harpoon
-Plug 'ThePrimeagen/harpoon'
+use 'ThePrimeagen/harpoon'
 
 
 ------
 -- LSP
 ------
-Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/nvim-lsp-installer'
+use 'neovim/nvim-lspconfig'
+use 'williamboman/nvim-lsp-installer'
 
 -- null-lsp
-Plug 'jose-elias-alvarez/null-ls.nvim'
+use 'jose-elias-alvarez/null-ls.nvim'
 
 
 ------------------------------
 -- Display
 ------------------------------
-Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
-Plug('nvim-treesitter/nvim-treesitter-textobjects')
-Plug 'nvim-treesitter/playground'
-Plug 'romgrk/nvim-treesitter-context'
+-- Treesitter and friends
+use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+use 'nvim-treesitter/nvim-treesitter-textobjects'
+use 'nvim-treesitter/playground'
+use 'romgrk/nvim-treesitter-context'
 
 -- statusline
-Plug 'nvim-lualine/lualine.nvim'
+use 'nvim-lualine/lualine.nvim'
 
 -- line for color column
-Plug 'lukas-reineke/virt-column.nvim'
+use 'lukas-reineke/virt-column.nvim'
 
 -- highlights color codes with that color as the background
-Plug 'norcalli/nvim-colorizer.lua'
+use 'norcalli/nvim-colorizer.lua'
 
 -- material colorscheme
-Plug 'marko-cerovac/material.nvim'
-Plug('folke/tokyonight.nvim', {['branch'] = 'main' })
+use 'marko-cerovac/material.nvim'
 
-Plug 'rcarriga/nvim-notify'
+use { 'folke/tokyonight.nvim', branch = 'main' }
+
+use 'rcarriga/nvim-notify'
+
+use 'nvim-neorg/neorg'
 
 
 -----------------
@@ -160,17 +181,19 @@ Plug 'rcarriga/nvim-notify'
 -----------------
 
 -- needed for correct indentation on new lines
-Plug 'hynek/vim-python-pep8-indent'
+use 'hynek/vim-python-pep8-indent'
 
 -- Plug 'ekalinin/Dockerfile.vim', { 'for': 'dockerfile' }
-Plug 'Zaptic/elm-vim'
+use 'Zaptic/elm-vim'
 -- Plug 'dag/vim-fish', { 'for': 'fish' }
 -- Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'sophacles/vim-bundle-mako'
-Plug 'Glench/Vim-Jinja2-Syntax'
+use 'sophacles/vim-bundle-mako'
+use 'Glench/Vim-Jinja2-Syntax'
 -- Plug 'rust-lang/rust.vim'
 
-vim.call('plug#end')
+-- vim.call('plug#end')
+
+end)
 
 -- setup plugin configurations
 require('plugins')

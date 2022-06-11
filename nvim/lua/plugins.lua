@@ -48,6 +48,22 @@ local ft = require('Comment.ft')
 ft.text = '# %s'
 
 
+-- Optional setup for overriding defaults.
+require("sort").setup({
+  -- Input configuration here.
+  -- Refer to the configuration section below for options.
+})
+
+-- map("n", "go", "<Cmd>Sort<CR>", defaults)
+map("v", "go", "<Esc><Cmd>Sort<CR>", defaults)
+map("n", "go", ":sort", defaults)
+map("v", "go", ":sort", defaults)
+
+-- vim.cmd([[
+--   nnoremap <silent> go <Cmd>Sort<CR>
+--   vnoremap <silent> go <Esc><Cmd>Sort<CR>
+-- ]])
+
 ------------
 -- Pear Tree
 ------------
@@ -81,8 +97,8 @@ require("yabs"):setup {
             default_task = "build_and_run",
             tasks = {
                 build = {
-                    command = "cd elm; find src/Entry -name '*.elm'  | xargs elm make --output ../portal/public/scripts/elm.js --debug",
-                    output = "echo",
+                    command = "cd elm; find src/Entry -name '*.elm' | xargs elm make --output ../portal/public/scripts/elm.js --debug",
+                    output = "terminal",
                 }
             }
         }
@@ -435,7 +451,8 @@ cmp.setup.cmdline(':', {
 ------
 -- LSP
 ------
-local nvim_lsp = require('lspconfig')
+require("nvim-lsp-installer").setup {}
+local lspconfig = require("lspconfig")
 
 local on_attach = function(_, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -459,36 +476,73 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 end
 
-local lsp_installer = require("nvim-lsp-installer")
+-- enable debug verbosity
+-- vim.lsp.set_log_level("debug")
 
-lsp_installer.on_server_ready(function(server)
-  local opts = {}
+local lsp_default_options = { on_attach = on_attach }
 
-  -- disable python diagnostics for now
-  if server.name == "pylsp" then
-     opts.handlers = {
-         ["textDocument/publishDiagnostics"] = function() end
-     }
-  end
-
-  -- TODO expand beyond elmls
-  if server.name == 'elmls' then
-      opts['capabilities'] = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  end
-
-  if server.name == "sumneko_lua" then
-      opts.settings = {
-          Lua = {
-              diagnostics = {
-                  globals = { 'vim' }
-              }
-          }
+lspconfig.cssls.setup(lsp_default_options)
+lspconfig.dockerls.setup(lsp_default_options)
+-- lspconfig.elmls.setup({
+--   on_attach = on_attach,
+--   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- })
+lspconfig.elmls.setup(lsp_default_options)
+lspconfig.eslint.setup(lsp_default_options)
+lspconfig.html.setup(lsp_default_options)
+lspconfig.jsonls.setup(lsp_default_options)
+lspconfig.sqls.setup(lsp_default_options)
+lspconfig.sumneko_lua.setup({
+  on_attach = on_attach,
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
       }
-  end
+    }
+  }
+})
+lspconfig.vimls.setup(lsp_default_options)
+lspconfig.yamlls.setup(lsp_default_options)
 
-  opts.on_attach = on_attach
-  server:setup(opts)
-end)
+-- lspconfig.pylsp.setup({
+--   on_attach = on_attach,
+--   handlers = {
+--     ["textDocument/publishDiagnostics"] = function() end
+--   }
+-- })
+
+
+-- local lsp_installer = require("nvim-lsp-installer")
+--
+-- lsp_installer.on_server_ready(function(server)
+--   local opts = {}
+--
+--   -- disable python diagnostics for now
+--   if server.name == "pylsp" then
+--      opts.handlers = {
+--          ["textDocument/publishDiagnostics"] = function() end
+--      }
+--   end
+--
+--   -- TODO expand beyond elmls
+--   if server.name == 'elmls' then
+--       opts['capabilities'] = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+--   end
+--
+--   if server.name == "sumneko_lua" then
+--       opts.settings = {
+--           Lua = {
+--               diagnostics = {
+--                   globals = { 'vim' }
+--               }
+--           }
+--       }
+--   end
+--
+--   opts.on_attach = on_attach
+--   server:setup(opts)
+-- end)
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -530,6 +584,25 @@ map('n', '<leader>hl', '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', default
 map('n', '<leader>h', '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>', defaults)
 
 require("telescope").load_extension('harpoon')
+
+--------
+-- neorg
+--------
+require('neorg').setup {
+  load = {
+    ["core.defaults"] = {},
+    ["core.norg.dirman"] = {
+      config = {
+        workspaces = {
+          work = "~/notes/work",
+          home = "~/notes/home",
+        }
+      }
+    },
+    ["core.norg.concealer"] = { },
+    ["core.gtd.base"] = {}
+  }
+}
 
 
 -----------------
