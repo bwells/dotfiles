@@ -59,6 +59,27 @@ require('lualine').setup {
 require("virt-column").setup()
 vim.cmd([[highlight clear ColorColumn]])
 
+-------------------
+-- indent-blankline
+-------------------
+-- Disabled for now because the column highlighting overrides cursorline
+-- vim.opt.termguicolors = true
+-- vim.cmd [[highlight IndentBlanklineIndent1 guibg=#0F111A gui=nocombine]]
+-- vim.cmd [[highlight IndentBlanklineIndent2 guibg=#16171A gui=nocombine]]
+--
+-- require("indent_blankline").setup {
+--     char = "",
+--     char_highlight_list = {
+--         "IndentBlanklineIndent1",
+--         "IndentBlanklineIndent2",
+--     },
+--     space_char_highlight_list = {
+--         "IndentBlanklineIndent1",
+--         "IndentBlanklineIndent2",
+--     },
+--     show_trailing_blankline_indent = false,
+-- }
+
 
 ---------
 -- Notify

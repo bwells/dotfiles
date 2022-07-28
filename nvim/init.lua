@@ -116,6 +116,8 @@ use 'moll/vim-bbye'
 -- also provides hs to stage changes and ]c,[c to navigate to changes
 use { 'lewis6991/gitsigns.nvim', tag = 'v0.4' }
 
+use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+
 -- Telescope
 use 'nvim-lua/popup.nvim'
 use {
@@ -168,6 +170,7 @@ use 'nvim-lualine/lualine.nvim'
 
 -- line for color column
 use 'lukas-reineke/virt-column.nvim'
+use 'lukas-reineke/indent-blankline.nvim'
 
 -- highlights color codes with that color as the background
 use 'norcalli/nvim-colorizer.lua'
@@ -180,6 +183,7 @@ use { 'folke/tokyonight.nvim', branch = 'main' }
 use 'rcarriga/nvim-notify'
 
 use 'nvim-neorg/neorg'
+
 
 
 -----------------
