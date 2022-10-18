@@ -451,7 +451,12 @@ cmp.setup.cmdline(':', {
 ------
 -- LSP
 ------
-require("nvim-lsp-installer").setup {}
+
+-- mason
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+-- require("nvim-lsp-installer").setup {}
 local lspconfig = require("lspconfig")
 
 local on_attach = function(_, bufnr)
@@ -462,7 +467,7 @@ local on_attach = function(_, bufnr)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
@@ -470,7 +475,6 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
@@ -483,10 +487,12 @@ local lsp_default_options = { on_attach = on_attach }
 
 lspconfig.cssls.setup(lsp_default_options)
 lspconfig.dockerls.setup(lsp_default_options)
+
 -- lspconfig.elmls.setup({
 --   on_attach = on_attach,
 --   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- })
+
 lspconfig.elmls.setup(lsp_default_options)
 lspconfig.eslint.setup(lsp_default_options)
 lspconfig.html.setup(lsp_default_options)
@@ -505,44 +511,12 @@ lspconfig.sumneko_lua.setup({
 lspconfig.vimls.setup(lsp_default_options)
 lspconfig.yamlls.setup(lsp_default_options)
 
--- lspconfig.pylsp.setup({
---   on_attach = on_attach,
---   handlers = {
---     ["textDocument/publishDiagnostics"] = function() end
---   }
--- })
-
-
--- local lsp_installer = require("nvim-lsp-installer")
---
--- lsp_installer.on_server_ready(function(server)
---   local opts = {}
---
---   -- disable python diagnostics for now
---   if server.name == "pylsp" then
---      opts.handlers = {
---          ["textDocument/publishDiagnostics"] = function() end
---      }
---   end
---
---   -- TODO expand beyond elmls
---   if server.name == 'elmls' then
---       opts['capabilities'] = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
---   end
---
---   if server.name == "sumneko_lua" then
---       opts.settings = {
---           Lua = {
---               diagnostics = {
---                   globals = { 'vim' }
---               }
---           }
---       }
---   end
---
---   opts.on_attach = on_attach
---   server:setup(opts)
--- end)
+lspconfig.pyright.setup {
+  on_attach = on_attach,
+  handlers = {
+    ["textDocument/publishDiagnostics"] = function() end
+  }
+}
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -555,13 +529,14 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
+
 -- null-ls
 local null_ls = require("null-ls")
 null_ls.setup({
     -- debug = true,
     sources = {
-        null_ls.builtins.diagnostics.pylint,
-        null_ls.builtins.diagnostics.flake8,
+        -- null_ls.builtins.diagnostics.pylint,
+        -- null_ls.builtins.diagnostics.flake8,
         null_ls.builtins.diagnostics.hadolint,
         null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.code_actions.gitsigns,
