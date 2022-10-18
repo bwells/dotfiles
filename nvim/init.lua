@@ -48,12 +48,15 @@ use 'svermeulen/vim-yoink'
 
 -- best of easymotion and sneak
 -- smarter s/S and f/F
-use {
-  'ggandor/lightspeed.nvim',
-  config = function()
-    require('lightspeed').setup {}
-  end
-}
+-- use {
+--   'ggandor/lightspeed.nvim',
+--   config = function()
+--     require('lightspeed').setup {}
+--   end
+-- }
+
+use 'ggandor/leap.nvim'
+use 'ggandor/flit.nvim'
 
 -- add motions for word hunks in camel or underscore case
 use 'chaoren/vim-wordmotion'
@@ -114,7 +117,7 @@ use 'moll/vim-bbye'
 
 -- git changes in the number column
 -- also provides hs to stage changes and ]c,[c to navigate to changes
-use { 'lewis6991/gitsigns.nvim', tag = 'v0.4' }
+use 'lewis6991/gitsigns.nvim'
 
 use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
 
