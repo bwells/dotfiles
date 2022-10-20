@@ -5,13 +5,31 @@ vim.g.material_style = "deep ocean"
 
 local material = require('material')
 material.setup{
-	italics = {
-		comments = false,
-    keywords = false,
-		functions = false,
-		strings = false,
-		variables = false
-	},
+  styles = {
+		comments = { italic = false },
+    keywords = { italic = false },
+		functions = { italic = false },
+		strings = { italic = false },
+		variables = { italic = false },
+  },
+  plugins = { -- Uncomment the plugins that you use to highlight them
+    -- Available plugins:
+    -- "dap",
+    -- "dashboard",
+    "gitsigns",
+    -- "hop",
+    -- "indent-blankline",
+    -- "lspsaga",
+    -- "mini",
+    "neogit",
+    "nvim-cmp",
+    -- "nvim-navic",
+    "nvim-tree",
+    -- "sneak",
+    "telescope",
+    "trouble",
+    -- "which-key",
+  },
   custom_highlights = {
     CursorLine = { fg = material.none, bg = '#1B1D25' },
     Selection = { fg = material.none, bg = '#8E97C4' }
