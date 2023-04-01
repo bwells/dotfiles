@@ -42,6 +42,10 @@ map('n', 'Y', 'y$', defaults)
 ------------
 require('leap').add_default_mappings()
 require('flit').setup()
+-- restore the default behavior of visual mode x and X
+vim.cmd([[xunmap x]])
+vim.cmd([[xunmap X]])
+
 
 ---------------
 -- Comment.nvim
@@ -59,15 +63,8 @@ require("sort").setup({
   -- Refer to the configuration section below for options.
 })
 
--- map("n", "go", "<Cmd>Sort<CR>", defaults)
-map("v", "go", "<Esc><Cmd>Sort<CR>", defaults)
-map("n", "go", ":sort", defaults)
-map("v", "go", ":sort", defaults)
-
--- vim.cmd([[
---   nnoremap <silent> go <Cmd>Sort<CR>
---   vnoremap <silent> go <Esc><Cmd>Sort<CR>
--- ]])
+vim.cmd[[nnoremap <silent> gsp vip<Esc><Cmd>Sort<CR>]]
+vim.cmd[[nnoremap <silent> gs$ v$<Esc><Cmd>Sort<CR>]]
 
 ------------
 -- Pear Tree
@@ -111,6 +108,20 @@ require("yabs"):setup {
 }
 
 map("n", "<Leader>y", "<cmd>Telescope yabs tasks<cr>", defaults)
+
+-------------
+-- coderunner
+-------------
+-- require('code_runner').setup({
+--   filetype = {
+-- 		-- java = "cd $dir && javac $fileName && java $fileNameWithoutExt",
+-- 		-- python = "python3 -u",
+-- 		-- typescript = "deno run",
+-- 		-- rust = "cd $dir && rustc $fileName && $dir/$fileNameWithoutExt"
+--     elm = "cd elm; find src/Entry -name '*.elm' | xargs elm make --output ../portal/public/scripts/elm.js --debug"
+-- 	},
+-- })
+
 
 -----------
 -- nvim-bqf
@@ -541,7 +552,7 @@ lspconfig.eslint.setup(lsp_default_options)
 lspconfig.html.setup(lsp_default_options)
 lspconfig.jsonls.setup(lsp_default_options)
 lspconfig.sqls.setup(lsp_default_options)
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
   on_attach = on_attach,
   settings = {
     Lua = {
@@ -559,6 +570,10 @@ lspconfig.pyright.setup {
   handlers = {
     ["textDocument/publishDiagnostics"] = function() end
   }
+}
+
+lspconfig.ruff_lsp.setup {
+  on_attach = on_attach,
 }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -587,11 +602,6 @@ null_ls.setup({
 })
 
 
--- require("lspconfig")["null-ls"].setup({
---     on_attach = on_attach
--- })
-
-
 ----------
 -- Harpoon
 ----------
@@ -608,22 +618,21 @@ require("telescope").load_extension('harpoon')
 --------
 -- neorg
 --------
-require('neorg').setup {
-  load = {
-    ["core.defaults"] = {},
-    ["core.norg.dirman"] = {
-      config = {
-        workspaces = {
-          work = "~/notes/work",
-          home = "~/notes/home",
-        }
-      }
-    },
-    ["core.norg.concealer"] = { },
-    ["core.gtd.base"] = {}
-  }
-}
-
+-- require('neorg').setup {
+--   load = {
+--     ["core.defaults"] = {},
+--     ["core.norg.dirman"] = {
+--       config = {
+--         workspaces = {
+--           work = "~/notes/work",
+--           home = "~/notes/home",
+--         }
+--       }
+--     },
+--     ["core.norg.concealer"] = { },
+--     ["core.gtd.base"] = {}
+--   }
+-- }
 
 -----------------
 -- Language Packs

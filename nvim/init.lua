@@ -25,11 +25,6 @@ require('maps')
 -- TODO: check out this dudes python testing workflow. https://www.reddit.com/r/neovim/comments/r312nn/whats_the_best_tool_for_testing/hm9dvmj/
 -- TODO: sort-motion isn't working, try setting up earlier or later, mapping conflict?
 
-
--- local Plug = vim.fn['plug#']
-
--- vim.call('plug#begin', '~/.config/nvim/plugged')
-
 require('packer').startup(function(use)
 
 -- Packer itself
@@ -69,8 +64,9 @@ use 'wellle/targets.vim'
 use 'tpope/vim-surround'
 
 -- defines a sort motion
-use 'christoomey/vim-sort-motion'
+-- use 'christoomey/vim-sort-motion'
 use 'sQVe/sort.nvim'
+-- use 'ralismark/opsort.vim'
 
 -- base64 conversion word motion
 use 'christianrondeau/vim-base64'
@@ -96,6 +92,7 @@ use 'FooSoft/vim-argwrap'
 
 -- Build system
 use { 'pianocomposer321/yabs.nvim', tag = 'v1.0' }
+-- use 'CRAG666/code_runner.nvim'
 
 -- Install the builtin but not on by default CFilter/LFilter plugin
 -- allows filtering quickfix/llist windows via //
@@ -103,6 +100,7 @@ vim.cmd([[packadd cfilter]])
 
 -- quickfix quality of life improvements
 -- Plug 'kevinhwang91/nvim-bqf'
+use 'kevinhwang91/nvim-bqf'
 
 
 -------------
@@ -148,6 +146,8 @@ use 'onsails/lspkind-nvim'
 -- Harpoon
 use 'ThePrimeagen/harpoon'
 
+use 'asiryk/auto-hlsearch.nvim'
+
 
 ------
 -- LSP
@@ -184,10 +184,23 @@ use 'marko-cerovac/material.nvim'
 
 use { 'folke/tokyonight.nvim', branch = 'main' }
 
+use {'shaunsingh/oxocarbon.nvim', run = './install.sh'}
+
 use 'rcarriga/nvim-notify'
 
-use 'nvim-neorg/neorg'
+-- use 'nvim-neorg/neorg'
 
+use {
+  "folke/trouble.nvim",
+  requires = "kyazdani42/nvim-web-devicons",
+  config = function()
+    require("trouble").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end
+}
 
 
 -----------------
@@ -205,7 +218,7 @@ use 'sophacles/vim-bundle-mako'
 use 'Glench/Vim-Jinja2-Syntax'
 -- Plug 'rust-lang/rust.vim'
 
--- vim.call('plug#end')
+use 'sychen52/gF-python-traceback'
 
 -- Automatically set up your configuration after cloning packer.nvim
 -- Put this at the end after all plugins

@@ -55,14 +55,14 @@ vim.o.showmode = false
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    -- theme = 'material-nvim'
     theme = 'material'
   },
   sections = {
     lualine_a = {'mode'},
     -- branch, changes, diagnostics and all the rest is too wide for a 100 col split
     -- lualine_b = {'branch', 'diff', {'diagnostics', sources={'nvim_lsp'}}},
-    lualine_b = {'branch', {'diagnostics', sources={'nvim_diagnostic'}}},
+    -- lualine_b = { {'branch', icon='שׂ'}, {'diagnostics', sources={'nvim_diagnostic'}}},
+    lualine_b = { {'branch'}, {'diagnostics', sources={'nvim_diagnostic'}}},
     lualine_c = {'filename'},
     lualine_x = {'filetype', 'fileformat', 'encoding'},
     lualine_y = {'progress'},
