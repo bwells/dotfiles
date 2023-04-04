@@ -9,6 +9,14 @@ vim.o.showmode = false
 
 vim.o.completeopt = 'menu,menuone,noselect'
 
+-- Set some wordmotion global options before import
+-- so that they're read in in the correct order
+vim.g.wordmotion_prefix = "<leader>"
+-- override the default 'b' mapping to avoid conflicting
+-- with <leader>b to open buffer search
+vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
+
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -115,36 +123,42 @@ require("lazy").setup({
 
   -- sneak like motions, smarter s/S and f/F
   {
-    'ggandor/flit.nvim',
+    'ggandor/leap.nvim',
+    priority=999,
     dependencies = {
       {
-        'ggandor/leap.nvim',
+        'ggandor/flit.nvim',
         config = function ()
-          require('leap').add_default_mappings()
-          vim.cmd([[xunmap x]])
-          vim.cmd([[xunmap X]])
+          require('flit').setup()
         end
       }
     },
     config = function ()
-        require('flit').setup()
+        require('leap').add_default_mappings()
+        vim.cmd([[xunmap x]])
+        vim.cmd([[xunmap X]])
     end
   },
 
   -- add motions for word hunks in camel or underscore case
-  -- {
-  --   'chaoren/vim-wordmotion',
-  --   config = function()
-  --     vim.g.wordmotion_prefix = "<leader>"
-  --     vim.g.wordmotion_nomap = true
-
-  --     -- CamelCaseACRONYMWords_underscore1234
-
-  --     -- override the default 'b' mapping to avoid conflicting
-  --     -- with <leader>b to open buffer search
-  --     vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
-  --   end
-  -- },
+  {
+    'chaoren/vim-wordmotion',
+    lazy = true,
+    keys = {
+      { "w", mode = "n" },
+      -- { "b", mode = "n" },
+      { "W", mode = "n" },
+      { "B", mode = "n" },
+      { "w", mode = "o" },
+      { "W", mode = "o" },
+    },
+    config = function()
+      -- vim.g.wordmotion_prefix = "<leader>"
+      -- override the default 'b' mapping to avoid conflicting
+      -- with <leader>b to open buffer search
+      -- vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
+    end
+  },
 
   -- lots of targets
   -- separators, args, etc
@@ -175,7 +189,10 @@ require("lazy").setup({
   -- gc to toggle comment selected line(s)
   {
     'numToStr/Comment.nvim',
-    lazy = false,
+    lazy = true,
+    keys = {
+      { 'gc' }
+    },
     config = function ()
       require('Comment').setup()
 
@@ -198,7 +215,7 @@ require("lazy").setup({
     end
   },
 
-  {
+  { -- TODO: fix lazy loading to actually load this ever
     'tpope/vim-abolish',
     lazy = true
   },
@@ -216,6 +233,10 @@ require("lazy").setup({
   -- :bc to close a buffer without also closing the split
   {
     'moll/vim-bbye',
+    -- lazy = true,
+    -- keys = {
+    --   { ":bc", ":bc"  }
+    -- },
     config = function ()
       -- alias Bdelete to Bclose
       vim.cmd([[command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>]])
@@ -325,40 +346,40 @@ require("lazy").setup({
         on_attach = function(bufnr)
           local gs = package.loaded.gitsigns
 
-          local function map(mode, l, r, opts)
+          local function local_map(mode, l, r, opts)
             opts = opts or {}
             opts.buffer = bufnr
             vim.keymap.set(mode, l, r, opts)
           end
 
           -- Navigation
-          map('n', ']c', function()
+          local_map('n', ']c', function()
             if vim.wo.diff then return ']c' end
             vim.schedule(function() gs.next_hunk() end)
             return '<Ignore>'
           end, {expr=true})
 
-          map('n', '[c', function()
+          local_map('n', '[c', function()
             if vim.wo.diff then return '[c' end
             vim.schedule(function() gs.prev_hunk() end)
             return '<Ignore>'
           end, {expr=true})
 
           -- Actions
-          map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-          map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-          map('n', '<leader>hS', gs.stage_buffer)
-          map('n', '<leader>hu', gs.undo_stage_hunk)
-          map('n', '<leader>hR', gs.reset_buffer)
-          map('n', '<leader>hp', gs.preview_hunk)
-          map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-          map('n', '<leader>tb', gs.toggle_current_line_blame)
-          map('n', '<leader>hd', gs.diffthis)
-          map('n', '<leader>hD', function() gs.diffthis('~') end)
-          map('n', '<leader>td', gs.toggle_deleted)
+          local_map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+          local_map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+          local_map('n', '<leader>hS', gs.stage_buffer)
+          local_map('n', '<leader>hu', gs.undo_stage_hunk)
+          local_map('n', '<leader>hR', gs.reset_buffer)
+          local_map('n', '<leader>hp', gs.preview_hunk)
+          local_map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+          local_map('n', '<leader>tb', gs.toggle_current_line_blame)
+          local_map('n', '<leader>hd', gs.diffthis)
+          local_map('n', '<leader>hD', function() gs.diffthis('~') end)
+          local_map('n', '<leader>td', gs.toggle_deleted)
 
           -- Text object
-          map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+          local_map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
         end
       }
     end
@@ -426,6 +447,35 @@ require("lazy").setup({
 
   {
     'neovim/nvim-lspconfig',
+    lazy = true,
+    ft = {
+      "css",
+      "dockerfile",
+      "elm",
+      "html",
+      "javascript",
+      "json",
+      "lua",
+      "python",
+      "sql",
+      "vim",
+      "yaml"
+    },
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        build = ":MasonUpdate",
+        config = function ()
+          require("mason").setup()
+        end
+      },
+      {
+        'williamboman/mason-lspconfig.nvim',
+        config = function ()
+          require("mason-lspconfig").setup()
+        end
+      },
+    },
     config = function ()
 
       local lspconfig = require("lspconfig")
@@ -506,19 +556,6 @@ require("lazy").setup({
 
     end
   },
-  {
-    'williamboman/mason.nvim',
-    build = ":MasonUpdate",
-    config = function ()
-      require("mason").setup()
-    end
-  },
-  {
-    'williamboman/mason-lspconfig.nvim',
-    config = function ()
-      require("mason-lspconfig").setup()
-    end
-  },
 
   -- null-lsp
   {
@@ -543,6 +580,7 @@ require("lazy").setup({
   { 'hrsh7th/vim-vsnip' },
   {
     'hrsh7th/nvim-cmp',
+    lazy = true,
     dependencies = {
       { 'hrsh7th/cmp-vsnip' },
       { 'hrsh7th/cmp-nvim-lsp' },
@@ -630,6 +668,8 @@ require("lazy").setup({
 
   {
     'nvim-treesitter/nvim-treesitter',
+    lazy = true,
+    event = 'BufReadPre',
     build = ':TSUpdate',
     dependencies = {
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
@@ -748,6 +788,8 @@ require("lazy").setup({
       }
     end
   },
+
+  { 'rcarriga/nvim-notify' },
 
   -- needed for correct indentation on new lines
   { 'hynek/vim-python-pep8-indent', ft="python" },
