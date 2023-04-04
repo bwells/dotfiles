@@ -417,92 +417,6 @@ require("lazy").setup({
     end
   },
 
-  { 'hrsh7th/vim-vsnip' },
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      { 'hrsh7th/cmp-vsnip' },
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'hrsh7th/cmp-cmdline' },
-      config = function ()
-        local cmp = require('cmp')
-        local lspkind = require('lspkind')
-
-        cmp.setup({
-            snippet = {
-                expand = function(args)
-                    vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                end
-            },
-            mapping = {
-                ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-                ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-                ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-                ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-                ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-                ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-                ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-                ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-                ['<C-e>'] = cmp.mapping({
-                    i = cmp.mapping.abort(),
-                    c = cmp.mapping.close(),
-                }),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
-            },
-            sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'vsnip' },
-                { name = "buffer", keyword_length = 4 },
-            }),
-
-            -- ganked from tj's settings
-            formatting = {
-                format = lspkind.cmp_format {
-                    with_text = true,
-                    menu = {
-                        buffer = "[buf]",
-                        nvim_lsp = "[LSP]",
-                        nvim_lua = "[api]",
-                        path = "[path]",
-                        luasnip = "[snip]",
-                        gh_issues = "[issues]",
-                        tn = "[TabNine]",
-                    },
-                },
-            },
-
-            experimental = {
-                -- I like the new menu better! Nice work hrsh7th
-                native_menu = false,
-
-                -- Let's play with this for a day or two
-                ghost_text = true,
-            },
-
-        })
-
-        -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-        cmp.setup.cmdline('/', {
-            sources = {
-                { name = 'buffer' }
-            }
-        })
-
-        -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-        cmp.setup.cmdline(':', {
-            sources = cmp.config.sources({
-                { name = 'path' }
-            }, {
-                { name = 'cmdline',  keyword_length = 2 }
-            })
-        })
-      end
-    }
-  },
-  { 'onsails/lspkind-nvim' },
-
   'asiryk/auto-hlsearch.nvim',
 
   'christianrondeau/vim-base64',
@@ -610,6 +524,7 @@ require("lazy").setup({
   {
     'jose-elias-alvarez/null-ls.nvim',
     lazy = true,
+    ft = { "python", "javascript" },
     config = function ()
       local null_ls = require("null-ls")
       null_ls.setup({
@@ -622,6 +537,215 @@ require("lazy").setup({
               null_ls.builtins.code_actions.gitsigns,
           },
       })
+    end
+  },
+
+  { 'hrsh7th/vim-vsnip' },
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      { 'hrsh7th/cmp-vsnip' },
+      { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-path' },
+      { 'hrsh7th/cmp-cmdline' },
+    },
+    config = function ()
+      local cmp = require('cmp')
+      local lspkind = require('lspkind')
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+          end
+        },
+        mapping = {
+          ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+          ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+          ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+          ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+          ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+          ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+          ['<C-e>'] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+          }),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        },
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'vsnip' },
+          { name = "buffer", keyword_length = 4 },
+        }),
+
+        -- ganked from tj's settings
+        formatting = {
+          format = lspkind.cmp_format {
+            with_text = true,
+            menu = {
+              buffer = "[buf]",
+              nvim_lsp = "[LSP]",
+              nvim_lua = "[api]",
+              path = "[path]",
+              luasnip = "[snip]",
+              gh_issues = "[issues]",
+              tn = "[TabNine]",
+            },
+          },
+        },
+
+        experimental = {
+          -- I like the new menu better! Nice work hrsh7th
+          native_menu = false,
+
+          -- Let's play with this for a day or two
+          ghost_text = true,
+        },
+
+      })
+
+      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline('/', {
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          { name = 'cmdline',  keyword_length = 2 }
+        })
+      })
+    end
+
+  },
+  { 'onsails/lspkind-nvim' },
+
+
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    dependencies = {
+      { 'nvim-treesitter/nvim-treesitter-textobjects' },
+      { 'nvim-treesitter/playground' },
+      {
+        'romgrk/nvim-treesitter-context',
+        lazy = true,
+        keys = {
+          { "<leader>c", "<cmd>TSContextToggle<cr>", defaults },
+        },
+        config = function ()
+          require'treesitter-context'.setup{
+            enable = false -- disabled by default
+          }
+        end
+      },
+    },
+    config = function ()
+      require'nvim-treesitter.configs'.setup {
+        ensure_installed = "all", -- one of "all", or a list of languages
+        ignore_install = { "phpdoc" },
+        highlight = {
+          enable = true, -- false will disable the whole extension
+          disable = {},  -- list of language that will be disabled
+        },
+        textobjects = {
+          select = {
+            enable = true,
+
+            -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
+
+            keymaps = {
+              -- You can use the capture groups defined in textobjects.scm
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              -- ["ac"] = "@class.outer",
+              -- ["ic"] = "@class.inner",
+              ["ac"] = "@comment.outer",
+              ["ic"] = "@comment.outer",
+              ["al"] = "@loop.outer",
+              ["il"] = "@loop.inner",
+              ["atc"] = "@conditional.outer",
+              ["itc"] = "@conditional.inner",
+              ["atb"] = "@block.outer",
+              ["itb"] = "@block.inner",
+              ["aa"] = "@parameter.outer",
+              ["ia"] = "@parameter.inner",
+
+              -- Or you can define your own textobjects like this
+              -- ["iF"] = {
+              --   python = "(function_definition) @function",
+              --   cpp = "(function_definition) @function",
+              --   c = "(function_definition) @function",
+              --   java = "(method_declaration) @function",
+              -- },
+            },
+          },
+          lsp_interop = {
+            enable = true,
+            border = 'none',
+            -- TODO: reenable, but explore if this is causing problems with normal df functionality
+            -- peek_definition_code = {
+            --   ["df"] = "@function.outer",
+            --   ["dF"] = "@class.outer",
+            -- },
+          },
+          playground = {
+            enable = true,
+            disable = {},
+            updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+            persist_queries = false, -- Whether the query persists across vim sessions
+            keybindings = {
+              toggle_query_editor = 'o',
+              toggle_hl_groups = 'i',
+              toggle_injected_languages = 't',
+              toggle_anonymous_nodes = 'a',
+              toggle_language_display = 'I',
+              focus_language = 'f',
+              unfocus_language = 'F',
+              update = 'R',
+              goto_node = '<cr>',
+              show_help = '?',
+            },
+          },
+          incremental_selection = {
+            enable = true,
+            keymaps = {
+              init_selection = "gnn",
+              node_incremental = "grn",
+              scope_incremental = "grc",
+              node_decremental = "grm",
+            },
+          },
+          -- move = {
+          --   enable = true,
+          --   set_jumps = true, -- whether to set jumps in the jumplist
+          --   goto_next_start = {
+          --     ["]m"] = "@function.outer",
+          --     ["]]"] = "@class.outer",
+          --   },
+          --   goto_next_end = {
+          --     ["]M"] = "@function.outer",
+          --     ["]["] = "@class.outer",
+          --   },
+          --   goto_previous_start = {
+          --     ["[m"] = "@function.outer",
+          --     ["[["] = "@class.outer",
+          --   },
+          --   goto_previous_end = {
+          --     ["[M"] = "@function.outer",
+          --     ["[]"] = "@class.outer",
+          --   },
+          -- },
+        },
+      }
     end
   },
 
