@@ -518,7 +518,7 @@ require("lazy").setup({
       lspconfig.eslint.setup(lsp_default_options)
       lspconfig.html.setup(lsp_default_options)
       lspconfig.jsonls.setup(lsp_default_options)
-      lspconfig.sqls.setup(lsp_default_options)
+      lspconfig.sqlls.setup(lsp_default_options)
       lspconfig.lua_ls.setup({
         on_attach = on_attach,
         settings = {
