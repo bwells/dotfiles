@@ -531,7 +531,14 @@ require("lazy").setup({
         }
       })
       lspconfig.vimls.setup(lsp_default_options)
-      lspconfig.yamlls.setup(lsp_default_options)
+      lspconfig.yamlls.setup({
+        on_attach = on_attach,
+        settings = {
+          yaml = {
+            keyOrdering = false
+          }
+        }
+      })
 
       lspconfig.pyright.setup {
         on_attach = on_attach,
