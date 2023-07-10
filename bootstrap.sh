@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # setup SSH
-ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
+ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 # add to github
 
 # TODO: remap capslock to ctrl
@@ -13,25 +13,7 @@ ssh-keygen -t rsa -b 4096 -C "kremlan@dioxin.com"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # brew install basic packages
-brew install ccrypt
-             curl
-	     fish
-	     fzf
-	     git
-	     go
-	     mercurial
-	     kops
-	     kubernetes-cli
-	     mysql
-	     neovim
-             nmap
-             node
-             ripgrep
-             sqlite
-             tmux
-             vim
-             python
-             stern
+brew install ccrypt curl fish fzf git go mercurial kops kubernetes-cli mysql neovim nmap node ripgrep sqlite tmux vim python stern
 
 # change default shell to fish
 sudo chsh -s /usr/local/bin/fish kremlan
@@ -45,8 +27,9 @@ brew install --HEAD universal-ctags
 # set font in Terminal Settings
 # Instal Meslo from nerdfonts.com
 # maybe
-# brew install font-meslo-lg-nerd-font
+# brew install homebrew/cask-fonts/font-meslo-lg-nerd-font
 
+# TODO: switch this to Packer for neovim
 # install vim-plug and plugins for vim
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim -c PlugInstall
@@ -62,6 +45,7 @@ ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/.pylintrc ~/.pylintrc
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/fish ~/.config/fish
+ln -s ~/dotfiles/kitty ~/.config/kitty
 mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 ln -s ~/dotfiles/nvim/ftplugin ~/.config/nvim/ftplugin
@@ -78,6 +62,10 @@ ln -s ~/workspace/go/src/github.com ~/workspace/bwells
 # login to dropbox
 # setup 1password - install from app store
 # setup work vpn
-# setup adium accounts?
 
 # install docker
+
+# install virtualfish
+mkdir ~/environments
+python3 -m pip install virtualfish
+vf install
