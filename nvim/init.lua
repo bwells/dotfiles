@@ -387,6 +387,20 @@ require("lazy").setup({
   },
 
   {
+    'kdheepak/lazygit.nvim',
+    lazy = true
+  },
+
+  {
+    'Almo7aya/openingh.nvim',
+    lazy = true,
+    keys = {
+      { mode = 'n', '<leader>gh', ":OpenInGHFile <CR>", defaults },
+      { mode = 'v', '<leader>gh', ":'<,'>OpenInGHFile <CR>", defaults }
+    }
+  },
+
+  {
     'kyazdani42/nvim-tree.lua',
     lazy = true,
     keys = {
@@ -445,157 +459,34 @@ require("lazy").setup({
   { 'kevinhwang91/nvim-bqf' },
 
   {
-    'neovim/nvim-lspconfig',
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v2.x',
     lazy = true,
-    ft = {
-      "css",
-      "dockerfile",
-      "elm",
-      "html",
-      "javascript",
-      "json",
-      "lua",
-      "python",
-      "sql",
-      "vim",
-      "yaml"
-    },
-    dependencies = {
-      {
-        'williamboman/mason.nvim',
-        build = ":MasonUpdate",
-        config = function ()
-          require("mason").setup()
-        end
-      },
-      {
-        'williamboman/mason-lspconfig.nvim',
-        config = function ()
-          require("mason-lspconfig").setup()
-        end
-      },
-    },
-    config = function ()
+    config = function()
+      -- This is where you modify the settings for lsp-zero
+      -- Note: autocompletion settings will not take effect
 
-      local lspconfig = require("lspconfig")
-
-      local on_attach = function(_, bufnr)
-        local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-        local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-        buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-        -- Mappings.
-        local opts = { noremap=true, silent=true }
-        buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-        buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-        buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-        buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-        buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-        buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-        buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-      end
-
-      -- enable debug verbosity
-      -- vim.lsp.set_log_level("debug")
-
-      local lsp_default_options = { on_attach = on_attach }
-
-      lspconfig.cssls.setup(lsp_default_options)
-      lspconfig.dockerls.setup(lsp_default_options)
-
-      -- lspconfig.elmls.setup({
-      --   on_attach = on_attach,
-      --   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-      -- })
-
-      lspconfig.elmls.setup(lsp_default_options)
-      lspconfig.eslint.setup(lsp_default_options)
-      lspconfig.html.setup(lsp_default_options)
-      lspconfig.jsonls.setup(lsp_default_options)
-      lspconfig.sqlls.setup(lsp_default_options)
-      lspconfig.lua_ls.setup({
-        on_attach = on_attach,
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { 'vim' }
-            }
-          }
-        }
-      })
-      lspconfig.vimls.setup(lsp_default_options)
-      lspconfig.yamlls.setup({
-        on_attach = on_attach,
-        settings = {
-          yaml = {
-            keyOrdering = false
-          }
-        }
-      })
-
-      lspconfig.pyright.setup {
-        on_attach = on_attach,
-        handlers = {
-          ["textDocument/publishDiagnostics"] = function() end
-        }
-      }
-
-      lspconfig.ruff_lsp.setup {
-        on_attach = on_attach,
-      }
-
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-          signs = {
-            severity_limit = "Hint",
-          },
-          virtual_text = {
-            severity_limit = "Warning",
-          },
-        }
-      )
-
+      require('lsp-zero.settings').preset({})
     end
   },
 
-  -- null-lsp
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    lazy = true,
-    ft = { "python", "javascript" },
-    config = function ()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-          -- debug = true,
-          sources = {
-              null_ls.builtins.diagnostics.pylint,
-              null_ls.builtins.diagnostics.flake8,
-              null_ls.builtins.diagnostics.hadolint,
-              null_ls.builtins.diagnostics.eslint,
-              null_ls.builtins.code_actions.gitsigns,
-          },
-      })
-    end
-  },
-
-  { 'hrsh7th/vim-vsnip' },
   {
     'hrsh7th/nvim-cmp',
     lazy = true,
+    event = 'InsertEnter',
     dependencies = {
+      { 'hrsh7th/vim-vsnip' },
       { 'hrsh7th/cmp-vsnip' },
-      { 'hrsh7th/cmp-nvim-lsp' },
+      -- { 'hrsh7th/cmp-nvim-lsp' },
       { 'hrsh7th/cmp-buffer' },
       { 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-cmdline' },
     },
     config = function ()
+      require('lsp-zero.cmp').extend()
+
       local cmp = require('cmp')
+      -- local cmp_action = require('lsp-zero.cmp').action()
       local lspkind = require('lspkind')
 
       cmp.setup({
@@ -669,7 +560,178 @@ require("lazy").setup({
     end
 
   },
-  { 'onsails/lspkind-nvim' },
+
+  {
+    'neovim/nvim-lspconfig',
+    lazy = true,
+    -- ft = {
+    --   "css",
+    --   "dockerfile",
+    --   "elm",
+    --   "html",
+    --   "javascript",
+    --   "json",
+    --   "lua",
+    --   "python",
+    --   "sql",
+    --   "vim",
+    --   "yaml"
+    -- },
+    cmd = {'LspInfo', 'Mason'},
+    event = {'BufReadPre', 'BufNewFile'},
+    dependencies = {
+    {'hrsh7th/cmp-nvim-lsp'},
+      {
+        'williamboman/mason.nvim',
+        build = ":MasonUpdate",
+        config = function ()
+          require("mason").setup()
+        end
+      },
+      {
+        'williamboman/mason-lspconfig.nvim',
+        config = function ()
+          require("mason-lspconfig").setup()
+        end
+      },
+      { 'onsails/lspkind-nvim' },
+    },
+    config = function ()
+
+      local lspconfig = require("lspconfig")
+
+      -- local on_attach = function(_, bufnr)
+      --   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+      --   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+      --
+      --   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+      --
+      --   -- Mappings.
+      --   local opts = { noremap=true, silent=true }
+      --   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+      --   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+      --   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+      --   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+      --   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+      --   buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+      --   buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+      --   buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+      --   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+      --   buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+      --   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+      -- end
+
+      -- enable debug verbosity
+      -- vim.lsp.set_log_level("debug")
+
+      -- local lsp_default_options = { on_attach = on_attach }
+
+      -- lspconfig.cssls.setup(lsp_default_options)
+      -- lspconfig.dockerls.setup(lsp_default_options)
+
+      -- lspconfig.elmls.setup({
+      --   on_attach = on_attach,
+      --   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+      -- })
+
+      -- lspconfig.elmls.setup(lsp_default_options)
+      -- lspconfig.eslint.setup(lsp_default_options)
+      -- lspconfig.html.setup(lsp_default_options)
+      -- lspconfig.jsonls.setup(lsp_default_options)
+      -- lspconfig.sqlls.setup(lsp_default_options)
+
+      -- lspconfig.lua_ls.setup({
+      --   on_attach = on_attach,
+      --   settings = {
+      --     Lua = {
+      --       diagnostics = {
+      --         globals = { 'vim' }
+      --       }
+      --     }
+      --   }
+      -- })
+
+      -- lspconfig.vimls.setup(lsp_default_options)
+
+      -- lspconfig.yamlls.setup({
+      --   on_attach = on_attach,
+      --   settings = {
+      --     yaml = {
+      --       keyOrdering = false
+      --     }
+      --   }
+      -- })
+
+      -- lspconfig.pyright.setup {
+      --   on_attach = on_attach,
+      --   handlers = {
+      --     ["textDocument/publishDiagnostics"] = function() end
+      --   }
+      -- }
+
+      -- lspconfig.ruff_lsp.setup {
+      --   on_attach = on_attach,
+      -- }
+
+      local lsp = require('lsp-zero')
+
+      lsp.on_attach(function(_, _)
+        -- lsp.default_keymaps({buffer = bufnr})
+
+        -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+        -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+        -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        -- Mappings.
+        local opts = { buffer=true, noremap=true, silent=true }
+        vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+        vim.keymap.set('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+        vim.keymap.set('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+        vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+        vim.keymap.set('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        vim.keymap.set('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        vim.keymap.set('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+        vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+      end)
+
+      lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
+
+      -- Disable the key ordering errors in YAML
+      lspconfig.yamlls.setup({
+        settings = {
+          yaml = {
+            keyOrdering = false
+          }
+        }
+      })
+
+      -- disable diagnostics coming from pyright
+      lspconfig.pyright.setup {
+        handlers = {
+          ["textDocument/publishDiagnostics"] = function() end
+        }
+      }
+
+      --
+      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          signs = {
+            severity_limit = "Hint",
+          },
+          virtual_text = {
+            severity_limit = "Warning",
+          },
+        }
+      )
+
+      lsp.setup()
+
+    end
+  },
 
   -- null-lsp
   -- {
@@ -824,6 +886,24 @@ require("lazy").setup({
           -- },
         },
       }
+    end
+  },
+
+  {
+    'mhartington/formatter.nvim',
+    lazy = true,
+    ft = 'python',
+    config = function ()
+      require('formatter').setup({
+        filetype = {
+          python = {
+            require("formatter.filetypes.python").isort,
+            require("formatter.filetypes.python").black,
+            require("formatter.filetypes.python").yapf,
+            require("formatter.filetypes.python").autopep8
+          }
+        }
+      })
     end
   },
 
