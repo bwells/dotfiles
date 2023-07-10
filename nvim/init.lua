@@ -16,6 +16,10 @@ vim.g.wordmotion_prefix = "<leader>"
 -- with <leader>b to open buffer search
 vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
 
+-- vim.cmd([[colorscheme lunaperche]])
+
+-- vim.cmd([[set background=dark]])
+-- vim.o.background = 'dark'
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -42,6 +46,14 @@ require("lazy").setup({
       vim.g.material_style = "deep ocean"
       local material = require("material")
       material.setup {
+        contrast = {
+          terminal = false, -- Enable contrast for the built-in terminal
+          sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+          floating_windows = true, -- Enable contrast for floating windows
+          cursor_line = false, -- Enable darker background for the cursor line
+          non_current_windows = false, -- Enable darker background for non-current windows
+          filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
+        },
         styles = {
           comments = { italic = false },
           keywords = { italic = false },
@@ -76,27 +88,52 @@ require("lazy").setup({
     end
   },
 
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.o.background = 'dark'
+  --     require('tokyonight').setup({
+  --       style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  --       light_style = "night",
+  --     })
+  --     -- vim.o.background = 'dark'
+  --     vim.cmd([[colorscheme tokyonight-night]])
+  --   end
+  -- },
+
   'tpope/vim-repeat',
 
   -- more sanity to yanking
+  -- {
+  --   'svermeulen/vim-cutlass',
+  --   lazy = false,
+  --   keys = {
+  --     -- { "m", "d", defaults },
+  --     -- { "x", "m", "d", defaults },
+  --     -- { "gm", "m", default },
+  --     -- { "mm", "dd", defaults },
+  --     -- { "M", "D", defaults }
+  --   },
+  --   config = function ()
+  --     map("n", "m", "d", defaults)
+  --     map("x", "m", "d", defaults)
+  --     map("n", "gm", "m", defaults)
+  --
+  --     map("n", "mm", "dd", defaults)
+  --     map("n", "M", "D", defaults)
+  --   end
+  -- },
   {
-    'svermeulen/vim-cutlass',
+    "gbprod/cutlass.nvim",
     lazy = false,
-    keys = {
-      -- { "m", "d", defaults },
-      -- { "x", "m", "d", defaults },
-      -- { "gm", "m", default },
-      -- { "mm", "dd", defaults },
-      -- { "M", "D", defaults }
+    opts = {
+      cut_key = 'm'
     },
-    config = function ()
-      map("n", "m", "d", defaults)
-      map("x", "m", "d", defaults)
-      map("n", "gm", "m", defaults)
-
-      map("n", "mm", "dd", defaults)
-      map("n", "M", "D", defaults)
-    end
+    keys = {
+      { "gm", "m", defaults },
+    }
   },
   {
     'svermeulen/vim-yoink',
@@ -144,6 +181,7 @@ require("lazy").setup({
   {
     'chaoren/vim-wordmotion',
     lazy = true,
+    event = {'BufReadPre', 'BufNewFile'},
     keys = {
       { "w", mode = "n" },
       -- { "b", mode = "n" },
@@ -205,6 +243,8 @@ require("lazy").setup({
 
   {
     'windwp/nvim-autopairs',
+    lazy = true,
+    event = {'BufReadPre', 'BufNewFile'},
     config = function ()
       require('nvim-autopairs').setup({})
 
@@ -770,13 +810,17 @@ require("lazy").setup({
     end
   },
 
+  {
+    'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    event = { 'BufReadPre' },
     build = ':TSUpdate',
     dependencies = {
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
       { 'nvim-treesitter/playground' },
       {
         'romgrk/nvim-treesitter-context',
-        lazy = true,
+        lazy = false,
         keys = {
           { "<leader>c", "<cmd>TSContextToggle<cr>", defaults },
         },
@@ -914,6 +958,14 @@ require("lazy").setup({
   { 'sychen52/gF-python-traceback', ft="python" }, -- or terminal?
   { 'Zaptic/elm-vim', ft="elm" },
   { 'sophacles/vim-bundle-mako', ft="mako" },
-  { 'Glench/Vim-Jinja2-Syntax', ft="jinja.html" },
+  { 'Glench/Vim-Jinja2-Syntax', ft={ "jinja.html", "html" }, lazy=true },
 
 }, {})
+
+-- vim.cmd([[
+-- augroup LazyVimColorHack
+--   autocmd!
+--   autocmd VeryLazy * :colorscheme material
+-- augroup END
+-- ]])
+-- vim.cmd([[colorscheme material]])
