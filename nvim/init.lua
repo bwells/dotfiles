@@ -671,11 +671,43 @@ require("lazy").setup({
   },
   { 'onsails/lspkind-nvim' },
 
+  -- null-lsp
+  -- {
+  --   'jose-elias-alvarez/null-ls.nvim',
+  --   lazy = true,
+  --   ft = { "python", "javascript" },
+  --   config = function ()
+  --     local null_ls = require("null-ls")
+  --     null_ls.setup({
+  --         -- debug = true,
+  --         sources = {
+  --             null_ls.builtins.diagnostics.pylint,
+  --             -- null_ls.builtins.diagnostics.flake8,
+  --             null_ls.builtins.diagnostics.hadolint,
+  --             -- null_ls.builtins.diagnostics.eslint,
+  --             -- null_ls.builtins.code_actions.gitsigns,
+  --         },
+  --     })
+  --   end
+  -- },
 
   {
-    'nvim-treesitter/nvim-treesitter',
+    'mfussenegger/nvim-lint',
     lazy = true,
-    event = 'BufReadPre',
+    ft = { "python", "dockerfile" },
+    config = function ()
+      require('lint').linters_by_ft = {
+        python = {'pylint',},
+        dockerfile = {'hadolint',}
+      }
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint()
+        end
+      })
+    end
+  },
+
     build = ':TSUpdate',
     dependencies = {
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
