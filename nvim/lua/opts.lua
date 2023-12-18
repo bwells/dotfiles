@@ -6,7 +6,7 @@ vim.o.clipboard = 'unnamed'
 
 -- enable gui colors from the last 50 years
 if vim.fn.has('termguicolors') then
-    vim.o.termguicolors = true
+  vim.o.termguicolors = true
 end
 
 -- turn on line numbers
@@ -40,6 +40,8 @@ vim.o.lazyredraw = true
 vim.o.splitbelow = true
 vim.o.splitright = true
 
+vim.o.scrolloff = 3
+
 -- allows you to have multiple buffers open
 vim.o.hidden = true
 
@@ -71,9 +73,9 @@ vim.o.timeoutlen = 500
 
 -- wildignore
 vim.opt.wildignore = {
-    '*.pyc',
-    '__pycache__',
-    '*/.git/*'
+  '*.pyc',
+  '__pycache__',
+  '*/.git/*'
 }
 
 -- vim.opt.wildignore = "__pycache__"
@@ -82,7 +84,7 @@ vim.opt.wildignore = {
 
 -- use ripgrep for grep
 if vim.fn.executable('rg') then
-    vim.o.grepprg = "rg --vimgrep"
+  vim.o.grepprg = "rg --vimgrep"
 end
 
 -- trims trailing whitespace
@@ -121,12 +123,12 @@ augroup END
 -- setup python_host_progs
 local python_host_prog = vim.env['HOME'] .. '/environments/nvim_python/bin/python'
 if vim.fn.filereadable(python_host_prog) then
-    vim.g.python_host_prog = python_host_prog
+  vim.g.python_host_prog = python_host_prog
 end
 
 local python3_host_prog = vim.env['HOME'] .. '/environments/nvim_python3/bin/python'
 if vim.fn.filereadable(python3_host_prog) then
-    vim.g.python3_host_prog = python3_host_prog
+  vim.g.python3_host_prog = python3_host_prog
 end
 
 
