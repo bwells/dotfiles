@@ -46,6 +46,16 @@ require("lazy").setup({
       vim.g.material_style = "deep ocean"
       local material = require("material")
       material.setup {
+        styles = { -- Give comments style such as bold, italic, underline etc.
+            comments = { italic = false },
+            strings = { italic = false },
+            keywords = { italic = false },
+            functions = { italic = false },
+            variables = { italic = false },
+            operators = { italic = false },
+            types = {},
+        },
+
         contrast = {
           terminal = false,            -- Enable contrast for the built-in terminal
           sidebars = true,             -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
@@ -54,35 +64,63 @@ require("lazy").setup({
           non_current_windows = false, -- Enable darker background for non-current windows
           filetypes = {},              -- Specify which filetypes get the contrasted (darker) background
         },
-        styles = {
-          comments = { italic = false },
-          keywords = { italic = false },
-          functions = { italic = false },
-          strings = { italic = false },
-          variables = { italic = false },
-        },
+
         plugins = { -- Uncomment the plugins that you use to highlight them
           -- Available plugins:
           -- "dap",
           -- "dashboard",
+          -- "eyeliner",
+          -- "fidget",
+          -- "flash",
           "gitsigns",
+          "harpoon",
           -- "hop",
+          -- "illuminate",
           -- "indent-blankline",
           -- "lspsaga",
           -- "mini",
-          "neogit",
+          -- "neogit",
+          -- "neotest",
+          -- "neo-tree",
+          -- "neorg",
+          -- "noice",
           "nvim-cmp",
           -- "nvim-navic",
           "nvim-tree",
-          -- "sneak",
+          "nvim-web-devicons",
+          -- "rainbow-delimiters",
+          "sneak",
           "telescope",
           "trouble",
           -- "which-key",
+          "nvim-notify",
         },
-        custom_highlights = {
-          CursorLine = { fg = material.none, bg = '#1B1D25' },
-          Selection = { fg = material.none, bg = '#8E97C4' }
-        }
+
+        disable = {
+            colored_cursor = false, -- Disable the colored cursor
+            borders = false, -- Disable borders between verticaly split windows
+            background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+            term_colors = false, -- Prevent the theme from setting terminal colors
+            eob_lines = false -- Hide the end-of-buffer lines
+        },
+
+        high_visibility = {
+            lighter = false, -- Enable higher contrast text for lighter style
+            darker = false -- Enable higher contrast text for darker style
+        },
+
+        lualine_style = "default", -- Lualine style ( can be 'stealth' or 'default' )
+
+        async_loading = true, -- Load parts of the theme asyncronously for faster startup (turned on by default)
+
+        custom_colors = nil, -- If you want to override the default colors, set this to a function
+
+        custom_highlights = {}, -- Overwrite highlights with your own
+
+        -- custom_highlights = {
+        --   -- CursorLine = { fg = material.none, bg = '#1B1D25' },
+        --   -- Selection = { fg = material.none, bg = '#8E97C4' }
+        -- }
       }
       vim.cmd([[colorscheme material]])
     end
@@ -100,6 +138,20 @@ require("lazy").setup({
   --     })
   --     -- vim.o.background = 'dark'
   --     vim.cmd([[colorscheme tokyonight-night]])
+  --   end
+  -- },
+
+  -- {
+  --   'rose-pine/neovim',
+  --   name = 'rose-pine',
+  --   config = function ()
+  --     require('rose-pine').setup({
+  --       styles = {
+  --           bold = true,
+  --           italic = false,
+  --           transparency = false,
+  --       }
+  --     })
   --   end
   -- },
 
@@ -549,6 +601,21 @@ require("lazy").setup({
 
   -- TOOD: see if this can be lazy and triggered on quickfix open
   { 'kevinhwang91/nvim-bqf' },
+  {
+    'romainl/vim-qf',
+    config = function()
+      -- local opts = { buffer = true, noremap = true, silent = true }
+      -- vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+      vim.cmd([[
+        augroup custom_qf_mapping
+        autocmd!
+        autocmd FileType qf nnoremap <buffer> dd :.Reject<CR>
+        autocmd FileType qf xnoremap <buffer> d :'<,'>Reject<CR>
+        autocmd FileType qf nnoremap <buffer> gk :.Keep<CR>
+        autocmd FileType qf xnoremap <buffer> gk :'<,'>Keep<CR>
+      ]])
+    end
+  },
 
   {
     'VonHeikemen/lsp-zero.nvim',
@@ -569,7 +636,7 @@ require("lazy").setup({
     dependencies = {
       { 'hrsh7th/vim-vsnip' },
       { 'hrsh7th/cmp-vsnip' },
-      -- { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-nvim-lsp' },
       { 'hrsh7th/cmp-buffer' },
       { 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-cmdline' },
@@ -631,8 +698,8 @@ require("lazy").setup({
 
         sources = cmp.config.sources({
           -- { name = "copilot", group_index = 2 },
-          { name = "copilot" },
           { name = 'nvim_lsp' },
+          { name = "copilot" },
           { name = 'vsnip' },
           { name = "buffer",  keyword_length = 4 },
         }),
@@ -887,6 +954,9 @@ require("lazy").setup({
           virtual_text = {
             severity_limit = "Warning",
           },
+          underline = {
+            severity_limit = "Error",
+          },
         }
       )
 
@@ -1140,8 +1210,9 @@ require("lazy").setup({
   { 'sophacles/vim-bundle-mako',    ft = "mako" },
   { 'Glench/Vim-Jinja2-Syntax',     ft = { "jinja.html", "html" }, lazy = true },
 
-  { -- This plugin
+  {
     "Zeioth/compiler.nvim",
+    lazy = true,
     cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
     dependencies = { "stevearc/overseer.nvim" },
     keys = {
@@ -1151,7 +1222,8 @@ require("lazy").setup({
   },
   { -- The task runner we use
     "stevearc/overseer.nvim",
-    commit = "400e762648b70397d0d315e5acaf0ff3597f2d8b",
+    lazy = true,
+    commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
     cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
     opts = {
       task_list = {
