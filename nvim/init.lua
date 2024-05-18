@@ -47,22 +47,22 @@ require("lazy").setup({
       local material = require("material")
       material.setup {
         styles = { -- Give comments style such as bold, italic, underline etc.
-            comments = { italic = false },
-            strings = { italic = false },
-            keywords = { italic = false },
-            functions = { italic = false },
-            variables = { italic = false },
-            operators = { italic = false },
-            types = {},
+          comments = { italic = false },
+          strings = { italic = false },
+          keywords = { italic = false },
+          functions = { italic = false },
+          variables = { italic = false },
+          operators = { italic = false },
+          types = {},
         },
 
         contrast = {
-          terminal = false,            -- Enable contrast for the built-in terminal
-          sidebars = true,             -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
-          floating_windows = true,     -- Enable contrast for floating windows
-          cursor_line = false,         -- Enable darker background for the cursor line
-          non_current_windows = false, -- Enable darker background for non-current windows
-          filetypes = {},              -- Specify which filetypes get the contrasted (darker) background
+          terminal = false,           -- Enable contrast for the built-in terminal
+          sidebars = true,            -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+          floating_windows = true,    -- Enable contrast for floating windows
+          cursor_line = false,        -- Enable darker background for the cursor line
+          non_current_windows = true, -- Enable darker background for non-current windows
+          filetypes = {},             -- Specify which filetypes get the contrasted (darker) background
         },
 
         plugins = { -- Uncomment the plugins that you use to highlight them
@@ -97,34 +97,43 @@ require("lazy").setup({
         },
 
         disable = {
-            colored_cursor = false, -- Disable the colored cursor
-            borders = false, -- Disable borders between verticaly split windows
-            background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
-            term_colors = false, -- Prevent the theme from setting terminal colors
-            eob_lines = false -- Hide the end-of-buffer lines
+          colored_cursor = true,   -- Disable the colored cursor
+          borders = false,         -- Disable borders between verticaly split windows
+          background = false,      -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+          term_colors = false,     -- Prevent the theme from setting terminal colors
+          eob_lines = false        -- Hide the end-of-buffer lines
         },
 
         high_visibility = {
-            lighter = false, -- Enable higher contrast text for lighter style
-            darker = false -- Enable higher contrast text for darker style
+          lighter = false,   -- Enable higher contrast text for lighter style
+          darker = false     -- Enable higher contrast text for darker style
         },
 
         lualine_style = "default", -- Lualine style ( can be 'stealth' or 'default' )
 
-        async_loading = true, -- Load parts of the theme asyncronously for faster startup (turned on by default)
+        async_loading = true,      -- Load parts of the theme asyncronously for faster startup (turned on by default)
 
-        custom_colors = nil, -- If you want to override the default colors, set this to a function
+        custom_colors = nil,       -- If you want to override the default colors, set this to a function
 
-        custom_highlights = {}, -- Overwrite highlights with your own
+        custom_highlights = {},    -- Overwrite highlights with your own
 
         -- custom_highlights = {
         --   -- CursorLine = { fg = material.none, bg = '#1B1D25' },
         --   -- Selection = { fg = material.none, bg = '#8E97C4' }
         -- }
       }
-      vim.cmd([[colorscheme material]])
+      -- vim.cmd([[colorscheme material]])
     end
   },
+
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+
+  { "jim-at-jibba/ariake.nvim" },
 
   -- {
   --   'folke/tokyonight.nvim',
@@ -512,10 +521,22 @@ require("lazy").setup({
   {
     'FabijanZulj/blame.nvim',
     lazy = true,
-    cmd = 'ToggleBlame',
+    cmd = 'BlameToggle',
     keys = {
-      { '<leader>gb', ':ToggleBlame virtual<cr>', defaults }
-    }
+      { '<leader>gb', ':BlameToggle virtual<cr>', defaults }
+    },
+    config = function()
+      require("blame").setup({
+        date_format = "%d.%m.%Y",
+        mappings = {
+          commit_info = "i",
+          stack_push = "<TAB>",
+          stack_pop = "<BS>",
+          show_commit = "<CR>",
+          close = { "<esc>", "q" },
+        }
+      })
+    end
   },
 
   {
@@ -597,7 +618,16 @@ require("lazy").setup({
 
   'asiryk/auto-hlsearch.nvim',
 
-  'christianrondeau/vim-base64',
+  -- 'christianrondeau/vim-base64',
+
+  {
+    "taybart/b64.nvim",
+    lazy = true,
+    keys = {
+      { mode = "x", "<leader>aa", "<cmd>lua require('b64').encode()<cr>", defaults },
+      { mode = "x", "<leader>bb", "<cmd>lua require('b64').decode()<cr>", defaults },
+    },
+  },
 
   -- TOOD: see if this can be lazy and triggered on quickfix open
   { 'kevinhwang91/nvim-bqf' },
@@ -939,6 +969,7 @@ require("lazy").setup({
       })
 
       -- disable diagnostics coming from pyright
+      -- it's just too much until sqlalchemy is updated with annotations
       lspconfig.pyright.setup {
         handlers = {
           ["textDocument/publishDiagnostics"] = function() end
@@ -949,13 +980,13 @@ require("lazy").setup({
       vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics, {
           signs = {
-            severity_limit = "Hint",
+            min = vim.diagnostic.severity.HINT,
           },
           virtual_text = {
-            severity_limit = "Warning",
+            min = vim.diagnostic.severity.WARN,
           },
           underline = {
-            severity_limit = "Error",
+            min = vim.diagnostic.severity.ERROR,
           },
         }
       )
@@ -1243,4 +1274,9 @@ require("lazy").setup({
 --   autocmd VeryLazy * :colorscheme material
 -- augroup END
 -- ]])
+
 -- vim.cmd([[colorscheme material]])
+vim.cmd([[colorscheme ariake]])
+
+-- vim.cmd([[colorscheme tokyonight-storm]])
+-- vim.cmd([[colorscheme tokyonight-moon]])
