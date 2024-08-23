@@ -61,12 +61,15 @@ require("lazy").setup({
           sidebars = true,            -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
           floating_windows = true,    -- Enable contrast for floating windows
           cursor_line = false,        -- Enable darker background for the cursor line
+          lsp_virtual_text = true,    -- Enable contrasted background for lsp virtual text
           non_current_windows = true, -- Enable darker background for non-current windows
           filetypes = {},             -- Specify which filetypes get the contrasted (darker) background
         },
 
         plugins = { -- Uncomment the plugins that you use to highlight them
           -- Available plugins:
+          -- "coc",
+          -- "colorful-winsep",
           -- "dap",
           -- "dashboard",
           -- "eyeliner",
@@ -89,7 +92,7 @@ require("lazy").setup({
           "nvim-tree",
           "nvim-web-devicons",
           -- "rainbow-delimiters",
-          "sneak",
+          -- "sneak",
           "telescope",
           "trouble",
           -- "which-key",
@@ -97,16 +100,16 @@ require("lazy").setup({
         },
 
         disable = {
-          colored_cursor = true,   -- Disable the colored cursor
-          borders = false,         -- Disable borders between verticaly split windows
-          background = false,      -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
-          term_colors = false,     -- Prevent the theme from setting terminal colors
-          eob_lines = false        -- Hide the end-of-buffer lines
+          colored_cursor = true, -- Disable the colored cursor
+          borders = false,       -- Disable borders between verticaly split windows
+          background = false,    -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
+          term_colors = false,   -- Prevent the theme from setting terminal colors
+          eob_lines = false      -- Hide the end-of-buffer lines
         },
 
         high_visibility = {
-          lighter = false,   -- Enable higher contrast text for lighter style
-          darker = false     -- Enable higher contrast text for darker style
+          lighter = false, -- Enable higher contrast text for lighter style
+          darker = false   -- Enable higher contrast text for darker style
         },
 
         lualine_style = "default", -- Lualine style ( can be 'stealth' or 'default' )
@@ -227,12 +230,17 @@ require("lazy").setup({
       {
         'ggandor/flit.nvim',
         config = function()
-          require('flit').setup()
+          require('flit').setup({
+            multiline = false
+          })
         end
       }
     },
     config = function()
       require('leap').add_default_mappings()
+      -- require('leap').setup({
+      --   max_aot_targets = nil
+      -- })
       vim.cmd([[xunmap x]])
       vim.cmd([[xunmap X]])
     end
@@ -616,6 +624,20 @@ require("lazy").setup({
     end
   },
 
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    lazy = true,
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { mode = "n", "-", "<cmd>Oil<cr>", defaults }
+    },
+    config = function()
+      require("oil").setup()
+    end
+  },
+
   'asiryk/auto-hlsearch.nvim',
 
   -- 'christianrondeau/vim-base64',
@@ -648,6 +670,17 @@ require("lazy").setup({
   },
 
   {
+    'MagicDuck/grug-far.nvim',
+    config = function()
+      require('grug-far').setup({
+        -- cookbook
+        -- require('grug-far').grug_far({ prefills = { search = vim.fn.expand("<cword>") } })
+        -- require('grug-far').grug_far({ prefills = { flags = vim.fn.expand("%") } })
+      });
+    end
+  },
+
+  {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v2.x',
     lazy = true,
@@ -659,163 +692,234 @@ require("lazy").setup({
     end
   },
 
+  -- {
+  --   'hrsh7th/nvim-cmp',
+  --   lazy = true,
+  --   event = 'InsertEnter',
+  --   dependencies = {
+  --     { 'hrsh7th/vim-vsnip' },
+  --     { 'hrsh7th/cmp-vsnip' },
+  --     { 'hrsh7th/cmp-nvim-lsp' },
+  --     { 'hrsh7th/cmp-buffer' },
+  --     { 'hrsh7th/cmp-path' },
+  --     { 'hrsh7th/cmp-cmdline' },
+  --   },
+  --   config = function()
+  --     require('lsp-zero.cmp').extend()
+  --
+  --     local cmp = require('cmp')
+  --     -- local cmp_action = require('lsp-zero.cmp').action()
+  --     local lspkind = require('lspkind')
+  --
+  --     local has_words_before = function()
+  --       if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  --       local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  --       return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+  --     end
+  --
+  --     cmp.setup({
+  --       mapping = {
+  --         ["<Tab>"] = vim.schedule_wrap(function(fallback)
+  --           if cmp.visible() and has_words_before() then
+  --             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+  --           else
+  --             fallback()
+  --           end
+  --         end),
+  --       },
+  --     })
+  --
+  --     cmp.setup({
+  --       snippet = {
+  --         expand = function(args)
+  --           vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+  --         end
+  --       },
+  --
+  --       mapping = {
+  --         ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+  --         ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+  --         ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+  --         ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+  --         ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+  --         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+  --         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+  --         ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+  --         ['<C-e>'] = cmp.mapping({
+  --           i = cmp.mapping.abort(),
+  --           c = cmp.mapping.close(),
+  --         }),
+  --         ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  --         ["<Tab>"] = vim.schedule_wrap(function(fallback)
+  --           if cmp.visible() and has_words_before() then
+  --             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+  --           else
+  --             fallback()
+  --           end
+  --         end)
+  --       },
+  --
+  --       sources = cmp.config.sources({
+  --         -- { name = "copilot", group_index = 2 },
+  --         { name = 'nvim_lsp' },
+  --         -- { name = "copilot" },
+  --         { name = "supermaven" },
+  --         { name = 'vsnip' },
+  --         { name = "buffer",    keyword_length = 4 },
+  --       }),
+  --
+  --       -- ganked from tj's settings
+  --       formatting = {
+  --         format = lspkind.cmp_format {
+  --           with_text = true,
+  --           menu = {
+  --             -- copilot = "",
+  --             copilot = "[gh]",
+  --             Supermaven = "",
+  --             buffer = "[buf]",
+  --             nvim_lsp = "[LSP]",
+  --             nvim_lua = "[api]",
+  --             path = "[path]",
+  --             luasnip = "[snip]",
+  --             gh_issues = "[issues]",
+  --           }
+  --         },
+  --       },
+  --
+  --       experimental = {
+  --         -- I like the new menu better! Nice work hrsh7th
+  --         native_menu = false,
+  --
+  --         -- Let's play with this for a day or two
+  --         ghost_text = true,
+  --       },
+  --
+  --       sorting = {
+  --         priority_weight = 2,
+  --         comparators = {
+  --           -- require("copilot_cmp.comparators").prioritize,
+  --
+  --           -- Below is the default comparitor list and order for nvim-cmp
+  --           cmp.config.compare.offset,
+  --           -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+  --           cmp.config.compare.exact,
+  --           cmp.config.compare.score,
+  --           cmp.config.compare.recently_used,
+  --           cmp.config.compare.locality,
+  --           cmp.config.compare.kind,
+  --           cmp.config.compare.sort_text,
+  --           cmp.config.compare.length,
+  --           cmp.config.compare.order,
+  --         }
+  --       }
+  --
+  --     })
+  --
+  --     -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  --     cmp.setup.cmdline('/', {
+  --       sources = {
+  --         { name = 'buffer' }
+  --       }
+  --     })
+  --
+  --     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  --     cmp.setup.cmdline(':', {
+  --       sources = cmp.config.sources({
+  --         { name = 'path' }
+  --       }, {
+  --         { name = 'cmdline', keyword_length = 2 }
+  --       })
+  --     })
+  --   end
+  --
+  -- },
+
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   dependencies = {
+  --     "zbirenbaum/copilot.lua",
+  --     cmd = "Copilot",
+  --     event = "InsertEnter",
+  --     config = function()
+  --       require("copilot").setup({
+  --         suggestion = { enabled = false },
+  --         panel = { enabled = false },
+  --       })
+  --     end,
+  --   },
+  --   config = function()
+  --     require("copilot_cmp").setup()
+  --   end
+  -- },
+
   {
-    'hrsh7th/nvim-cmp',
-    lazy = true,
-    event = 'InsertEnter',
-    dependencies = {
-      { 'hrsh7th/vim-vsnip' },
-      { 'hrsh7th/cmp-vsnip' },
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'hrsh7th/cmp-cmdline' },
-    },
+    "supermaven-inc/supermaven-nvim",
     config = function()
-      require('lsp-zero.cmp').extend()
-
-      local cmp = require('cmp')
-      -- local cmp_action = require('lsp-zero.cmp').action()
-      local lspkind = require('lspkind')
-
-      local has_words_before = function()
-        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
-      end
-
-      cmp.setup({
-        mapping = {
-          ["<Tab>"] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              fallback()
-            end
-          end),
+      require("supermaven-nvim").setup({
+        keymaps = {
+          accept_suggestion = "<C-f>",
+          clear_suggestion = "<C-]>",
+          accept_word = "<C-j>",
         },
+        ignore_filetypes = { },
+        color = {
+          suggestion_color = "#ffffff",
+          cterm = 244,
+        },
+        log_level = "info",                  -- set to "off" to disable logging completely
+        disable_inline_completion = false,   -- disables inline completion for use with cmp
+        disable_keymaps = false              -- disables built in keymaps for more manual control
       })
-
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-          end
-        },
-
-        mapping = {
-          ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-          ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-          ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-          ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-          ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-          ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-          ['<C-e>'] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-          }),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              fallback()
-            end
-          end)
-        },
-
-        sources = cmp.config.sources({
-          -- { name = "copilot", group_index = 2 },
-          { name = 'nvim_lsp' },
-          { name = "copilot" },
-          { name = 'vsnip' },
-          { name = "buffer",  keyword_length = 4 },
-        }),
-
-        -- ganked from tj's settings
-        formatting = {
-          format = lspkind.cmp_format {
-            with_text = true,
-            menu = {
-              -- copilot = "",
-              copilot = "[gh]",
-              buffer = "[buf]",
-              nvim_lsp = "[LSP]",
-              nvim_lua = "[api]",
-              path = "[path]",
-              luasnip = "[snip]",
-              gh_issues = "[issues]",
-              tn = "[TabNine]"
-            }
-          },
-        },
-
-        experimental = {
-          -- I like the new menu better! Nice work hrsh7th
-          native_menu = false,
-
-          -- Let's play with this for a day or two
-          ghost_text = true,
-        },
-
-        sorting = {
-          priority_weight = 2,
-          comparators = {
-            require("copilot_cmp.comparators").prioritize,
-
-            -- Below is the default comparitor list and order for nvim-cmp
-            cmp.config.compare.offset,
-            -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.locality,
-            cmp.config.compare.kind,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
-          }
-        }
-
-      })
-
-      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline('/', {
-        sources = {
-          { name = 'buffer' }
-        }
-      })
-
-      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline(':', {
-        sources = cmp.config.sources({
-          { name = 'path' }
-        }, {
-          { name = 'cmdline', keyword_length = 2 }
-        })
-      })
-    end
-
+    end,
   },
 
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("chatgpt").setup({
+  --       openai_params = {
+  --         model = "gpt-4",
+  --       },
+  --       openai_edit_params = {
+  --         model = "gpt-4",
+  --       },
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "folke/trouble.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   }
+  -- },
+
   {
-    "zbirenbaum/copilot-cmp",
+    "frankroeder/parrot.nvim",
     dependencies = {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-        })
-      end,
+      'ibhagwan/fzf-lua',
+      'nvim-lua/plenary.nvim'
     },
     config = function()
-      require("copilot_cmp").setup()
-    end
+      require("parrot").setup {
+        providers = {
+          -- pplx = {
+          --   api_key = os.getenv "PERPLEXITY_API_KEY",
+          --   -- OPTIONAL
+          --   -- gpg command
+          --   -- api_key = { "gpg", "--decrypt", vim.fn.expand("$HOME") .. "/pplx_api_key.txt.gpg"  },
+          --   -- macOS security tool
+          --   -- api_key = { "/usr/bin/security", "find-generic-password", "-s pplx-api-key", "-w" },
+          -- },
+          openai = {
+            api_key = os.getenv "OPENAI_API_KEY",
+          },
+          anthropic = {
+            api_key = os.getenv "ANTHROPIC_API_KEY",
+          },
+        },
+      }
+    end,
   },
 
   {
@@ -837,7 +941,7 @@ require("lazy").setup({
     cmd = { 'LspInfo', 'Mason' },
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      { 'hrsh7th/cmp-nvim-lsp' },
+      -- { 'hrsh7th/cmp-nvim-lsp' },
       {
         'williamboman/mason.nvim',
         build = ":MasonUpdate",
@@ -1018,12 +1122,13 @@ require("lazy").setup({
   {
     'mfussenegger/nvim-lint',
     lazy = true,
-    ft = { "python", "dockerfile", "javascript" },
+    -- ft = { "python", "dockerfile", "javascript" },
+    ft = { "dockerfile", "javascript" },
     config = function()
       require('lint').linters_by_ft = {
         dockerfile = { 'hadolint', },
         javascript = { 'eslint_d', },
-        python = { 'pylint', },
+        -- python = { 'pylint', },
       }
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
         callback = function()
@@ -1188,6 +1293,12 @@ require("lazy").setup({
   -- },
 
   {
+    "folke/trouble.nvim",
+    opts = {},
+    cmd = "Trouble"
+  },
+
+  {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
     cmd = { "ConformInfo" },
@@ -1249,12 +1360,14 @@ require("lazy").setup({
     keys = {
       { "<leader>m", "<cmd>CompilerOpen<cr>", defaults },
     },
-    opts = {},
+    opts = {
+      auto_close = true,
+    },
   },
   { -- The task runner we use
     "stevearc/overseer.nvim",
     lazy = true,
-    commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
+    -- commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
     cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
     opts = {
       task_list = {
@@ -1275,8 +1388,8 @@ require("lazy").setup({
 -- augroup END
 -- ]])
 
--- vim.cmd([[colorscheme material]])
-vim.cmd([[colorscheme ariake]])
+vim.cmd([[colorscheme material]])
+-- vim.cmd([[colorscheme ariake]])
 
 -- vim.cmd([[colorscheme tokyonight-storm]])
 -- vim.cmd([[colorscheme tokyonight-moon]])
