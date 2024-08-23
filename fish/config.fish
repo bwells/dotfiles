@@ -49,6 +49,8 @@ for p in $APPEND_PATHS
     end
 end
 
+set -x PATH $PATH ~/.local/bin
+
 # virtualfish/venv config
 set -x WORKON_HOME ~/environments
 set -x VIRTUALFISH_HOME ~/environments
