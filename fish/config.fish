@@ -52,7 +52,6 @@ end
 set -x PATH $PATH ~/.local/bin
 
 # virtualfish/venv config
-set -x WORKON_HOME ~/environments
 set -x VIRTUALFISH_HOME ~/environments
 
 set -x VIRTUAL_ENV_DISABLE_PROMPT 1
@@ -74,16 +73,51 @@ function chpwd --on-variable PWD --description "Activate Python virtualenvs on e
     if test -n "$GIT_TOPLEVEL"
         set PROJECT (basename $GIT_TOPLEVEL)
 
-        # if a VENV is not active but does exist
+        # if a VENV is not active but does exist in the venvs home
         if test -z "$VIRTUAL_ENV" && test -d "$VIRTUALFISH_HOME/$PROJECT"
-            vf activate $PROJECT
+            # vf activate $PROJECT
+            source $VIRTUALFISH_HOME/$PROJECT/bin/activate.fish
+
+        # if a VENV is not active but does exist in a project local .venv directory
+        else if test -z "$VIRTUAL_ENV" && [ -d .venv ]
+            source .venv/bin/activate.fish
+
         # if a VENV is active but it is not the right one and the new one does exist
         else if [ "$VIRTUAL_ENV" != "$PROJECT" ] && test -d "$VIRTUALFISH_HOME/$PROJECT"
-            vf activate $PROJECT
+            # vf activate $PROJECT
+            source $VIRTUALFISH_HOME/$PROJECT/bin/activate.fish
+
+        # if a VENV is active but it is not the right one and the new one does exist in a project local .venv directory
+        else if [ "$VIRTUAL_ENV" != "$PROJECT" ] && [ -d .venv ]
+            source .venv/bin/activate.fish
+
         end
     else
-        if test -n "$VIRTUAL_ENV"
+        # if a deactivate function exists, use it
+        if functions -q deactivate
+            deactivate
+        else if test -n "$VIRTUAL_ENV"
             vf deactivate
+        end
+    end
+end
+
+# activate a virtualenv on login
+function check_and_activate_venv --on-event fish_prompt
+    if status --is-interactive
+        and status --is-login
+        and not set -q VIRTUAL_ENV
+        # Check if .venv exists in the current directory
+        if test -d .venv
+            source .venv/bin/activate.fish
+        else
+            set GIT_TOPLEVEL (git rev-parse --show-toplevel 2> /dev/null)
+            if test -n "$GIT_TOPLEVEL"
+                set PROJECT (basename $GIT_TOPLEVEL)
+                if test -d "$VIRTUALFISH_HOME/$PROJECT"
+                    source $VIRTUALFISH_HOME/$PROJECT/bin/activate.fish
+                end
+            end
         end
     end
 end
