@@ -1,3 +1,9 @@
+-- mther lua config files
+-- ~/.config/nvim/lua/colors.lua
+-- ~/.config/nvim/lua/maps.lua
+-- ~/.config/nvim/lua/opts.lua
+-- ~/.config/nvim/lua/plugins.lua
+
 -- load basic vim config
 require('opts')
 
@@ -15,6 +21,7 @@ vim.g.wordmotion_prefix = "<leader>"
 -- override the default 'b' mapping to avoid conflicting
 -- with <leader>b to open buffer search
 vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
+
 
 -- vim.cmd([[colorscheme lunaperche]])
 
@@ -38,6 +45,18 @@ local map = vim.api.nvim_set_keymap
 local defaults = { noremap = true, silent = true }
 
 require("lazy").setup({
+
+  -- {
+  --   "folke/snacks.nvim",
+  --   priority = 1000,
+  --   lazy = false,
+  --   opts = {
+  --     -- your configuration comes here
+  --     -- or leave it empty to use the default settings
+  --     -- refer to the configuration section below
+  --   },
+  -- },
+
   {
     'marko-cerovac/material.nvim',
     lazy = false,
@@ -70,11 +89,11 @@ require("lazy").setup({
           -- Available plugins:
           -- "coc",
           -- "colorful-winsep",
-          -- "dap",
+          "dap",
           -- "dashboard",
           -- "eyeliner",
           -- "fidget",
-          -- "flash",
+          "flash",
           "gitsigns",
           "harpoon",
           -- "hop",
@@ -118,12 +137,17 @@ require("lazy").setup({
 
         custom_colors = nil,       -- If you want to override the default colors, set this to a function
 
-        custom_highlights = {},    -- Overwrite highlights with your own
+        -- custom_highlights = {},    -- Overwrite highlights with your own
 
         -- custom_highlights = {
         --   -- CursorLine = { fg = material.none, bg = '#1B1D25' },
         --   -- Selection = { fg = material.none, bg = '#8E97C4' }
         -- }
+
+        custom_highlights = {
+          -- FlashBackdrop = { bg = c.magenta1, bold = true, fg = c.fg },
+          FlashLabel = { bg = "magenta3", bold = true }
+        },
       }
       -- vim.cmd([[colorscheme material]])
     end
@@ -133,62 +157,28 @@ require("lazy").setup({
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    opts = {},
+    config = function()
+      require("tokyonight").setup({
+        style = "storm",
+        styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = false },
+          keywords = { italic = false },
+          functions = { italic = false },
+          variables = { italic = false },
+          -- Background styles. Can be "dark", "transparent" or "normal"
+          sidebars = "dark", -- style for sidebars, see below
+          floats = "dark",   -- style for floating windows
+        },
+      })
+    end
+
   },
-
-  { "jim-at-jibba/ariake.nvim" },
-
-  -- {
-  --   'folke/tokyonight.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     -- vim.o.background = 'dark'
-  --     require('tokyonight').setup({
-  --       style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-  --       light_style = "night",
-  --     })
-  --     -- vim.o.background = 'dark'
-  --     vim.cmd([[colorscheme tokyonight-night]])
-  --   end
-  -- },
-
-  -- {
-  --   'rose-pine/neovim',
-  --   name = 'rose-pine',
-  --   config = function ()
-  --     require('rose-pine').setup({
-  --       styles = {
-  --           bold = true,
-  --           italic = false,
-  --           transparency = false,
-  --       }
-  --     })
-  --   end
-  -- },
 
   'tpope/vim-repeat',
 
   -- more sanity to yanking
-  -- {
-  --   'svermeulen/vim-cutlass',
-  --   lazy = false,
-  --   keys = {
-  --     -- { "m", "d", defaults },
-  --     -- { "x", "m", "d", defaults },
-  --     -- { "gm", "m", default },
-  --     -- { "mm", "dd", defaults },
-  --     -- { "M", "D", defaults }
-  --   },
-  --   config = function ()
-  --     map("n", "m", "d", defaults)
-  --     map("x", "m", "d", defaults)
-  --     map("n", "gm", "m", defaults)
-  --
-  --     map("n", "mm", "dd", defaults)
-  --     map("n", "M", "D", defaults)
-  --   end
-  -- },
   {
     "gbprod/cutlass.nvim",
     lazy = false,
@@ -222,27 +212,40 @@ require("lazy").setup({
     end
   },
 
-  -- sneak like motions, smarter s/S and f/F
   {
-    'ggandor/leap.nvim',
-    priority = 999,
-    dependencies = {
-      {
-        'ggandor/flit.nvim',
-        config = function()
-          require('flit').setup({
-            multiline = false
-          })
-        end
-      }
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      -- { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      -- { "S",     mode = { "n", "o" },      function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
     config = function()
-      require('leap').add_default_mappings()
-      -- require('leap').setup({
-      --   max_aot_targets = nil
-      -- })
-      vim.cmd([[xunmap x]])
-      vim.cmd([[xunmap X]])
+      require("flash").setup({
+        modes = {
+          char = {
+            autohide = false,
+            config = function(opts)
+              -- autohide flash when in operator-pending mode
+              opts.autohide = opts.autohide or (vim.fn.mode(true):find("no") and vim.v.operator == "y")
+
+              -- disable jump labels when not enabled, when using a count,
+              -- or when recording/executing registers
+              opts.jump_labels = opts.jump_labels
+                  and vim.v.count == 0
+                  and vim.fn.reg_executing() == ""
+                  and vim.fn.reg_recording() == ""
+
+              -- Show jump labels only in operator-pending mode
+              -- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
+            end
+          }
+        }
+      })
     end
   },
 
@@ -259,12 +262,12 @@ require("lazy").setup({
       { "w", mode = "o" },
       { "W", mode = "o" },
     },
-    config = function()
-      -- vim.g.wordmotion_prefix = "<leader>"
-      -- override the default 'b' mapping to avoid conflicting
-      -- with <leader>b to open buffer search
-      -- vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
-    end
+    -- config = function()
+    -- vim.g.wordmotion_prefix = "<leader>"
+    -- override the default 'b' mapping to avoid conflicting
+    -- with <leader>b to open buffer search
+    -- vim.cmd([[let g:wordmotion_mappings = { 'b': '<M-b>' }]])
+    -- end
   },
 
   -- lots of targets
@@ -341,12 +344,6 @@ require("lazy").setup({
       cmap = false
     },
   },
-
-  -- {
-  --   "chrisgrieser/nvim-puppeteer",
-  --   dependencies = "nvim-treesitter/nvim-treesitter",
-  --   lazy = false, -- plugin lazy-loads itself
-  -- },
 
   { -- TODO: fix lazy loading to actually load this ever
     'tpope/vim-abolish',
@@ -565,13 +562,59 @@ require("lazy").setup({
     },
   },
 
+  -- {
+  --   'Almo7aya/openingh.nvim',
+  --   lazy = true,
+  --   keys = {
+  --     { mode = 'n', '<leader>gh', ":OpenInGHFile <CR>",      defaults },
+  --     { mode = 'v', '<leader>gh', ":'<,'>OpenInGHFile <CR>", defaults }
+  --   }
+  -- },
+
   {
-    'Almo7aya/openingh.nvim',
-    lazy = true,
-    keys = {
-      { mode = 'n', '<leader>gh', ":OpenInGHFile <CR>",      defaults },
-      { mode = 'v', '<leader>gh', ":'<,'>OpenInGHFile <CR>", defaults }
-    }
+    'daliusd/ghlite.nvim',
+    config = function()
+      require('ghlite').setup({
+        --     debug = false, -- if set to true debugging information is written to ~/.ghlite.log file
+        --     view_split = 'vsplit', -- set to empty string '' to open in active buffer
+        --     diff_split = 'vsplit', -- set to empty string '' to open in active buffer
+        --     comment_split = 'split', -- set to empty string '' to open in active buffer
+        --     open_command = 'open', -- open command to use, e.g. on Linux you might want to use xdg-open
+        --     keymaps = { -- override default keymaps with the ones you prefer
+        --       diff = {
+        --         open_file = 'gf',
+        --         open_file_tab = 'gt',
+        --         open_file_split = 'gs',
+        --         open_file_vsplit = 'gv',
+        --         approve = '<C-A>',
+        --       },
+        --       comment = {
+        --         send_comment = '<C-CR>'
+        --       },
+        --       pr = {
+        --         approve = '<C-A>',
+        --       },
+        --     },
+      })
+    end,
+    -- keys = {
+    --   { '<leader>us', ':GHLitePRSelect<cr>',        silent = true },
+    --   { '<leader>uo', ':GHLitePRCheckout<cr>',      silent = true },
+    --   { '<leader>uv', ':GHLitePRView<cr>',          silent = true },
+    --   { '<leader>uu', ':GHLitePRLoadComments<cr>',  silent = true },
+    --   { '<leader>up', ':GHLitePRDiff<cr>',          silent = true },
+    --   { '<leader>ul', ':GHLitePRDiffview<cr>',      silent = true },
+    --   { '<leader>ua', ':GHLitePRAddComment<cr>',    silent = true },
+    --   { '<leader>uc', ':GHLitePRUpdateComment<cr>', silent = true },
+    --   { '<leader>ud', ':GHLitePRDeleteComment<cr>', silent = true },
+    --   { '<leader>ug', ':GHLitePROpenComment<cr>',   silent = true },
+    -- }
+  },
+
+  {
+    'akinsho/git-conflict.nvim',
+    version = "*",
+    config = true
   },
 
   {
@@ -627,20 +670,10 @@ require("lazy").setup({
   {
     'stevearc/oil.nvim',
     opts = {},
-    lazy = true,
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    keys = {
-      { mode = "n", "-", "<cmd>Oil<cr>", defaults }
-    },
-    config = function()
-      require("oil").setup()
-    end
+    dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
   },
 
   'asiryk/auto-hlsearch.nvim',
-
-  -- 'christianrondeau/vim-base64',
 
   {
     "taybart/b64.nvim",
@@ -834,24 +867,6 @@ require("lazy").setup({
   --
   -- },
 
-  -- {
-  --   "zbirenbaum/copilot-cmp",
-  --   dependencies = {
-  --     "zbirenbaum/copilot.lua",
-  --     cmd = "Copilot",
-  --     event = "InsertEnter",
-  --     config = function()
-  --       require("copilot").setup({
-  --         suggestion = { enabled = false },
-  --         panel = { enabled = false },
-  --       })
-  --     end,
-  --   },
-  --   config = function()
-  --     require("copilot_cmp").setup()
-  --   end
-  -- },
-
   {
     "supermaven-inc/supermaven-nvim",
     config = function()
@@ -861,65 +876,63 @@ require("lazy").setup({
           clear_suggestion = "<C-]>",
           accept_word = "<C-j>",
         },
-        ignore_filetypes = { },
+        ignore_filetypes = {},
         color = {
           suggestion_color = "#ffffff",
           cterm = 244,
         },
-        log_level = "info",                  -- set to "off" to disable logging completely
-        disable_inline_completion = false,   -- disables inline completion for use with cmp
-        disable_keymaps = false              -- disables built in keymaps for more manual control
+        log_level = "info",                -- set to "off" to disable logging completely
+        disable_inline_completion = false, -- disables inline completion for use with cmp
+        disable_keymaps = false            -- disables built in keymaps for more manual control
       })
     end,
   },
 
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("chatgpt").setup({
-  --       openai_params = {
-  --         model = "gpt-4",
-  --       },
-  --       openai_edit_params = {
-  --         model = "gpt-4",
-  --       },
-  --     })
-  --   end,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "folke/trouble.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   }
-  -- },
-
   {
-    "frankroeder/parrot.nvim",
-    dependencies = {
-      'ibhagwan/fzf-lua',
-      'nvim-lua/plenary.nvim'
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- set this if you want to always pull the latest change
+    opts = {
+      -- add any opts here
     },
-    config = function()
-      require("parrot").setup {
-        providers = {
-          -- pplx = {
-          --   api_key = os.getenv "PERPLEXITY_API_KEY",
-          --   -- OPTIONAL
-          --   -- gpg command
-          --   -- api_key = { "gpg", "--decrypt", vim.fn.expand("$HOME") .. "/pplx_api_key.txt.gpg"  },
-          --   -- macOS security tool
-          --   -- api_key = { "/usr/bin/security", "find-generic-password", "-s pplx-api-key", "-w" },
-          -- },
-          openai = {
-            api_key = os.getenv "OPENAI_API_KEY",
-          },
-          anthropic = {
-            api_key = os.getenv "ANTHROPIC_API_KEY",
-          },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      -- "zbirenbaum/copilot.lua",      -- for providers='copilot'
+      -- {
+      --   -- support for image pasting
+      --   "HakonHarnes/img-clip.nvim",
+      --   event = "VeryLazy",
+      --   opts = {
+      --     -- recommended settings
+      --     default = {
+      --       embed_image_as_base64 = false,
+      --       prompt_for_file_name = false,
+      --       drag_and_drop = {
+      --         insert_mode = true,
+      --       },
+      --       -- required for Windows users
+      --       use_absolute_path = true,
+      --     },
+      --   },
+      -- },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
         },
-      }
-    end,
+        ft = { "markdown", "Avante" },
+      },
+    },
   },
 
   {
@@ -927,16 +940,6 @@ require("lazy").setup({
     lazy = true,
     -- ft = {
     --   "css",
-    --   "dockerfile",
-    --   "elm",
-    --   "html",
-    --   "javascript",
-    --   "json",
-    --   "lua",
-    --   "python",
-    --   "sql",
-    --   "vim",
-    --   "yaml"
     -- },
     cmd = { 'LspInfo', 'Mason' },
     event = { 'BufReadPre', 'BufNewFile' },
@@ -959,79 +962,6 @@ require("lazy").setup({
     },
     config = function()
       local lspconfig = require("lspconfig")
-
-      -- local on_attach = function(_, bufnr)
-      --   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-      --   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-      --
-      --   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-      --
-      --   -- Mappings.
-      --   local opts = { noremap=true, silent=true }
-      --   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-      --   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-      --   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-      --   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-      --   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-      --   buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-      --   buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-      --   buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-      --   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-      --   buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-      --   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-      -- end
-
-      -- enable debug verbosity
-      -- vim.lsp.set_log_level("debug")
-
-      -- local lsp_default_options = { on_attach = on_attach }
-
-      -- lspconfig.cssls.setup(lsp_default_options)
-      -- lspconfig.dockerls.setup(lsp_default_options)
-
-      -- lspconfig.elmls.setup({
-      --   on_attach = on_attach,
-      --   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-      -- })
-
-      -- lspconfig.elmls.setup(lsp_default_options)
-      -- lspconfig.eslint.setup(lsp_default_options)
-      -- lspconfig.html.setup(lsp_default_options)
-      -- lspconfig.jsonls.setup(lsp_default_options)
-      -- lspconfig.sqlls.setup(lsp_default_options)
-
-      -- lspconfig.lua_ls.setup({
-      --   on_attach = on_attach,
-      --   settings = {
-      --     Lua = {
-      --       diagnostics = {
-      --         globals = { 'vim' }
-      --       }
-      --     }
-      --   }
-      -- })
-
-      -- lspconfig.vimls.setup(lsp_default_options)
-
-      -- lspconfig.yamlls.setup({
-      --   on_attach = on_attach,
-      --   settings = {
-      --     yaml = {
-      --       keyOrdering = false
-      --     }
-      --   }
-      -- })
-
-      -- lspconfig.pyright.setup {
-      --   on_attach = on_attach,
-      --   handlers = {
-      --     ["textDocument/publishDiagnostics"] = function() end
-      --   }
-      -- }
-
-      -- lspconfig.ruff_lsp.setup {
-      --   on_attach = on_attach,
-      -- }
 
       local lsp = require('lsp-zero')
 
@@ -1096,45 +1026,6 @@ require("lazy").setup({
       )
 
       lsp.setup()
-    end
-  },
-
-  -- null-lsp
-  -- {
-  --   'jose-elias-alvarez/null-ls.nvim',
-  --   lazy = true,
-  --   ft = { "python", "javascript" },
-  --   config = function ()
-  --     local null_ls = require("null-ls")
-  --     null_ls.setup({
-  --         -- debug = true,
-  --         sources = {
-  --             null_ls.builtins.diagnostics.pylint,
-  --             -- null_ls.builtins.diagnostics.flake8,
-  --             null_ls.builtins.diagnostics.hadolint,
-  --             -- null_ls.builtins.diagnostics.eslint,
-  --             -- null_ls.builtins.code_actions.gitsigns,
-  --         },
-  --     })
-  --   end
-  -- },
-
-  {
-    'mfussenegger/nvim-lint',
-    lazy = true,
-    -- ft = { "python", "dockerfile", "javascript" },
-    ft = { "dockerfile", "javascript" },
-    config = function()
-      require('lint').linters_by_ft = {
-        dockerfile = { 'hadolint', },
-        javascript = { 'eslint_d', },
-        -- python = { 'pylint', },
-      }
-      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-        callback = function()
-          require("lint").try_lint()
-        end
-      })
     end
   },
 
@@ -1261,37 +1152,6 @@ require("lazy").setup({
     end
   },
 
-  -- {
-  --   'mhartington/formatter.nvim',
-  --   lazy = true,
-  --   ft = 'python',
-  --   config = function ()
-  --     local util = require "formatter.util"
-  --
-  --     require('formatter').setup({
-  --       filetype = {
-  --         python = {
-  --           -- require("formatter.filetypes.python").isort,
-  --           -- require("formatter.filetypes.python").black,
-  --           -- require("formatter.filetypes.python").yapf,
-  --           -- require("formatter.filetypes.python").autopep8,
-  --           function()
-  --             return {
-  --               exe = "usort",
-  --               args = {
-  --                 "format",
-  --                 util.escape_path(util.get_current_buffer_file_path()),
-  --                 -- "-",
-  --               },
-  --               -- stdin = true,
-  --             }
-  --           end
-  --         }
-  --       }
-  --     })
-  --   end
-  -- },
-
   {
     "folke/trouble.nvim",
     opts = {},
@@ -1301,7 +1161,7 @@ require("lazy").setup({
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
-    cmd = { "ConformInfo" },
+    -- cmd = { "ConformInfo" },
     -- keys = {
     --   {
     --     -- Customize or remove this keymap to your liking
@@ -1315,6 +1175,11 @@ require("lazy").setup({
     -- },
     -- Everything in opts will be passed to setup()
     opts = {
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_format = "fallback",
+      },
       -- Define your formatters
       formatters_by_ft = {
         -- lua = { "stylua" },
@@ -1327,9 +1192,8 @@ require("lazy").setup({
         --   end
         -- end,
         -- javascript = { { "prettierd", "prettier" } },
+        css = { "prettierd", "prettier", stop_after_first = true },
       },
-      -- Set up format-on-save
-      -- format_on_save = { timeout_ms = 500, lsp_fallback = true },
       -- Customize formatters
       formatters = {
         -- shfmt = {
@@ -1379,6 +1243,145 @@ require("lazy").setup({
     },
   },
 
+  {
+    'lucidph3nx/nvim-sops',
+    -- event = { 'BufEnter' },
+    lazy = true,
+    cmd = { "SopsEncrypt", "SopsDecrypt" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require('nvim-ts-autotag').setup({
+        opts = {
+          -- Defaults
+          enable_close = true,          -- Auto close tags
+          enable_rename = true,         -- Auto rename pairs of tags
+          enable_close_on_slash = false -- Auto close on trailing </
+        },
+        -- Also override individual filetype configs, these take priority.
+        -- Empty by default, useful if one of the "opts" global settings
+        -- doesn't work well in a specific filetype
+        per_filetype = {
+          -- ["html"] = {
+          --   enable_close = false
+          -- }
+        }
+      })
+    end
+  },
+
+  {
+    "jake-stewart/multicursor.nvim",
+    branch = "1.0",
+    config = function()
+      local mc = require("multicursor-nvim")
+
+      mc.setup()
+
+      local set = vim.keymap.set
+
+      -- Add or skip cursor above/below the main cursor.
+      set({ "n", "v" }, "<up>",
+        function() mc.lineAddCursor(-1) end)
+      set({ "n", "v" }, "<down>",
+        function() mc.lineAddCursor(1) end)
+      set({ "n", "v" }, "<leader><up>",
+        function() mc.lineSkipCursor(-1) end)
+      set({ "n", "v" }, "<leader><down>",
+        function() mc.lineSkipCursor(1) end)
+
+      -- Add or skip adding a new cursor by matching word/selection
+      set({ "n", "v" }, "<leader>n",
+        function() mc.matchAddCursor(1) end)
+      set({ "n", "v" }, "<leader>s",
+        function() mc.matchSkipCursor(1) end)
+      set({ "n", "v" }, "<leader>N",
+        function() mc.matchAddCursor(-1) end)
+      set({ "n", "v" }, "<leader>S",
+        function() mc.matchSkipCursor(-1) end)
+
+      -- Add all matches in the document
+      set({ "n", "v" }, "<leader>A", mc.matchAllAddCursors)
+
+      -- You can also add cursors with any motion you prefer:
+      -- set("n", "<right>", function()
+      --     mc.addCursor("w")
+      -- end)
+      -- set("n", "<leader><right>", function()
+      --     mc.skipCursor("w")
+      -- end)
+
+      -- Rotate the main cursor.
+      set({ "n", "v" }, "<right>", mc.prevCursor)
+      set({ "n", "v" }, "<left>", mc.nextCursor)
+
+      -- Delete the main cursor.
+      set({ "n", "v" }, "<leader>x", mc.deleteCursor)
+
+      -- Add and remove cursors with control + left click.
+      set("n", "<c-leftmouse>", mc.handleMouse)
+
+      -- Easy way to add and remove cursors using the main cursor.
+      set({ "n", "v" }, "<c-q>", mc.toggleCursor)
+
+      -- Clone every cursor and disable the originals.
+      set({ "n", "v" }, "<leader><c-q>", mc.duplicateCursors)
+
+      set("n", "<esc>", function()
+        if not mc.cursorsEnabled() then
+          mc.enableCursors()
+        elseif mc.hasCursors() then
+          mc.clearCursors()
+        else
+          -- Default <esc> handler.
+        end
+      end)
+
+      -- bring back cursors if you accidentally clear them
+      set("n", "<leader>gv", mc.restoreCursors)
+
+      -- Align cursor columns.
+      set("v", "<leader>a", mc.alignCursors)
+
+      -- Split visual selections by regex.
+      -- conflicts with visual mode surround mapping
+      -- set("v", "S", mc.splitCursors)
+
+      -- Append/insert for each line of visual selections.
+      set("v", "I", mc.insertVisual)
+      set("v", "A", mc.appendVisual)
+
+      -- match new cursors within visual selections by regex.
+      set("v", "M", mc.matchCursors)
+
+      -- Rotate visual selection contents.
+      set("v", "<leader>t",
+        function() mc.transposeCursors(1) end)
+      set("v", "<leader>T",
+        function() mc.transposeCursors(-1) end)
+
+      -- Jumplist support
+      set({ "v", "n" }, "<c-i>", mc.jumpForward)
+      set({ "v", "n" }, "<c-o>", mc.jumpBackward)
+
+      -- Customize how cursors look.
+      local hl = vim.api.nvim_set_hl
+      hl(0, "MultiCursorCursor", { link = "Cursor" })
+      hl(0, "MultiCursorVisual", { link = "Visual" })
+      hl(0, "MultiCursorSign", { link = "SignColumn" })
+      hl(0, "MultiCursorDisabledCursor", { link = "Visual" })
+      hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+      hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
+    end
+  },
+
 }, {})
 
 -- vim.cmd([[
@@ -1389,7 +1392,6 @@ require("lazy").setup({
 -- ]])
 
 vim.cmd([[colorscheme material]])
--- vim.cmd([[colorscheme ariake]])
 
 -- vim.cmd([[colorscheme tokyonight-storm]])
 -- vim.cmd([[colorscheme tokyonight-moon]])

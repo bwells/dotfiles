@@ -20,8 +20,17 @@ map("i", "jk", "<esc>l", defaults)
 map("n", "<leader>o", "mzo<esc>`z", defaults)
 map("n", "<leader>O", "mzO<esc>`z", defaults)
 
+-- delete the line below (o) and above (O) the current line
 map("n", "do", "mzjdd`z", defaults)
 map("n", "dO", "mzkdd`z", defaults)
+
+-- Move single line up
+vim.keymap.set('n', '<A-k>', ':move .-2<CR>==', { noremap = true, silent = true })
+vim.keymap.set('v', '<A-k>', ":move '<-2<CR>gv=gv", { noremap = true, silent = true })
+
+-- Move the current line down
+vim.keymap.set('n', '<A-j>', ':move .+1<CR>==', { noremap = true, silent = true })
+vim.keymap.set('v', '<A-j>', ":move '>+1<CR>gv=gv", { noremap = true, silent = true })
 
 -- clear highlight with <esc><esc> after a search
 map("n", "<esc><esc>", ":noh<return><esc>", defaults)
@@ -31,6 +40,7 @@ map("n", "<esc><esc>", ":noh<return><esc>", defaults)
 -- Navigation
 -------------
 
+-- TODO: this definitely isn't working
 -- Keep search movements at the center of screen
 map("n", "n", "n:lua CenterView()<cr>", defaults)
 map("n", "N", "N:lua CenterView()<cr>", defaults)
