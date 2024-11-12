@@ -4,22 +4,18 @@
 ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 # add to github
 
-# TODO: remap capslock to ctrl
+# remap capslock to ctrl in keyboard settings
 # update keyboard repeat rate
 
 # install command line tools and/or xcode
 
-# install brew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# install brew. installs via .pkg these days, download from homebrew website
 
 # brew install basic packages
-brew install ccrypt curl fish fzf git go mercurial kops kubernetes-cli mysql neovim nmap node ripgrep sqlite tmux vim python stern
+brew install ccrypt curl fish fzf git go kops kubernetes-cli mysql neovim nmap ripgrep fd sqlite tmux vim python stern pkg-config uv
 
 # change default shell to fish
-sudo chsh -s /usr/local/bin/fish kremlan
-
-brew tap universal-ctags/universal-ctags
-brew install --HEAD universal-ctags
+sudo chsh -s /opt/homebrew/bin/fish kremlan
 
 # setup cask
 # brew tap homebrew/cask-fonts
@@ -28,15 +24,6 @@ brew install --HEAD universal-ctags
 # Instal Meslo from nerdfonts.com
 # maybe
 # brew install homebrew/cask-fonts/font-meslo-lg-nerd-font
-
-# TODO: switch this to Packer for neovim
-# install vim-plug and plugins for vim
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-vim -c PlugInstall
-
-# install vim-plug for nvim
-curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-nvim -c PlugInstall
 
 # symlink in dotfiles
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
