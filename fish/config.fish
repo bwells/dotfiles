@@ -30,8 +30,11 @@ set -U CDPATH . ~ ~/workspace
 
 set -x KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
 
+set -x UV_PYTHON_PREFERENC only-managed
+
 # Paths we want to add before system default paths
-set -l PREPEND_PATHS /opt/homebrew/bin /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.10/bin /opt/homebrew/opt/python@3.9/bin /opt/homebrew/opt/python@3.11/bin
+#set -l PREPEND_PATHS /opt/homebrew/bin /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.10/bin /opt/homebrew/opt/python@3.9/bin /opt/homebrew/opt/python@3.11/bin
+set -l PREPEND_PATHS /opt/homebrew/bin
 
 for p in $PREPEND_PATHS
     if not contains $p $PATH
@@ -41,13 +44,13 @@ end
 
 # Paths we want to add after system default paths
 
-set -l APPEND_PATHS /opt/homebrew/opt/mysql@5.7/bin /Library/Frameworks/Python.framework/Versions/2.7/bin
-
-for p in $APPEND_PATHS
-    if not contains $p $PATH
-        set -x PATH $PATH $p
-    end
-end
+# set -l APPEND_PATHS /opt/homebrew/opt/mysql@5.7/bin /Library/Frameworks/Python.framework/Versions/2.7/bin
+#
+# for p in $APPEND_PATHS
+#     if not contains $p $PATH
+#         set -x PATH $PATH $p
+#     end
+# end
 
 set -x PATH $PATH ~/.local/bin
 
@@ -61,6 +64,8 @@ ssh-add -A 2>/dev/null;
 
 # completion for ccdecrypt
 complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
+
+uvx --generate-shell-completion fish | source
 
 # activate a virtualenv on entry
 # also deactivates on project exit
