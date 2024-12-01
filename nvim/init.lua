@@ -3,6 +3,7 @@
 -- ~/.config/nvim/lua/maps.lua
 -- ~/.config/nvim/lua/opts.lua
 -- ~/.config/nvim/lua/plugins.lua
+-- ~/.config/nvim/lua/util.lua
 
 -- load basic vim config
 require('opts')
@@ -1022,6 +1023,8 @@ require("lazy").setup({
 
       local lsp = require('lsp-zero')
 
+      local util = require('util')
+
       lsp.on_attach(function(_, _)
         -- lsp.default_keymaps({buffer = bufnr})
 
@@ -1061,10 +1064,22 @@ require("lazy").setup({
 
       -- disable diagnostics coming from pyright
       -- it's just too much until sqlalchemy is updated with annotations
-      lspconfig.pyright.setup {
-        handlers = {
-          ["textDocument/publishDiagnostics"] = function() end
-        }
+      -- lspconfig.pyright.setup {
+      --   handlers = {
+      --     ["textDocument/publishDiagnostics"] = function() end
+      --   }
+      -- }
+
+      lspconfig.ruff.setup({
+        root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' })
+        -- root_dir = function(fname)
+        --   return util.find_highest_git_ancestor(fname)
+        -- end
+      })
+
+      lspconfig.basedpyright.setup {
+        disableOrganizeImports = true,
+        root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' })
       }
 
       --
