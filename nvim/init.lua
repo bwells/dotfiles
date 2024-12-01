@@ -1,4 +1,4 @@
--- mther lua config files
+-- other lua config files
 -- ~/.config/nvim/lua/colors.lua
 -- ~/.config/nvim/lua/maps.lua
 -- ~/.config/nvim/lua/opts.lua
@@ -99,7 +99,7 @@ require("lazy").setup({
           -- "indent-blankline",
           -- "lspsaga",
           -- "mini",
-          -- "neogit",
+          "neogit",
           -- "neotest",
           -- "neo-tree",
           -- "neorg",
@@ -169,6 +169,55 @@ require("lazy").setup({
           sidebars = "dark", -- style for sidebars, see below
           floats = "dark",   -- style for floating windows
         },
+        on_colors = function(colors)
+          -- colors.yellow = "#e0af68" -- default
+          -- colors.yellow = "#c99b5c"
+          -- colors.yellow = "#b88e52"
+          -- colors.yellow = "#a57e4a"
+          -- colors.yellow = "#967146"
+        end,
+        on_highlights = function(highlights, colors)
+          -- Modify Python docstrings away from FACE SLAPPING ORANGE
+          highlights["@string.documentation.python"] = {
+            fg = colors.purple,
+          }
+
+          -- Modify Python constants to use TokyoNight's built-in magenta
+          -- just do this to all constants?
+          highlights["@constant.python"] = {
+            -- fg = colors.magenta,
+            fg = colors.magenta2,
+          }
+
+          -- Set Python member variables to use default text color
+          highlights["@variable.member.python"] = {
+            fg = colors.fg, -- This uses TokyoNight's default text color
+          }
+
+          highlights["@variable.parameter"] = {
+            fg = colors.fg, -- This uses TokyoNight's default text color
+            -- fg = colors.blue0
+            -- fg = colors.blue1
+            -- fg = colors.blue2
+            -- fg = colors.blue3
+            -- fg = colors.blue4
+            -- fg = colors.blue5
+            -- fg = colors.blue6
+            -- fg = colors.blue7
+          }
+
+          highlights.Number = {
+            fg = colors.red,
+          }
+
+          -- highlights.String = {
+          --   fg = colors.green
+          -- }
+
+          highlights.TelescopePromptBorder = {
+            fg = colors.magenta,
+          }
+        end,
       })
     end
 
@@ -540,6 +589,16 @@ require("lazy").setup({
         }
       })
     end
+  },
+
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",  -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+      "nvim-telescope/telescope.nvim",
+    },
+    config = true
   },
 
   {
@@ -1036,14 +1095,15 @@ require("lazy").setup({
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
       { 'nvim-treesitter/playground' },
       {
-        'romgrk/nvim-treesitter-context',
+        "nvim-treesitter/nvim-treesitter-context",
         lazy = false,
         keys = {
           { "<leader>c", "<cmd>TSContextToggle<cr>", defaults },
         },
+        cmd = { "TSContextToggle", "TSContextEnable", "TSContextDisable" },
         config = function()
           require 'treesitter-context'.setup {
-            enable = false -- disabled by default
+            enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
           }
         end
       },
@@ -1209,7 +1269,8 @@ require("lazy").setup({
 
   -- needed for correct indentation on new lines
   { 'hynek/vim-python-pep8-indent', ft = "python" },
-  { 'sychen52/gF-python-traceback', ft = "python" }, -- or terminal?
+  -- { 'sychen52/gF-python-traceback', ft = "python" }, -- or terminal?
+  { 'sychen52/gF-python-traceback' }, -- or terminal?
   { 'Zaptic/elm-vim',               ft = "elm" },
   { 'sophacles/vim-bundle-mako',    ft = "mako" },
   { 'Glench/Vim-Jinja2-Syntax',     ft = { "jinja.html", "html" }, lazy = true },
@@ -1380,6 +1441,24 @@ require("lazy").setup({
     end
   },
 
+  -- show color samples inline
+  {
+    "uga-rosa/ccc.nvim",
+    config = function()
+      local ccc = require("ccc")
+      -- local mapping = ccc.mapping
+
+      ccc.setup({
+        -- Your preferred settings
+        -- Example: enable highlighter
+        highlighter = {
+          auto_enable = true,
+          lsp = true,
+        },
+      })
+    end
+  }
+
 }, {})
 
 -- vim.cmd([[
@@ -1389,7 +1468,4 @@ require("lazy").setup({
 -- augroup END
 -- ]])
 
-vim.cmd([[colorscheme material]])
-
--- vim.cmd([[colorscheme tokyonight-storm]])
--- vim.cmd([[colorscheme tokyonight-moon]])
+vim.cmd([[colorscheme tokyonight-night]])
