@@ -4,13 +4,13 @@
 vim.g.material_style = "deep ocean"
 
 local material = require('material')
-material.setup{
+material.setup {
   styles = {
-		comments = { italic = false },
+    comments = { italic = false },
     keywords = { italic = false },
-		functions = { italic = false },
-		strings = { italic = false },
-		variables = { italic = false },
+    functions = { italic = false },
+    strings = { italic = false },
+    variables = { italic = false },
   },
   plugins = { -- Uncomment the plugins that you use to highlight them
     -- Available plugins:
@@ -39,12 +39,6 @@ material.setup{
 vim.cmd([[colorscheme material]])
 
 
-------------
--- Colorizer
-------------
-require'colorizer'.setup()
-
-
 ----------
 -- Lualine
 ----------
@@ -52,24 +46,24 @@ require'colorizer'.setup()
 -- disable showing the builtin mode indicator
 vim.o.showmode = false
 
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'material'
-  },
-  sections = {
-    lualine_a = {'mode'},
-    -- branch, changes, diagnostics and all the rest is too wide for a 100 col split
-    -- lualine_b = {'branch', 'diff', {'diagnostics', sources={'nvim_lsp'}}},
-    -- lualine_b = { {'branch', icon='שׂ'}, {'diagnostics', sources={'nvim_diagnostic'}}},
-    lualine_b = { {'branch'}, {'diagnostics', sources={'nvim_diagnostic'}}},
-    lualine_c = {'filename'},
-    lualine_x = {'filetype', 'fileformat', 'encoding'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  extensions = {'quickfix', 'nvim-tree'}
-}
+-- require('lualine').setup {
+--   options = {
+--     icons_enabled = true,
+--     theme = 'material'
+--   },
+--   sections = {
+--     lualine_a = { 'mode' },
+--     -- branch, changes, diagnostics and all the rest is too wide for a 100 col split
+--     -- lualine_b = {'branch', 'diff', {'diagnostics', sources={'nvim_lsp'}}},
+--     -- lualine_b = { {'branch', icon='שׂ'}, {'diagnostics', sources={'nvim_diagnostic'}}},
+--     lualine_b = { { 'branch' }, { 'diagnostics', sources = { 'nvim_diagnostic' } } },
+--     lualine_c = { 'filename' },
+--     lualine_x = { 'filetype', 'fileformat', 'encoding' },
+--     lualine_y = { 'progress' },
+--     lualine_z = { 'location' }
+--   },
+--   extensions = { 'quickfix', 'nvim-tree' }
+-- }
 
 --------------
 -- virt-column
@@ -102,4 +96,4 @@ vim.cmd([[highlight clear ColorColumn]])
 ---------
 -- Notify
 ---------
-vim.notify = require("notify")
+-- vim.notify = require("notify")
