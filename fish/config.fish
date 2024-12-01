@@ -23,6 +23,8 @@ end
 
 alias dbimport="~/workspace/ERP/erp/scripts/dbimport.py"
 
+alias dbget="s5cmd --endpoint-url=https://s3-accelerate.amazonaws.com cp s3://alta-db-backups/(s5cmd ls s3://alta-db-backups | tail -n 1 | cut -w -f4) ~/Downloads"
+
 alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.write(zlib.decompress(sys.stdin.buffer.read()))'"
 
 # add workspace to cd search path
