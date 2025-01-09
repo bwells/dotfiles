@@ -4,12 +4,15 @@
 -- ~/.config/nvim/lua/opts.lua
 -- ~/.config/nvim/lua/plugins.lua
 -- ~/.config/nvim/lua/util.lua
+-- ~/.config/nvim/lua/lsp.lua
 
 -- load basic vim config
 require('opts')
 
 -- load custom vim specific keymaps
 require('maps')
+
+require('lsp')
 
 -- disable showing the builtin mode indicator
 vim.o.showmode = false
@@ -1025,13 +1028,13 @@ require("lazy").setup({
 
       local util = require('util')
 
-      lsp.on_attach(function(_, _)
-        -- lsp.default_keymaps({buffer = bufnr})
-
-        -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-        -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-        -- buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+      lsp.on_attach(function(client, _)
+        -- Check if the server should be disabled
+        local disabled_servers = vim.g.disabled_servers or {}
+        if disabled_servers[client.name] then
+          client.stop()
+          return
+        end
 
         -- Mappings.
         local opts = { buffer = true, noremap = true, silent = true }
@@ -1072,14 +1075,15 @@ require("lazy").setup({
 
       lspconfig.ruff.setup({
         root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' })
-        -- root_dir = function(fname)
-        --   return util.find_highest_git_ancestor(fname)
-        -- end
       })
 
       lspconfig.basedpyright.setup {
         disableOrganizeImports = true,
-        root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' })
+        root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' }),
+        handlers = {
+          ["textDocument/publishDiagnostics"] = function() end,
+          ["textDocument/semanticTokens"] = function() end,
+        }
       }
 
       --
