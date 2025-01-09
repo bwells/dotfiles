@@ -12,7 +12,7 @@ ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 # install brew. installs via .pkg these days, download from homebrew website
 
 # brew install basic packages
-brew install ccrypt curl fish fzf git go kops kubernetes-cli mysql neovim nmap ripgrep fd sqlite tmux vim python stern pkg-config uv
+brew install awscli ccrypt curl elm fd fish fzf git go kops kubernetes-cli mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv
 
 # change default shell to fish
 sudo chsh -s /opt/homebrew/bin/fish kremlan
@@ -33,6 +33,7 @@ ln -s ~/dotfiles/.pylintrc ~/.pylintrc
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/fish ~/.config/fish
 ln -s ~/dotfiles/kitty ~/.config/kitty
+ln -s ~/dotfiles/ghostty.config ~/Library/Application\ Support/com.mitchellh.ghostty/config
 mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 ln -s ~/dotfiles/nvim/ftplugin ~/.config/nvim/ftplugin
