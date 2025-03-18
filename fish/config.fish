@@ -56,6 +56,8 @@ end
 
 set -x PATH $PATH ~/.local/bin
 
+fish_add_path /opt/homebrew/opt/node@22/bin
+
 # virtualfish/venv config
 set -x VIRTUALFISH_HOME ~/environments
 
