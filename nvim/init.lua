@@ -740,7 +740,7 @@ require("lazy").setup({
     "taybart/b64.nvim",
     lazy = true,
     keys = {
-      { mode = "x", "<leader>aa", "<cmd>lua require('b64').encode()<cr>", defaults },
+      { mode = "x", "<leader>ab", "<cmd>lua require('b64').encode()<cr>", defaults },
       { mode = "x", "<leader>bb", "<cmd>lua require('b64').decode()<cr>", defaults },
     },
   },
@@ -1083,6 +1083,50 @@ require("lazy").setup({
         handlers = {
           ["textDocument/publishDiagnostics"] = function() end,
           ["textDocument/semanticTokens"] = function() end,
+        }
+      }
+
+      lspconfig.tailwindcss.setup {
+        filetypes = { "html", "css", "scss", "javascript", "typescript", "elm" },
+        init_options = {
+          userLanguages = {
+            css = "css",
+            html = "html",
+            javascript = "javascript",
+            typescript = "javascript",
+            elm = "html",
+          },
+        },
+        settings = {
+          tailwindCSS = {
+            validate = true,
+            includeLanguages = {
+              elm = "html",
+              html = "html",
+            },
+            classAttributes = { "class", "className", "classList" },
+            experimental = {
+              classRegex = {
+                "\\bclass[\\s(<|]+\"([^\"]*)\"",
+                "\\bclass[\\s(]+\"[^\"]*\"[\\s+]+\"([^\"]*)\"",
+                "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
+                "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
+                "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
+                "\\bclassList[\\s\\[\\(]+\"([^\"]*)\"",
+                "\\bclassList[\\s\\[\\(]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"([^\"]*)\"",
+                "\\bclassList[\\s\\[\\(]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"([^\"]*)\""
+              }
+            },
+            lint = {
+              cssConflict = "warning",
+              invalidApply = "error",
+              invalidConfigPath = "error",
+              invalidScreen = "error",
+              invalidTailwindDirective = "error",
+              invalidVariant = "error",
+              recommendedVariantOrder = "warning"
+            },
+          }
         }
       }
 
