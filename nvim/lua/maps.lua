@@ -89,16 +89,16 @@ map("n", "<C-w>.", "<C-w><", defaults)
 
 -- edit config files
 function GetConfigPath(configFile)
-    local configPath = vim.fn.expand("~") .. "/.config/nvim/lua/" .. configFile
-    print(configPath)
-    return configPath
+  local configPath = vim.fn.expand("~") .. "/.config/nvim/lua/" .. configFile
+  print(configPath)
+  return configPath
 end
 
 map("n", "<leader>v", ":edit $MYVIMRC<cr>", defaults)
-map("n", "<leader>vp", ":lua vim.cmd(':edit ' .. GetConfigPath('plugins.lua'))<cr>" , defaults)
-map("n", "<leader>vm", ":lua vim.cmd(':edit ' .. GetConfigPath('maps.lua'))<cr>" , defaults)
-map("n", "<leader>vo", ":lua vim.cmd(':edit ' .. GetConfigPath('opts.lua'))<cr>" , defaults)
-map("n", "<leader>vc", ":lua vim.cmd(':edit ' .. GetConfigPath('colors.lua'))<cr>" , defaults)
+map("n", "<leader>vp", ":lua vim.cmd(':edit ' .. GetConfigPath('plugins.lua'))<cr>", defaults)
+map("n", "<leader>vm", ":lua vim.cmd(':edit ' .. GetConfigPath('maps.lua'))<cr>", defaults)
+map("n", "<leader>vo", ":lua vim.cmd(':edit ' .. GetConfigPath('opts.lua'))<cr>", defaults)
+map("n", "<leader>vc", ":lua vim.cmd(':edit ' .. GetConfigPath('colors.lua'))<cr>", defaults)
 
 
 function ReloadConfig()
@@ -120,8 +120,8 @@ map("n", "<leader>vr", ":lua ReloadConfig()<cr>", defaults)
 
 -- TODO: put this somewhere?
 -- scroll current line to middle if it is within two of the window edge
-function CenterView ()
-    if vim.fn.winline() <= 2 or vim.fn.winline() >= vim.fn.winheight(0) - 1 then
-        vim.cmd([[normal! zz]])
-    end
+function CenterView()
+  if vim.fn.winline() <= 2 or vim.fn.winline() >= vim.fn.winheight(0) - 1 then
+    vim.cmd([[normal! zz]])
+  end
 end
