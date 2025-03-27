@@ -48,16 +48,67 @@ local defaults = { noremap = true, silent = true }
 
 require("lazy").setup({
 
-  -- {
-  --   "folke/snacks.nvim",
-  --   priority = 1000,
-  --   lazy = false,
-  --   opts = {
-  --     -- your configuration comes here
-  --     -- or leave it empty to use the default settings
-  --     -- refer to the configuration section below
-  --   },
-  -- },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      picker = {
+        enabled = true,
+        -- recreate the Telescope layout
+        layout = {
+          reverse = true,
+          layout = {
+            box = "horizontal",
+            backdrop = false,
+            width = 0.8,
+            height = 0.9,
+            border = "none",
+            {
+              box = "vertical",
+              {
+                win = "list",
+                title = " Results ",
+                title_pos = "center",
+                border = "rounded"
+              },
+              {
+                win = "input",
+                height = 1,
+                border = "rounded",
+                title = "{title} {live} {flags}",
+                title_pos = "center",
+              },
+            },
+            {
+              win = "preview",
+              title = "{preview:Preview}",
+              width = 0.45,
+              border = "rounded"
+            },
+          }
+        }
+      },
+      { bufdelete = { enabled = true } },
+      { image = { enabled = true } },
+    },
+    keys = {
+      { "<leader>f", function() require("snacks").picker.smart() end,   desc = "Smart Find Files" },
+      { "<leader>b", function() require("snacks").picker.buffers() end, desc = "Buffers" },
+      { "<leader>/", function() require("snacks").picker.grep() end,    desc = "Grep" },
+      { "<leader>r", function() require("snacks").picker.resume() end,  desc = "Smart Find Files" },
+    },
+    init = function()
+      -- create a :Bc command to delete buffers
+      vim.api.nvim_create_user_command('Bc', function(opts)
+        local force = opts.bang
+        require('snacks').bufdelete({ force = force })
+      end, { bang = true })
+
+      -- map 'bc' to 'Bc' for ease of typing
+      vim.cmd([[cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))]])
+    end,
+  },
 
   {
     'marko-cerovac/material.nvim',
@@ -173,7 +224,7 @@ require("lazy").setup({
           sidebars = "dark", -- style for sidebars, see below
           floats = "dark",   -- style for floating windows
         },
-        on_colors = function(colors)
+        on_colors = function()
           -- colors.yellow = "#e0af68" -- default
           -- colors.yellow = "#c99b5c"
           -- colors.yellow = "#b88e52"
@@ -413,87 +464,87 @@ require("lazy").setup({
 
   -- better bdelete
   -- :bc to close a buffer without also closing the split
-  {
-    'moll/vim-bbye',
-    -- lazy = true,
-    -- keys = {
-    --   { ":bc", ":bc"  }
-    -- },
-    config = function()
-      -- alias Bdelete to Bclose
-      vim.cmd([[command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>]])
-
-      -- map 'bc' to 'Bc' for ease of typing
-      vim.cmd([[cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))]])
-    end
-  },
+  -- {
+  --   'moll/vim-bbye',
+  --   -- lazy = true,
+  --   -- keys = {
+  --   --   { ":bc", ":bc"  }
+  --   -- },
+  --   config = function()
+  --     -- alias Bdelete to Bclose
+  --     vim.cmd([[command! -bang -complete=buffer -nargs=? Bclose Bdelete<bang> <args>]])
+  --
+  --     -- map 'bc' to 'Bc' for ease of typing
+  --     vim.cmd([[cnoreabbrev <expr> bc ((getcmdtype() is# ':' && getcmdline() is# 'bc')?('Bc'):('bc'))]])
+  --   end
+  -- },
 
   'asiryk/auto-hlsearch.nvim',
 
   -- Telescope
-  {
-    'nvim-telescope/telescope.nvim',
-    lazy = true,
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
-    },
-    config = function()
-      local actions = require('telescope.actions')
-      require('telescope').setup {
-        defaults = {
-          mappings = {
-            i = {
-              ["<C-j>"] = actions.move_selection_next,
-              ["<C-k>"] = actions.move_selection_previous,
-            },
-            n = {},
-          },
-        },
-        pickers = {
-          live_grep = {
-            additional_args = function(opts)
-              if opts.search_all == true then
-                return {}
-              end
-              local args_for_ext = {
-                ["rs"]     = "-trust",
-                ["lua"]    = "-tlua",
-                ["python"] = "-tpy",
-                ["elm"]    = "-telm"
-              }
-              if args_for_ext[vim.bo.filetype] ~= nil then
-                return { args_for_ext[vim.bo.filetype] }
-              else
-                return { "-t" .. vim.bo.filetype }
-              end
-            end
-          }
-        },
-        extensions = {
-          fzf = {
-            override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-          }
-        }
-      }
-
-      require('telescope').load_extension('fzf')
-      require('telescope').load_extension('ghn')
-    end,
-    keys = {
-      { "<leader>gs", "<cmd>Telescope grep_string<cr>",                                           defaults },
-      { "<leader>/",  "<cmd>lua require('telescope.builtin').live_grep({search_all = true})<cr>", defaults },
-      { "<leader>t",  "<cmd>lua require('telescope.builtin').live_grep()<cr>",                    defaults },
-      { "<leader>ts", "<cmd>Telescope treesitter<cr>",                                            defaults },
-      { "<leader>f",  "<cmd>Telescope find_files<cr>",                                            defaults },
-      { "<Leader>b",  "<cmd>Telescope buffers<cr>",                                               defaults },
-      { "<Leader>q",  "<cmd>Telescope quickfix<cr>",                                              defaults },
-      { "<Leader>r",  "<cmd>Telescope resume<cr>",                                                defaults },
-      { "<Leader>gn", "<cmd>Telescope ghn<cr>",                                                   defaults }
-    }
-  },
+  -- {
+  --   'nvim-telescope/telescope.nvim',
+  --   lazy = true,
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'kyazdani42/nvim-web-devicons',
+  --     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+  --   },
+  --   config = function()
+  --     local actions = require('telescope.actions')
+  --     require('telescope').setup {
+  --       defaults = {
+  --         mappings = {
+  --           i = {
+  --             ["<C-j>"] = actions.move_selection_next,
+  --             ["<C-k>"] = actions.move_selection_previous,
+  --           },
+  --           n = {},
+  --         },
+  --       },
+  --       pickers = {
+  --         live_grep = {
+  --           additional_args = function(opts)
+  --             if opts.search_all == true then
+  --               return {}
+  --             end
+  --             local args_for_ext = {
+  --               ["rs"]     = "-trust",
+  --               ["lua"]    = "-tlua",
+  --               ["python"] = "-tpy",
+  --               ["elm"]    = "-telm"
+  --             }
+  --             if args_for_ext[vim.bo.filetype] ~= nil then
+  --               return { args_for_ext[vim.bo.filetype] }
+  --             else
+  --               return { "-t" .. vim.bo.filetype }
+  --             end
+  --           end
+  --         }
+  --       },
+  --       extensions = {
+  --         fzf = {
+  --           override_generic_sorter = true, -- override the generic sorter
+  --           override_file_sorter = true,    -- override the file sorter
+  --         }
+  --       }
+  --     }
+  --
+  --     require('telescope').load_extension('fzf')
+  --     require('telescope').load_extension('ghn')
+  --   end,
+  --   keys = {
+  --     { "<leader>gs", "<cmd>Telescope grep_string<cr>",                                           defaults },
+  --     { "<leader>/",  "<cmd>lua require('telescope.builtin').live_grep({search_all = true})<cr>", defaults },
+  --     { "<leader>t",  "<cmd>lua require('telescope.builtin').live_grep()<cr>",                    defaults },
+  --     { "<leader>ts", "<cmd>Telescope treesitter<cr>",                                            defaults },
+  --     { "<leader>f",  "<cmd>Telescope find_files<cr>",                                            defaults },
+  --     { "<Leader>b",  "<cmd>Telescope buffers<cr>",                                               defaults },
+  --     { "<Leader>q",  "<cmd>Telescope quickfix<cr>",                                              defaults },
+  --     { "<Leader>r",  "<cmd>Telescope resume<cr>",                                                defaults },
+  --     { "<Leader>gn", "<cmd>Telescope ghn<cr>",                                                   defaults }
+  --   }
+  -- },
 
   -- lualine
   {
@@ -774,17 +825,17 @@ require("lazy").setup({
     end
   },
 
-  {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
-    lazy = true,
-    config = function()
-      -- This is where you modify the settings for lsp-zero
-      -- Note: autocompletion settings will not take effect
-
-      require('lsp-zero.settings').preset({})
-    end
-  },
+  -- {
+  --   'VonHeikemen/lsp-zero.nvim',
+  --   branch = 'v2.x',
+  --   lazy = true,
+  --   config = function()
+  --     -- This is where you modify the settings for lsp-zero
+  --     -- Note: autocompletion settings will not take effect
+  --
+  --     require('lsp-zero.settings').preset({})
+  --   end
+  -- },
 
   -- {
   --   'hrsh7th/nvim-cmp',
@@ -1024,37 +1075,85 @@ require("lazy").setup({
     config = function()
       local lspconfig = require("lspconfig")
 
-      local lsp = require('lsp-zero')
+      -- local lsp = require('lsp-zero')
 
       local util = require('util')
 
-      lsp.on_attach(function(client, _)
-        -- Check if the server should be disabled
-        local disabled_servers = vim.g.disabled_servers or {}
-        if disabled_servers[client.name] then
-          client.stop()
-          return
+      -- lsp.on_attach(function(client, _)
+      --   -- Check if the server should be disabled
+      --   local disabled_servers = vim.g.disabled_servers or {}
+      --   if disabled_servers[client.name] then
+      --     client.stop()
+      --     return
+      --   end
+      --
+      --   -- Mappings.
+      --   local opts = { buffer = true, noremap = true, silent = true }
+      --   vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+      --   vim.keymap.set('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+      --   vim.keymap.set('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+      --   vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+      --   vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+      --   vim.keymap.set('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+      --   vim.keymap.set('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+      --   vim.keymap.set('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+      --   vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+      --   vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+      --   vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+      --   vim.keymap.set('n', '<space>q', function()
+      --     vim.lsp.buf.format { async = true }
+      --   end, opts)
+      -- end)
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        desc = 'LSP actions',
+        callback = function(event)
+          -- Check if the server should be disabled
+          local disabled_servers = vim.g.disabled_servers or {}
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and disabled_servers[client.name] then
+            client.stop()
+            return
+          end
+
+          -- Mappings.
+          local opts = { buffer = event.buf, noremap = true, silent = true }
+          vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+          vim.keymap.set('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+          vim.keymap.set('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+          vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+          vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+          vim.keymap.set('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+          vim.keymap.set('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+          vim.keymap.set('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+          vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+          vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+          vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+          vim.keymap.set('n', '<space>q', function()
+            vim.lsp.buf.format { async = true }
+          end, opts)
         end
+      })
 
-        -- Mappings.
-        local opts = { buffer = true, noremap = true, silent = true }
-        vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        vim.keymap.set('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        vim.keymap.set('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-        vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-        vim.keymap.set('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-        vim.keymap.set('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-        vim.keymap.set('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-        vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-        vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-        vim.keymap.set('n', '<space>q', function()
-          vim.lsp.buf.format { async = true }
-        end, opts)
-      end)
-
-      lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
+      lspconfig.lua_ls.setup({
+        settings = {
+          Lua = {
+            runtime = {
+              version = 'LuaJIT',
+            },
+            diagnostics = {
+              globals = { 'vim' },
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      })
 
       -- Disable the key ordering errors in YAML
       lspconfig.yamlls.setup({
@@ -1081,7 +1180,7 @@ require("lazy").setup({
         disableOrganizeImports = true,
         root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' }),
         handlers = {
-          ["textDocument/publishDiagnostics"] = function() end,
+          -- ["textDocument/publishDiagnostics"] = function() end,
           ["textDocument/semanticTokens"] = function() end,
         }
       }
@@ -1145,7 +1244,7 @@ require("lazy").setup({
         }
       )
 
-      lsp.setup()
+      -- lsp.setup()
     end
   },
 
@@ -1334,7 +1433,7 @@ require("lazy").setup({
   { 'hynek/vim-python-pep8-indent', ft = "python" },
   -- { 'sychen52/gF-python-traceback', ft = "python" }, -- or terminal?
   { 'sychen52/gF-python-traceback' }, -- or terminal?
-  { 'Zaptic/elm-vim',               ft = "elm" },
+  -- { 'Zaptic/elm-vim',               ft = "elm" },
   { 'sophacles/vim-bundle-mako',    ft = "mako" },
   { 'Glench/Vim-Jinja2-Syntax',     ft = { "jinja.html", "html" }, lazy = true },
 
