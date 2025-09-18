@@ -826,18 +826,6 @@ require("lazy").setup({
   },
 
   -- {
-  --   'VonHeikemen/lsp-zero.nvim',
-  --   branch = 'v2.x',
-  --   lazy = true,
-  --   config = function()
-  --     -- This is where you modify the settings for lsp-zero
-  --     -- Note: autocompletion settings will not take effect
-  --
-  --     require('lsp-zero.settings').preset({})
-  --   end
-  -- },
-
-  -- {
   --   'hrsh7th/nvim-cmp',
   --   lazy = true,
   --   event = 'InsertEnter',
@@ -1050,9 +1038,6 @@ require("lazy").setup({
   {
     'neovim/nvim-lspconfig',
     lazy = true,
-    -- ft = {
-    --   "css",
-    -- },
     cmd = { 'LspInfo', 'Mason' },
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
@@ -1064,46 +1049,10 @@ require("lazy").setup({
           require("mason").setup()
         end
       },
-      {
-        'williamboman/mason-lspconfig.nvim',
-        config = function()
-          require("mason-lspconfig").setup()
-        end
-      },
       { 'onsails/lspkind-nvim' },
     },
     config = function()
-      local lspconfig = require("lspconfig")
-
-      -- local lsp = require('lsp-zero')
-
       local util = require('util')
-
-      -- lsp.on_attach(function(client, _)
-      --   -- Check if the server should be disabled
-      --   local disabled_servers = vim.g.disabled_servers or {}
-      --   if disabled_servers[client.name] then
-      --     client.stop()
-      --     return
-      --   end
-      --
-      --   -- Mappings.
-      --   local opts = { buffer = true, noremap = true, silent = true }
-      --   vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-      --   vim.keymap.set('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-      --   vim.keymap.set('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-      --   vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-      --   vim.keymap.set('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-      --   vim.keymap.set('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-      --   vim.keymap.set('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-      --   vim.keymap.set('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-      --   vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-      --   vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-      --   vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-      --   vim.keymap.set('n', '<space>q', function()
-      --     vim.lsp.buf.format { async = true }
-      --   end, opts)
-      -- end)
 
       vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP actions',
@@ -1135,7 +1084,7 @@ require("lazy").setup({
         end
       })
 
-      lspconfig.lua_ls.setup({
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             runtime = {
@@ -1156,7 +1105,7 @@ require("lazy").setup({
       })
 
       -- Disable the key ordering errors in YAML
-      lspconfig.yamlls.setup({
+      vim.lsp.config('yamlls', {
         settings = {
           yaml = {
             keyOrdering = false
@@ -1166,26 +1115,35 @@ require("lazy").setup({
 
       -- disable diagnostics coming from pyright
       -- it's just too much until sqlalchemy is updated with annotations
-      -- lspconfig.pyright.setup {
+      -- vim.lsp.config('pyright', {
       --   handlers = {
       --     ["textDocument/publishDiagnostics"] = function() end
       --   }
       -- }
 
-      lspconfig.ruff.setup({
+      vim.lsp.config('ruff', {
         root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' })
       })
 
-      lspconfig.basedpyright.setup {
+      vim.lsp.config('basedpyright', {
         disableOrganizeImports = true,
         root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' }),
         handlers = {
           -- ["textDocument/publishDiagnostics"] = function() end,
           ["textDocument/semanticTokens"] = function() end,
         }
-      }
+      })
 
-      lspconfig.tailwindcss.setup {
+      -- next gen python type checkers - not ready yet
+      -- vim.lsp.enable('ty')
+      -- vim.lsp.enable('pyrefly')
+      -- vim.lsp.enable('zuban')
+
+      vim.lsp.enable('sqlls')
+
+      vim.lsp.enable('elmls')
+
+      vim.lsp.config('tailwindcss', {
         filetypes = { "html", "css", "scss", "javascript", "typescript", "elm" },
         init_options = {
           userLanguages = {
@@ -1227,24 +1185,19 @@ require("lazy").setup({
             },
           }
         }
-      }
+      })
 
-      --
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-          signs = {
-            min = vim.diagnostic.severity.HINT,
-          },
-          virtual_text = {
-            min = vim.diagnostic.severity.WARN,
-          },
-          underline = {
-            min = vim.diagnostic.severity.ERROR,
-          },
+      vim.diagnostic.config({
+        signs = {
+          severity = vim.diagnostic.severity.HINT
+        },
+        virtual_text = {
+          severity = vim.diagnostic.severity.WARN
+        },
+        underline = {
+          severity = vim.diagnostic.severity.ERROR
         }
-      )
-
-      -- lsp.setup()
+      })
     end
   },
 
@@ -1260,9 +1213,9 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter-context",
         lazy = false,
         keys = {
-          { "<leader>c", "<cmd>TSContextToggle<cr>", defaults },
+          { "<leader>c", "<cmd>TSContext toggle<cr>", defaults },
         },
-        cmd = { "TSContextToggle", "TSContextEnable", "TSContextDisable" },
+        cmd = { "TSContext" },
         config = function()
           require 'treesitter-context'.setup {
             enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -1413,6 +1366,8 @@ require("lazy").setup({
         -- end,
         -- javascript = { { "prettierd", "prettier" } },
         css = { "prettierd", "prettier", stop_after_first = true },
+        elm = { "prettier", stop_after_first = true },
+        -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
       -- Customize formatters
       formatters = {
@@ -1437,31 +1392,38 @@ require("lazy").setup({
   { 'sophacles/vim-bundle-mako',    ft = "mako" },
   { 'Glench/Vim-Jinja2-Syntax',     ft = { "jinja.html", "html" }, lazy = true },
 
+  -- {
+  --   "Zeioth/compiler.nvim",
+  --   lazy = true,
+  --   cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+  --   dependencies = { "stevearc/overseer.nvim" },
+  --   keys = {
+  --     { "<leader>m", "<cmd>CompilerOpen<cr>", defaults },
+  --   },
+  --   opts = {
+  --     auto_close = true,
+  --   },
+  -- },
+  -- { -- The task runner we use
+  --   "stevearc/overseer.nvim",
+  --   lazy = true,
+  --   -- commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
+  --   cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
+  --   opts = {
+  --     task_list = {
+  --       direction = "bottom",
+  --       min_height = 25,
+  --       max_height = 25,
+  --       default_detail = 1
+  --     },
+  --   },
+  -- },
+
   {
-    "Zeioth/compiler.nvim",
-    lazy = true,
-    cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-    dependencies = { "stevearc/overseer.nvim" },
-    keys = {
-      { "<leader>m", "<cmd>CompilerOpen<cr>", defaults },
-    },
+    "gitpushjoe/zuzu.nvim",
     opts = {
-      auto_close = true,
-    },
-  },
-  { -- The task runner we use
-    "stevearc/overseer.nvim",
-    lazy = true,
-    -- commit = "68a2d344cea4a2e11acfb5690dc8ecd1a1ec0ce0",
-    cmd = { "CompilerOpen", "CompilerToggleResults", "CompilerRedo" },
-    opts = {
-      task_list = {
-        direction = "bottom",
-        min_height = 25,
-        max_height = 25,
-        default_detail = 1
-      },
-    },
+      --- add options here
+    }
   },
 
   {
@@ -1605,21 +1567,30 @@ require("lazy").setup({
 
   -- show color samples inline
   {
-    "uga-rosa/ccc.nvim",
+    "brenoprata10/nvim-highlight-colors",
     config = function()
-      local ccc = require("ccc")
-      -- local mapping = ccc.mapping
-
-      ccc.setup({
-        -- Your preferred settings
-        -- Example: enable highlighter
-        highlighter = {
-          auto_enable = true,
-          lsp = true,
-        },
+      require("nvim-highlight-colors").setup({
+        enable_tailwind = true,
+        render = 'background',
+        -- ---Set virtual symbol (requires render to be set to 'virtual')
+        -- virtual_symbol = '■',
+        --
+        -- ---Set virtual symbol suffix (defaults to '')
+        -- virtual_symbol_prefix = '',
+        --
+        -- ---Set virtual symbol suffix (defaults to ' ')
+        -- virtual_symbol_suffix = ' ',
+        --
+        -- ---Set virtual symbol position()
+        -- ---@usage 'inline'|'eol'|'eow'
+        -- ---inline mimics VS Code style
+        -- ---eol stands for `end of column` - Recommended to set `virtual_symbol_suffix = ''` when used.
+        -- ---eow stands for `end of word` - Recommended to set `virtual_symbol_prefix = ' ' and virtual_symbol_suffix = ''` when used.
+        -- virtual_symbol_position = 'inline',
       })
     end
-  }
+
+  },
 
 }, {})
 

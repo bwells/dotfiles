@@ -19,10 +19,13 @@ vim.o.relativenumber = true
 -- vim.o.ruler at 81 chars
 vim.o.colorcolumn = "81,101"
 
-vim.o.signcolumn = 'yes'
+vim.o.signcolumn = "yes"
 
 -- highlight the line the cursor is on
 vim.o.cursorline = true
+
+-- correctly increment "p-2" rather than decrement
+vim.o.nrformats = "bin,hex,blank"
 
 -- only enable cursorline in the active buffer
 vim.cmd([[
