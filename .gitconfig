@@ -3,6 +3,7 @@
 	email = bwells@altalang.com
 [push]
 	default = upstream
+	autoSetupRemote = true
 [core]
 	editor = nvim
 	excludesfile = /Users/kremlan/.gitignore
@@ -15,3 +16,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[alias]
+	co = checkout
