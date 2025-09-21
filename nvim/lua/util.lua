@@ -1,58 +1,62 @@
 local lspconfig_util = require 'lspconfig.util'
 local uv = vim.uv or vim.loop
 
-
 local M = {}
 
--- Helper function to check if a path is a git directory or worktree
 local function is_git_path(path)
   local gitpath = lspconfig_util.path.join(path, '.git')
   return vim.fn.isdirectory(gitpath) == 1 or (uv.fs_stat(gitpath) or {}).type == 'file'
 end
 
---- Finds the git ancestor closest to the root directory
---- @param startpath string: The starting path to search from
---- @return string|nil: Returns the highest git ancestor path found, or nil if none found
+--- Return the topmost (highest) directory that contains a .git (dir or file)
+---@param startpath string
+---@return string|nil
 function M.find_highest_git_ancestor(startpath)
-  -- Validate input
-  if not startpath or type(startpath) ~= 'string' then
-    return nil
+  if type(startpath) ~= 'string' or startpath == '' then return nil end
+  local current = startpath
+  local highest
+  while current do
+    if is_git_path(current) then highest = current end
+    -- local parent = lspconfig_util.path.dirname(current)
+    local parent = vim.fs.dirname(current)
+    if parent == current then break end
+    current = parent
   end
-
-  local current_path = startpath
-  local highest_git = nil
-
-  -- Keep searching until we reach the root
-  while current_path do
-    if is_git_path(current_path) then
-      highest_git = current_path
-    end
-
-    -- Get parent directory
-    local parent = lspconfig_util.path.dirname(current_path)
-
-    -- Break if we've reached the root (parent same as current)
-    if parent == current_path then
-      break
-    end
-
-    current_path = parent
-  end
-
-  return highest_git
+  return highest
 end
 
--- Helper function that combines git ancestor detection with pattern matching
+--- Build a root detector that prefers the topmost git root, else marker patterns.
+--- Works with BOTH signatures:
+---   1) dir = fn(fname)
+---   2) fn(bufnr, on_dir)  -- must call on_dir(dir)
+---@param patterns string[]
 function M.get_root_dir(patterns)
-  return function(fname)
-    -- First check for the highest git ancestor
-    local git_root = M.find_highest_git_ancestor(fname)
+  -- Prebuild the marker finder (unpack the list!)
+  local marker_finder = lspconfig_util.root_pattern(unpack(patterns or {}))
+
+  -- The actual detector
+  local function detect(path_like)
+    -- path_like is either a filename or a directory; use it as-is
+    local git_root = M.find_highest_git_ancestor(path_like)
     if git_root then
       return git_root
     end
+    return marker_finder(path_like)
+  end
 
-    -- Fallback to pattern matching if no git root found
-    return lspconfig_util.root_pattern(patterns)(fname)
+  -- Adapter that supports both calling conventions
+  return function(a, b)
+    -- New core API: (bufnr, on_dir)
+    if type(a) == 'number' and type(b) == 'function' then
+      local bufnr, on_dir = a, b
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      local dir = detect(fname ~= '' and fname or vim.loop.cwd())
+      -- MUST call on_dir (pass nil to disable/skip)
+      return on_dir(dir)
+    end
+    -- Old lspconfig style: (fname) -> dir
+    local fname = a
+    return detect(fname)
   end
 end
 

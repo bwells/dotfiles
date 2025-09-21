@@ -12,6 +12,10 @@ alias ks="kubectl -n kube-system"
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
+alias k="kubectl"
+alias ktx="kubectx"
+alias kns="kubens"
+
 # set -x HOMEBREW_NO_ENV_HINTS=1
 
 if type -q nvim

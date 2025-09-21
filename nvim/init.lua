@@ -1041,7 +1041,6 @@ require("lazy").setup({
     cmd = { 'LspInfo', 'Mason' },
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      -- { 'hrsh7th/cmp-nvim-lsp' },
       {
         'williamboman/mason.nvim',
         build = ":MasonUpdate",
@@ -1050,14 +1049,18 @@ require("lazy").setup({
         end
       },
       { 'onsails/lspkind-nvim' },
+      -- { 'hrsh7th/cmp-nvim-lsp' }, -- if you use cmp, enable and pass capabilities below
     },
     config = function()
-      local util = require('util')
+      local util = require("util")
 
+      -- If you use nvim-cmp, uncomment and pass `capabilities = capabilities` to each setup
+      -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+      -- Keymaps on attach (unchanged)
       vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP actions',
         callback = function(event)
-          -- Check if the server should be disabled
           local disabled_servers = vim.g.disabled_servers or {}
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and disabled_servers[client.name] then
@@ -1065,7 +1068,6 @@ require("lazy").setup({
             return
           end
 
-          -- Mappings.
           local opts = { buffer = event.buf, noremap = true, silent = true }
           vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
           vim.keymap.set('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
@@ -1084,66 +1086,48 @@ require("lazy").setup({
         end
       })
 
-      vim.lsp.config('lua_ls', {
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
-            runtime = {
-              version = 'LuaJIT',
-            },
-            diagnostics = {
-              globals = { 'vim' },
-            },
+            runtime = { version = 'LuaJIT' },
+            diagnostics = { globals = { 'vim' } },
             workspace = {
               library = vim.api.nvim_get_runtime_file("", true),
               checkThirdParty = false,
             },
-            telemetry = {
-              enable = false,
-            },
+            telemetry = { enable = false },
           },
         },
       })
+      vim.lsp.enable("lua_ls")
 
-      -- Disable the key ordering errors in YAML
-      vim.lsp.config('yamlls', {
+      vim.lsp.config("yamlls", {
         settings = {
-          yaml = {
-            keyOrdering = false
-          }
+          yaml = { keyOrdering = false }
         }
       })
+      vim.lsp.enable("yamlls")
 
-      -- disable diagnostics coming from pyright
-      -- it's just too much until sqlalchemy is updated with annotations
-      -- vim.lsp.config('pyright', {
-      --   handlers = {
-      --     ["textDocument/publishDiagnostics"] = function() end
-      --   }
-      -- }
-
-      vim.lsp.config('ruff', {
-        root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' })
-      })
-
-      vim.lsp.config('basedpyright', {
-        disableOrganizeImports = true,
+      vim.lsp.config("ruff", {
         root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' }),
-        handlers = {
-          -- ["textDocument/publishDiagnostics"] = function() end,
-          ["textDocument/semanticTokens"] = function() end,
-        }
       })
+      vim.lsp.enable("ruff")
 
-      -- next gen python type checkers - not ready yet
-      -- vim.lsp.enable('ty')
-      -- vim.lsp.enable('pyrefly')
-      -- vim.lsp.enable('zuban')
+      vim.lsp.config("basedpyright", {
+        root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" },
+        root_dir = util.get_root_dir({ 'pyproject.toml' }),
+        disableOrganizeImports = true,
+        handlers = {
+          ["textDocument/semanticTokens"] = function() end,
+        },
+      })
+      vim.lsp.enable("basedpyright")
 
-      vim.lsp.enable('sqlls')
+      vim.lsp.enable("sqlls")
 
-      vim.lsp.enable('elmls')
+      vim.lsp.enable("elmls")
 
-      vim.lsp.config('tailwindcss', {
+      vim.lsp.config("tailwindcss", {
         filetypes = { "html", "css", "scss", "javascript", "typescript", "elm" },
         init_options = {
           userLanguages = {
@@ -1186,17 +1170,12 @@ require("lazy").setup({
           }
         }
       })
+      vim.lsp.enable("tailwindcss")
 
       vim.diagnostic.config({
-        signs = {
-          severity = vim.diagnostic.severity.HINT
-        },
-        virtual_text = {
-          severity = vim.diagnostic.severity.WARN
-        },
-        underline = {
-          severity = vim.diagnostic.severity.ERROR
-        }
+        signs = { severity = vim.diagnostic.severity.HINT },
+        virtual_text = { severity = vim.diagnostic.severity.WARN },
+        underline = { severity = vim.diagnostic.severity.ERROR },
       })
     end
   },
