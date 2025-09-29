@@ -1053,21 +1053,18 @@ require("lazy").setup({
         end
       },
       { 'onsails/lspkind-nvim' },
-      -- { 'hrsh7th/cmp-nvim-lsp' }, -- if you use cmp, enable and pass capabilities below
+      -- { 'hrsh7th/cmp-nvim-lsp' },
     },
     config = function()
       local util = require("util")
 
-      -- If you use nvim-cmp, uncomment and pass `capabilities = capabilities` to each setup
-      -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-      -- Keymaps on attach (unchanged)
       vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP actions',
         callback = function(event)
           local disabled_servers = vim.g.disabled_servers or {}
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and disabled_servers[client.name] then
+            ---@diagnostic disable-next-line: missing-parameter
             client.stop()
             return
           end
