@@ -557,12 +557,16 @@ require("lazy").setup({
         },
         sections = {
           lualine_a = { 'mode' },
-          -- branch, changes, diagnostics and all the rest is too wide for a 100 col split
-          -- lualine_b = {'branch', 'diff', {'diagnostics', sources={'nvim_lsp'}}},
-          -- lualine_b = { {'branch', icon='שׂ'}, {'diagnostics', sources={'nvim_diagnostic'}}},
-          lualine_b = { { 'branch' }, require('github-notifications').statusline_notification_count, { 'diagnostics', sources = { 'nvim_diagnostic' } } },
+          lualine_b = {
+            { 'branch',      cond = function() return vim.fn.winwidth(0) > 80 end },
+            { 'diagnostics', sources = { 'nvim_diagnostic' } }
+          },
           lualine_c = { 'filename' },
-          lualine_x = { 'filetype', 'fileformat', 'encoding' },
+          lualine_x = {
+            { 'filetype',   cond = function() return vim.fn.winwidth(0) > 90 end },
+            { 'fileformat', cond = function() return vim.fn.winwidth(0) > 100 end },
+            { 'encoding',   cond = function() return vim.fn.winwidth(0) > 110 end }
+          },
           lualine_y = { 'progress' },
           lualine_z = { 'location' }
         },
@@ -662,17 +666,17 @@ require("lazy").setup({
     cmd = 'LazyGit'
   },
 
-  {
-    'rlch/github-notifications.nvim',
-    -- config = [[require('config.github-notifications')]],
-    config = function()
-      require('github-notifications').setup {}
-    end,
-    dependencies = {
-      { 'nvim-lua/plenary.nvim' },
-      { 'nvim-telescope/telescope.nvim' },
-    },
-  },
+  -- {
+  --   'rlch/github-notifications.nvim',
+  --   -- config = [[require('config.github-notifications')]],
+  --   config = function()
+  --     require('github-notifications').setup {}
+  --   end,
+  --   dependencies = {
+  --     { 'nvim-lua/plenary.nvim' },
+  --     { 'nvim-telescope/telescope.nvim' },
+  --   },
+  -- },
 
   -- {
   --   'Almo7aya/openingh.nvim',
