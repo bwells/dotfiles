@@ -75,6 +75,12 @@ complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
 
 uvx --generate-shell-completion fish | source
 
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
+
+set -x KOPS_STATE_STORE s3://alta-kubernetes-state-store
+
 # activate a virtualenv on entry
 # also deactivates on project exit
 #
@@ -134,3 +140,6 @@ function check_and_activate_venv --on-event fish_prompt
         end
     end
 end
+
+# opencode
+fish_add_path /Users/kremlan/.opencode/bin
