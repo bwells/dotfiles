@@ -8,13 +8,13 @@ alias vimr="vimr -s"
 
 alias brewi="arch -x86_64 /usr/local/bin/brew"
 
-alias ks="kubectl -n kube-system"
-
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
 alias k="kubectl"
 alias ktx="kubectx"
 alias kns="kubens"
+
+alias p="pulumi"
 
 # set -x HOMEBREW_NO_ENV_HINTS=1
 
@@ -80,6 +80,8 @@ set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
 set -x KOPS_STATE_STORE s3://alta-kubernetes-state-store
+
+set -Ux AWS_PROFILE prod
 
 # activate a virtualenv on entry
 # also deactivates on project exit
