@@ -1204,7 +1204,7 @@ require("lazy").setup({
       },
     },
     config = function()
-      require 'nvim-treesitter.configs'.setup {
+      require 'nvim-treesitter.config'.setup {
         ensure_installed = "all", -- one of "all", or a list of languages
         ignore_install = { "phpdoc" },
         highlight = {
