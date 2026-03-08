@@ -55,6 +55,15 @@ require("lazy").setup({
     opts = {
       picker = {
         enabled = true,
+        -- Configure formatters to control path display
+        formatters = {
+          file = {
+            filename_only = false,  -- Set to true to show only filename
+            truncate = "left",      -- Options: "left", "center", "right"
+            min_width = 60,         -- Minimum width for truncated paths
+            filename_first = false, -- Show filename before path
+          },
+        },
         -- recreate the Telescope layout
         layout = {
           reverse = true,
@@ -93,10 +102,11 @@ require("lazy").setup({
       { image = { enabled = true } },
     },
     keys = {
-      { "<leader>f", function() require("snacks").picker.smart() end,   desc = "Smart Find Files" },
-      { "<leader>b", function() require("snacks").picker.buffers() end, desc = "Buffers" },
-      { "<leader>/", function() require("snacks").picker.grep() end,    desc = "Grep" },
-      { "<leader>r", function() require("snacks").picker.resume() end,  desc = "Smart Find Files" },
+      { "<leader>f",  function() require("snacks").picker.smart() end,   desc = "Smart Find Files" },
+      { "<leader>b",  function() require("snacks").picker.buffers() end, desc = "Buffers" },
+      { "<leader>/",  function() require("snacks").picker.grep() end,    desc = "Grep" },
+      { "<leader>r",  function() require("snacks").picker.resume() end,  desc = "Smart Find Files" },
+      { "<leader>pr", function() require("snacks").picker.gh_pr() end,   desc = "GitHub Pull Requests" },
     },
     init = function()
       -- create a :Bc command to delete buffers
@@ -650,15 +660,15 @@ require("lazy").setup({
     end
   },
 
-  {
-    "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",  -- required
-      "sindrets/diffview.nvim", -- optional - Diff integration
-      "nvim-telescope/telescope.nvim",
-    },
-    config = true
-  },
+  -- {
+  --   "NeogitOrg/neogit",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",  -- required
+  --     "sindrets/diffview.nvim", -- optional - Diff integration
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  --   config = true
+  -- },
 
   {
     'kdheepak/lazygit.nvim',
@@ -992,52 +1002,52 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    lazy = false,
-    version = false, -- set this if you want to always pull the latest change
-    opts = {
-      -- add any opts here
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      -- "zbirenbaum/copilot.lua",      -- for providers='copilot'
-      -- {
-      --   -- support for image pasting
-      --   "HakonHarnes/img-clip.nvim",
-      --   event = "VeryLazy",
-      --   opts = {
-      --     -- recommended settings
-      --     default = {
-      --       embed_image_as_base64 = false,
-      --       prompt_for_file_name = false,
-      --       drag_and_drop = {
-      --         insert_mode = true,
-      --       },
-      --       -- required for Windows users
-      --       use_absolute_path = true,
-      --     },
-      --   },
-      -- },
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
-      },
-    },
-  },
+  -- {
+  --   "yetone/avante.nvim",
+  --   event = "VeryLazy",
+  --   lazy = false,
+  --   version = false, -- set this if you want to always pull the latest change
+  --   opts = {
+  --     -- add any opts here
+  --   },
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   build = "make",
+  --   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "stevearc/dressing.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     --- The below dependencies are optional,
+  --     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+  --     -- "zbirenbaum/copilot.lua",      -- for providers='copilot'
+  --     -- {
+  --     --   -- support for image pasting
+  --     --   "HakonHarnes/img-clip.nvim",
+  --     --   event = "VeryLazy",
+  --     --   opts = {
+  --     --     -- recommended settings
+  --     --     default = {
+  --     --       embed_image_as_base64 = false,
+  --     --       prompt_for_file_name = false,
+  --     --       drag_and_drop = {
+  --     --         insert_mode = true,
+  --     --       },
+  --     --       -- required for Windows users
+  --     --       use_absolute_path = true,
+  --     --     },
+  --     --   },
+  --     -- },
+  --     {
+  --       -- Make sure to set this up properly if you have lazy=true
+  --       'MeanderingProgrammer/render-markdown.nvim',
+  --       opts = {
+  --         file_types = { "markdown", "Avante" },
+  --       },
+  --       ft = { "markdown", "Avante" },
+  --     },
+  --   },
+  -- },
 
   {
     'neovim/nvim-lspconfig',
@@ -1116,13 +1126,25 @@ require("lazy").setup({
 
       vim.lsp.config("basedpyright", {
         root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" },
-        root_dir = util.get_root_dir({ 'pyproject.toml' }),
+        root_dir = util.get_root_dir({ "pyproject.toml" }),
         disableOrganizeImports = true,
         handlers = {
           ["textDocument/semanticTokens"] = function() end,
         },
       })
       vim.lsp.enable("basedpyright")
+
+      vim.lsp.config("ty", {
+        root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" },
+        root_dir = util.get_root_dir({ "pyproject.toml" }),
+      })
+      -- vim.lsp.enable("ty")
+
+      -- vim.lsp.config("pyrefly", {
+      --   root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" },
+      --   root_dir = util.get_root_dir({ "pyproject.toml" }),
+      -- })
+      -- vim.lsp.enable("pyrefly")
 
       vim.lsp.enable("sqlls")
 
@@ -1398,13 +1420,6 @@ require("lazy").setup({
   --     },
   --   },
   -- },
-
-  {
-    "gitpushjoe/zuzu.nvim",
-    opts = {
-      --- add options here
-    }
-  },
 
   {
     'lucidph3nx/nvim-sops',
