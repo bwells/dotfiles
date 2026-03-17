@@ -12,18 +12,16 @@ ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 # install brew. installs via .pkg these days, download from homebrew website
 
 # brew install basic packages
-brew install awscli ccrypt curl elm fd fish fzf git go kops kubernetes-cli mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv
+brew install awscli ccrypt curl elm fd fish fzf git go kops kubernetes-cli mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv s5cmd ghostty
+
+brew install --cask font-meslo-lg-nerd-font kitty
 
 # change default shell to fish
+# add /opt/homebrew/bin/fish to /etc/shells
 sudo chsh -s /opt/homebrew/bin/fish kremlan
 
-# setup cask
-# brew tap homebrew/cask-fonts
 # brew install font-menlo-for-powerline
 # set font in Terminal Settings
-# Instal Meslo from nerdfonts.com
-# maybe
-# brew install homebrew/cask-fonts/font-meslo-lg-nerd-font
 
 # symlink in dotfiles
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
@@ -47,13 +45,7 @@ mkdir -p ~/workspace/go/src/github.com/bwells
 ln -s ~/workspace/go/src/github.com ~/workspace/bwells
 
 # App setups
-# login to dropbox
 # setup 1password - install from app store
-# setup work vpn
+# install tailscale from tailscale
 
-# install docker
-
-# install virtualfish
-mkdir ~/environments
-python3 -m pip install virtualfish
-vf install
+# install docker desktop
