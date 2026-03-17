@@ -4,10 +4,6 @@ abbr -a resource source ~/.config/fish/config.fish
 
 alias forget="sudo killall -HUP mDNSResponder; sudo killall mDNSResponderHelper; sudo dscacheutil -flushcache"
 
-alias vimr="vimr -s"
-
-alias brewi="arch -x86_64 /usr/local/bin/brew"
-
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
 alias k="kubectl"
@@ -19,9 +15,9 @@ alias p="pulumi"
 # set -x HOMEBREW_NO_ENV_HINTS=1
 
 if type -q nvim
+    alias vim nvim
     set -x EDITOR nvim
 else
-    alias vim nvim
     set -x EDITOR nvim
 end
 
@@ -37,6 +33,9 @@ set -U CDPATH . ~ ~/workspace
 set -x KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
 
 set -x UV_PYTHON_PREFERENC only-managed
+
+# disable showing active venv in prompt
+set -x VIRTUAL_ENV_DISABLE_PROMPT 1
 
 # Paths we want to add before system default paths
 #set -l PREPEND_PATHS /opt/homebrew/bin /usr/local/Cellar/elm/0.19.1/bin /opt/homebrew/opt/python@3.10/bin /opt/homebrew/opt/python@3.9/bin /opt/homebrew/opt/python@3.11/bin
@@ -60,12 +59,7 @@ end
 
 set -x PATH $PATH ~/.local/bin
 
-fish_add_path /opt/homebrew/opt/node@22/bin
-
-# virtualfish/venv config
-set -x VIRTUALFISH_HOME ~/environments
-
-set -x VIRTUAL_ENV_DISABLE_PROMPT 1
+# fish_add_path /opt/homebrew/opt/node@22/bin
 
 # import ssh keys on boot
 ssh-add -A 2>/dev/null;
