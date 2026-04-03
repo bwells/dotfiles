@@ -12,7 +12,7 @@ ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 # install brew. installs via .pkg these days, download from homebrew website
 
 # brew install basic packages
-brew install awscli ccrypt curl elm fd fish fzf git go kops kubernetes-cli mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv s5cmd ghostty
+brew install awscli ccrypt curl elm fd fish fzf git go kops kubernetes-cli kubectx mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv s5cmd ghostty
 
 brew install --cask font-meslo-lg-nerd-font kitty
 
