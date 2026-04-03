@@ -10,7 +10,9 @@ local function disable_language_server(server_name)
   vim.g.disabled_servers = disabled_servers
 
   -- Stop the server if it's running
-  vim.cmd('LspStop ' .. server_name)
+  for _, client in ipairs(vim.lsp.get_clients({ name = server_name })) do
+    client:stop()
+  end
 end
 
 -- Function to enable a previously disabled language server
@@ -20,7 +22,7 @@ local function enable_language_server(server_name)
   vim.g.disabled_servers = disabled_servers
 
   -- Restart the server
-  vim.cmd('LspStart ' .. server_name)
+  vim.lsp.enable(server_name)
 end
 
 -- Create user commands

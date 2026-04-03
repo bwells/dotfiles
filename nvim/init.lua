@@ -1209,7 +1209,38 @@ require("lazy").setup({
     event = { 'BufReadPre' },
     build = ':TSUpdate',
     dependencies = {
-      { 'nvim-treesitter/nvim-treesitter-textobjects' },
+      {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        config = function()
+          require('nvim-treesitter-textobjects').setup {
+            select = {
+              lookahead = true,
+              include_surrounding_whitespace = true,
+            },
+          }
+
+          local select_textobject = require('nvim-treesitter-textobjects.select').select_textobject
+          local textobject_keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+            ["ac"] = "@comment.outer",
+            ["ic"] = "@comment.outer",
+            ["al"] = "@loop.outer",
+            ["il"] = "@loop.inner",
+            ["atc"] = "@conditional.outer",
+            ["itc"] = "@conditional.inner",
+            ["atb"] = "@block.outer",
+            ["itb"] = "@block.inner",
+            ["aa"] = "@parameter.outer",
+            ["ia"] = "@parameter.inner",
+          }
+          for keymap, capture in pairs(textobject_keymaps) do
+            vim.keymap.set({ "x", "o" }, keymap, function()
+              select_textobject(capture, "textobjects")
+            end)
+          end
+        end,
+      },
       -- { 'nvim-treesitter/playground' },
       {
         "nvim-treesitter/nvim-treesitter-context",
@@ -1220,111 +1251,11 @@ require("lazy").setup({
         cmd = { "TSContext" },
         config = function()
           require 'treesitter-context'.setup {
-            enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
+            enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
           }
         end
       },
     },
-    config = function()
-      require 'nvim-treesitter.config'.setup {
-        ensure_installed = "all", -- one of "all", or a list of languages
-        ignore_install = { "phpdoc" },
-        highlight = {
-          enable = true, -- false will disable the whole extension
-          disable = {},  -- list of language that will be disabled
-        },
-        textobjects = {
-          select = {
-            enable = true,
-
-            -- Automatically jump forward to textobj, similar to targets.vim
-            lookahead = true,
-
-            keymaps = {
-              -- You can use the capture groups defined in textobjects.scm
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              -- ["ac"] = "@class.outer",
-              -- ["ic"] = "@class.inner",
-              ["ac"] = "@comment.outer",
-              ["ic"] = "@comment.outer",
-              ["al"] = "@loop.outer",
-              ["il"] = "@loop.inner",
-              ["atc"] = "@conditional.outer",
-              ["itc"] = "@conditional.inner",
-              ["atb"] = "@block.outer",
-              ["itb"] = "@block.inner",
-              ["aa"] = "@parameter.outer",
-              ["ia"] = "@parameter.inner",
-
-              -- Or you can define your own textobjects like this
-              -- ["iF"] = {
-              --   python = "(function_definition) @function",
-              --   cpp = "(function_definition) @function",
-              --   c = "(function_definition) @function",
-              --   java = "(method_declaration) @function",
-              -- },
-            },
-          },
-          lsp_interop = {
-            enable = true,
-            border = 'none',
-            -- TODO: reenable, but explore if this is causing problems with normal df functionality
-            -- peek_definition_code = {
-            --   ["df"] = "@function.outer",
-            --   ["dF"] = "@class.outer",
-            -- },
-          },
-          -- playground = {
-          --   enable = true,
-          --   disable = {},
-          --   updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
-          --   persist_queries = false, -- Whether the query persists across vim sessions
-          --   keybindings = {
-          --     toggle_query_editor = 'o',
-          --     toggle_hl_groups = 'i',
-          --     toggle_injected_languages = 't',
-          --     toggle_anonymous_nodes = 'a',
-          --     toggle_language_display = 'I',
-          --     focus_language = 'f',
-          --     unfocus_language = 'F',
-          --     update = 'R',
-          --     goto_node = '<cr>',
-          --     show_help = '?',
-          --   },
-          -- },
-          incremental_selection = {
-            enable = true,
-            keymaps = {
-              init_selection = "gnn",
-              node_incremental = "grn",
-              scope_incremental = "grc",
-              node_decremental = "grm",
-            },
-          },
-          -- move = {
-          --   enable = true,
-          --   set_jumps = true, -- whether to set jumps in the jumplist
-          --   goto_next_start = {
-          --     ["]m"] = "@function.outer",
-          --     ["]]"] = "@class.outer",
-          --   },
-          --   goto_next_end = {
-          --     ["]M"] = "@function.outer",
-          --     ["]["] = "@class.outer",
-          --   },
-          --   goto_previous_start = {
-          --     ["[m"] = "@function.outer",
-          --     ["[["] = "@class.outer",
-          --   },
-          --   goto_previous_end = {
-          --     ["[M"] = "@function.outer",
-          --     ["[]"] = "@class.outer",
-          --   },
-          -- },
-        },
-      }
-    end
   },
 
   {
@@ -1455,110 +1386,110 @@ require("lazy").setup({
     end
   },
 
-  {
-    "jake-stewart/multicursor.nvim",
-    branch = "1.0",
-    config = function()
-      local mc = require("multicursor-nvim")
-
-      mc.setup()
-
-      local set = vim.keymap.set
-
-      -- Add or skip cursor above/below the main cursor.
-      set({ "n", "v" }, "<up>",
-        function() mc.lineAddCursor(-1) end)
-      set({ "n", "v" }, "<down>",
-        function() mc.lineAddCursor(1) end)
-      set({ "n", "v" }, "<leader><up>",
-        function() mc.lineSkipCursor(-1) end)
-      set({ "n", "v" }, "<leader><down>",
-        function() mc.lineSkipCursor(1) end)
-
-      -- Add or skip adding a new cursor by matching word/selection
-      set({ "n", "v" }, "<leader>n",
-        function() mc.matchAddCursor(1) end)
-      set({ "n", "v" }, "<leader>s",
-        function() mc.matchSkipCursor(1) end)
-      set({ "n", "v" }, "<leader>N",
-        function() mc.matchAddCursor(-1) end)
-      set({ "n", "v" }, "<leader>S",
-        function() mc.matchSkipCursor(-1) end)
-
-      -- Add all matches in the document
-      set({ "n", "v" }, "<leader>A", mc.matchAllAddCursors)
-
-      -- You can also add cursors with any motion you prefer:
-      -- set("n", "<right>", function()
-      --     mc.addCursor("w")
-      -- end)
-      -- set("n", "<leader><right>", function()
-      --     mc.skipCursor("w")
-      -- end)
-
-      -- Rotate the main cursor.
-      set({ "n", "v" }, "<right>", mc.prevCursor)
-      set({ "n", "v" }, "<left>", mc.nextCursor)
-
-      -- Delete the main cursor.
-      set({ "n", "v" }, "<leader>x", mc.deleteCursor)
-
-      -- Add and remove cursors with control + left click.
-      set("n", "<c-leftmouse>", mc.handleMouse)
-
-      -- Easy way to add and remove cursors using the main cursor.
-      set({ "n", "v" }, "<c-q>", mc.toggleCursor)
-
-      -- Clone every cursor and disable the originals.
-      set({ "n", "v" }, "<leader><c-q>", mc.duplicateCursors)
-
-      set("n", "<esc>", function()
-        if not mc.cursorsEnabled() then
-          mc.enableCursors()
-        elseif mc.hasCursors() then
-          mc.clearCursors()
-        else
-          -- Default <esc> handler.
-        end
-      end)
-
-      -- bring back cursors if you accidentally clear them
-      set("n", "<leader>gv", mc.restoreCursors)
-
-      -- Align cursor columns.
-      set("v", "<leader>a", mc.alignCursors)
-
-      -- Split visual selections by regex.
-      -- conflicts with visual mode surround mapping
-      -- set("v", "S", mc.splitCursors)
-
-      -- Append/insert for each line of visual selections.
-      set("v", "I", mc.insertVisual)
-      set("v", "A", mc.appendVisual)
-
-      -- match new cursors within visual selections by regex.
-      set("v", "M", mc.matchCursors)
-
-      -- Rotate visual selection contents.
-      set("v", "<leader>t",
-        function() mc.transposeCursors(1) end)
-      set("v", "<leader>T",
-        function() mc.transposeCursors(-1) end)
-
-      -- Jumplist support
-      set({ "v", "n" }, "<c-i>", mc.jumpForward)
-      set({ "v", "n" }, "<c-o>", mc.jumpBackward)
-
-      -- Customize how cursors look.
-      local hl = vim.api.nvim_set_hl
-      hl(0, "MultiCursorCursor", { link = "Cursor" })
-      hl(0, "MultiCursorVisual", { link = "Visual" })
-      hl(0, "MultiCursorSign", { link = "SignColumn" })
-      hl(0, "MultiCursorDisabledCursor", { link = "Visual" })
-      hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
-      hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
-    end
-  },
+  -- {
+  --   "jake-stewart/multicursor.nvim",
+  --   branch = "1.0",
+  --   config = function()
+  --     local mc = require("multicursor-nvim")
+  --
+  --     mc.setup()
+  --
+  --     local set = vim.keymap.set
+  --
+  --     -- Add or skip cursor above/below the main cursor.
+  --     set({ "n", "v" }, "<up>",
+  --       function() mc.lineAddCursor(-1) end)
+  --     set({ "n", "v" }, "<down>",
+  --       function() mc.lineAddCursor(1) end)
+  --     set({ "n", "v" }, "<leader><up>",
+  --       function() mc.lineSkipCursor(-1) end)
+  --     set({ "n", "v" }, "<leader><down>",
+  --       function() mc.lineSkipCursor(1) end)
+  --
+  --     -- Add or skip adding a new cursor by matching word/selection
+  --     set({ "n", "v" }, "<leader>n",
+  --       function() mc.matchAddCursor(1) end)
+  --     set({ "n", "v" }, "<leader>s",
+  --       function() mc.matchSkipCursor(1) end)
+  --     set({ "n", "v" }, "<leader>N",
+  --       function() mc.matchAddCursor(-1) end)
+  --     set({ "n", "v" }, "<leader>S",
+  --       function() mc.matchSkipCursor(-1) end)
+  --
+  --     -- Add all matches in the document
+  --     set({ "n", "v" }, "<leader>A", mc.matchAllAddCursors)
+  --
+  --     -- You can also add cursors with any motion you prefer:
+  --     -- set("n", "<right>", function()
+  --     --     mc.addCursor("w")
+  --     -- end)
+  --     -- set("n", "<leader><right>", function()
+  --     --     mc.skipCursor("w")
+  --     -- end)
+  --
+  --     -- Rotate the main cursor.
+  --     set({ "n", "v" }, "<right>", mc.prevCursor)
+  --     set({ "n", "v" }, "<left>", mc.nextCursor)
+  --
+  --     -- Delete the main cursor.
+  --     set({ "n", "v" }, "<leader>x", mc.deleteCursor)
+  --
+  --     -- Add and remove cursors with control + left click.
+  --     set("n", "<c-leftmouse>", mc.handleMouse)
+  --
+  --     -- Easy way to add and remove cursors using the main cursor.
+  --     set({ "n", "v" }, "<c-q>", mc.toggleCursor)
+  --
+  --     -- Clone every cursor and disable the originals.
+  --     set({ "n", "v" }, "<leader><c-q>", mc.duplicateCursors)
+  --
+  --     set("n", "<esc>", function()
+  --       if not mc.cursorsEnabled() then
+  --         mc.enableCursors()
+  --       elseif mc.hasCursors() then
+  --         mc.clearCursors()
+  --       else
+  --         -- Default <esc> handler.
+  --       end
+  --     end)
+  --
+  --     -- bring back cursors if you accidentally clear them
+  --     set("n", "<leader>gv", mc.restoreCursors)
+  --
+  --     -- Align cursor columns.
+  --     set("v", "<leader>a", mc.alignCursors)
+  --
+  --     -- Split visual selections by regex.
+  --     -- conflicts with visual mode surround mapping
+  --     -- set("v", "S", mc.splitCursors)
+  --
+  --     -- Append/insert for each line of visual selections.
+  --     set("v", "I", mc.insertVisual)
+  --     set("v", "A", mc.appendVisual)
+  --
+  --     -- match new cursors within visual selections by regex.
+  --     set("v", "M", mc.matchCursors)
+  --
+  --     -- Rotate visual selection contents.
+  --     set("v", "<leader>t",
+  --       function() mc.transposeCursors(1) end)
+  --     set("v", "<leader>T",
+  --       function() mc.transposeCursors(-1) end)
+  --
+  --     -- Jumplist support
+  --     set({ "v", "n" }, "<c-i>", mc.jumpForward)
+  --     set({ "v", "n" }, "<c-o>", mc.jumpBackward)
+  --
+  --     -- Customize how cursors look.
+  --     local hl = vim.api.nvim_set_hl
+  --     hl(0, "MultiCursorCursor", { link = "Cursor" })
+  --     hl(0, "MultiCursorVisual", { link = "Visual" })
+  --     hl(0, "MultiCursorSign", { link = "SignColumn" })
+  --     hl(0, "MultiCursorDisabledCursor", { link = "Visual" })
+  --     hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+  --     hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
+  --   end
+  -- },
 
   -- show color samples inline
   {
