@@ -1150,6 +1150,8 @@ require("lazy").setup({
 
       vim.lsp.enable("elmls")
 
+      vim.lsp.enable('gleam')
+
       vim.lsp.config("tailwindcss", {
         filetypes = { "html", "css", "scss", "javascript", "typescript", "elm" },
         init_options = {
