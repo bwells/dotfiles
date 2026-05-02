@@ -6,6 +6,10 @@
 -- ~/.config/nvim/lua/util.lua
 -- ~/.config/nvim/lua/lsp.lua
 
+-- disable netrw before any plugin loads so nvim-tree can hijack directory buffers
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- load basic vim config
 require('opts')
 
@@ -744,7 +748,7 @@ require("lazy").setup({
   },
 
   {
-    'kyazdani42/nvim-tree.lua',
+    'nvim-tree/nvim-tree.lua',
     lazy = true,
     keys = {
       { "<c-g>", "<Cmd>NvimTreeToggle<CR>", defaults }
@@ -753,11 +757,10 @@ require("lazy").setup({
       require('nvim-tree').setup {
         disable_netrw       = true,
         hijack_netrw        = true,
-        open_on_tab         = false,
         hijack_cursor       = true,
-        update_cwd          = false,
-        git                 = {
-          ignore = true
+        sync_root_with_cwd  = false,
+        tab                 = {
+          sync = { open = false },
         },
         diagnostics         = {
           enable = false,
@@ -770,25 +773,18 @@ require("lazy").setup({
         },
         update_focused_file = {
           enable      = false,
-          update_cwd  = false,
-          ignore_list = {}
-        },
-        system_open         = {
-          cmd  = nil,
-          args = {}
+          update_root = false,
+          ignore_list = {},
         },
         filters             = {
-          dotfiles = false,
-          custom = {}
+          dotfiles    = false,
+          git_ignored = true,
+          custom      = {},
         },
         view                = {
           width = 30,
-          side = 'left',
-          -- mappings = {
-          --   custom_only = false,
-          --   list = {}
-          -- }
-        }
+          side  = 'left',
+        },
       }
     end
   },
