@@ -703,6 +703,7 @@ require("lazy").setup({
 
   {
     'daliusd/ghlite.nvim',
+    dependencies = { 'lewis6991/async.nvim' },
     config = function()
       require('ghlite').setup({
         --     debug = false, -- if set to true debugging information is written to ~/.ghlite.log file
