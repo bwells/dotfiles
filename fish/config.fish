@@ -30,7 +30,7 @@ alias inflate="/usr/local/bin/python3 -c 'import sys, zlib; sys.stdout.buffer.wr
 # add workspace to cd search path
 set -U CDPATH . ~ ~/workspace
 
-set -x KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-aws-config:/Users/kremlan/.kube/k3s-office-config:/Users/kremlan/.kube/k3s-azure-config
+set -x KUBECONFIG /Users/kremlan/.kube/config:/Users/kremlan/.kube/k3s-azure-config
 
 set -x UV_PYTHON_PREFERENC only-managed
 
@@ -68,6 +68,10 @@ ssh-add -A 2>/dev/null;
 complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
 
 uvx --generate-shell-completion fish | source
+
+
+# PR Review Chat group chat - for teams-cli
+set -x TEAMS_CHAT_ID 19:02449f32b5f24aa1962249d425897c7d@thread.v2
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
