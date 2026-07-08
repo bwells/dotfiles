@@ -9,10 +9,8 @@ local function disable_language_server(server_name)
   disabled_servers[server_name] = true
   vim.g.disabled_servers = disabled_servers
 
-  -- Stop the server if it's running
-  for _, client in ipairs(vim.lsp.get_clients({ name = server_name })) do
-    client:stop()
-  end
+  -- Disable the server and stop any running clients
+  vim.lsp.enable(server_name, false)
 end
 
 -- Function to enable a previously disabled language server
@@ -60,5 +58,10 @@ end, {
     return servers
   end
 })
+
+-- Aliases for removed nvim-lspconfig commands
+vim.api.nvim_create_user_command('LspInfo', function() vim.cmd('checkhealth vim.lsp') end, {})
+vim.api.nvim_create_user_command('LspRestart', function() vim.cmd('lsp restart') end, {})
+vim.api.nvim_create_user_command('LspLog', function() vim.cmd('edit ' .. vim.lsp.log.get_filename()) end, {})
 
 return M

@@ -74,6 +74,7 @@ vim.o.title = true
 
 --
 vim.o.timeoutlen = 500
+vim.o.updatetime = 250
 
 -- wildignore
 vim.opt.wildignore = {

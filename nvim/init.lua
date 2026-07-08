@@ -742,10 +742,25 @@ require("lazy").setup({
     -- }
   },
 
+  -- {
+  --   'akinsho/git-conflict.nvim',
+  --   version = "*",
+  --   config = true
+  -- },
+
   {
-    'akinsho/git-conflict.nvim',
-    version = "*",
-    config = true
+    'https://github.com/barrettruth/diffs.nvim',
+    event = "VeryLazy",
+    cmd = { "Diff" },
+    -- Config is read from vim.g.diffs when the plugin sources, so it must be
+    -- set in `init` (runs at startup) rather than `config` (runs too late).
+    init = function()
+      vim.g.diffs = {
+        integrations = {
+          gitsigns = true,
+        },
+      }
+    end,
   },
 
   {
@@ -1048,9 +1063,9 @@ require("lazy").setup({
 
   {
     'neovim/nvim-lspconfig',
-    lazy = true,
-    cmd = { 'LspInfo', 'Mason' },
-    event = { 'BufReadPre', 'BufNewFile' },
+    lazy = false,
+    -- cmd = { 'LspInfo', 'Mason' },
+    -- event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       {
         'williamboman/mason.nvim',
@@ -1117,6 +1132,7 @@ require("lazy").setup({
       vim.lsp.enable("yamlls")
 
       vim.lsp.config("ruff", {
+        root_markers = { 'pyproject.toml', 'ruff.toml', '.ruff.toml' },
         root_dir = util.get_root_dir({ 'pyproject.toml', 'ruff.toml', '.ruff.toml' }),
       })
       vim.lsp.enable("ruff")
@@ -1124,7 +1140,11 @@ require("lazy").setup({
       vim.lsp.config("basedpyright", {
         root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml" },
         root_dir = util.get_root_dir({ "pyproject.toml" }),
-        disableOrganizeImports = true,
+        settings = {
+          basedpyright = {
+            disableOrganizeImports = true,
+          },
+        },
         handlers = {
           ["textDocument/semanticTokens"] = function() end,
         },
@@ -1195,9 +1215,19 @@ require("lazy").setup({
       vim.lsp.enable("tailwindcss")
 
       vim.diagnostic.config({
-        signs = { severity = vim.diagnostic.severity.HINT },
-        virtual_text = { severity = vim.diagnostic.severity.WARN },
-        underline = { severity = vim.diagnostic.severity.ERROR },
+        signs = { severity = { min = vim.diagnostic.severity.HINT } },
+        virtual_text = { severity = { min = vim.diagnostic.severity.WARN } },
+        underline = { severity = { min = vim.diagnostic.severity.ERROR } },
+      })
+
+      local diag_timer = vim.uv.new_timer()
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        callback = function()
+          diag_timer:stop()
+          diag_timer:start(100, 0, vim.schedule_wrap(function()
+            vim.diagnostic.open_float({ scope = 'cursor', focusable = false })
+          end))
+        end,
       })
     end
   },
@@ -1296,7 +1326,7 @@ require("lazy").setup({
         --     --   return { "isort", "blue" }
         --   end
         -- end,
-        -- javascript = { { "prettierd", "prettier" } },
+        javascript = { { "eslint", "prettierd", "prettier" } },
         css = { "prettierd", "prettier", stop_after_first = true },
         elm = { "prettier", stop_after_first = true },
         -- javascript = { "prettierd", "prettier", stop_after_first = true },

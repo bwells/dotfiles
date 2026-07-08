@@ -66,8 +66,8 @@ map("n", "<leader><tab>", ":b#<cr>", defaults)
 -- map("i", "<C-k>", "<esc><c-w><c-k>", defaults)
 
 -- next and previous diagnostics
-map('n', '[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>', defaults)
-map('n', ']e', '<cmd>lua vim.diagnostic.goto_next()<CR>', defaults)
+map('n', '[e', '<cmd>lua vim.diagnostic.jump({ count = -1 })<CR>', defaults)
+map('n', ']e', '<cmd>lua vim.diagnostic.jump({ count = 1 })<CR>', defaults)
 
 map('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', defaults)
 map('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', defaults)

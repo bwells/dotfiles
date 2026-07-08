@@ -1,12 +1,6 @@
-local lspconfig_util = require 'lspconfig.util'
 local uv = vim.uv or vim.loop
 
 local M = {}
-
-local function is_git_path(path)
-  local gitpath = lspconfig_util.path.join(path, '.git')
-  return vim.fn.isdirectory(gitpath) == 1 or (uv.fs_stat(gitpath) or {}).type == 'file'
-end
 
 --- Return the topmost (highest) directory that contains a .git (dir or file)
 ---@param startpath string
@@ -16,8 +10,11 @@ function M.find_highest_git_ancestor(startpath)
   local current = startpath
   local highest
   while current do
-    if is_git_path(current) then highest = current end
-    -- local parent = lspconfig_util.path.dirname(current)
+    local gitpath = current .. '/.git'
+    local stat = uv.fs_stat(gitpath)
+    if stat and (stat.type == 'directory' or stat.type == 'file') then
+      highest = current
+    end
     local parent = vim.fs.dirname(current)
     if parent == current then break end
     current = parent
@@ -25,38 +22,43 @@ function M.find_highest_git_ancestor(startpath)
   return highest
 end
 
---- Build a root detector that prefers the topmost git root, else marker patterns.
---- Works with BOTH signatures:
----   1) dir = fn(fname)
----   2) fn(bufnr, on_dir)  -- must call on_dir(dir)
+--- Find the highest (closest to filesystem root) directory containing any of the given markers.
+---@param startpath string
+---@param patterns string[]
+---@return string|nil
+local function find_highest_marker(startpath, patterns)
+  local current = startpath
+  local highest
+  while current do
+    for _, pattern in ipairs(patterns) do
+      local stat = uv.fs_stat(current .. '/' .. pattern)
+      if stat then
+        highest = current
+        break
+      end
+    end
+    local parent = vim.fs.dirname(current)
+    if parent == current then break end
+    current = parent
+  end
+  return highest
+end
+
+--- Build a root detector for vim.lsp.config's root_dir.
+--- Prefers the highest marker file (closest to fs root), falls back to highest git ancestor.
 ---@param patterns string[]
 function M.get_root_dir(patterns)
-  -- Prebuild the marker finder (unpack the list!)
-  local marker_finder = lspconfig_util.root_pattern(unpack(patterns or {}))
+  return function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local startpath = fname ~= '' and vim.fs.dirname(fname) or uv.cwd()
 
-  -- The actual detector
-  local function detect(path_like)
-    -- path_like is either a filename or a directory; use it as-is
-    local git_root = M.find_highest_git_ancestor(path_like)
-    if git_root then
-      return git_root
+    local marker_root = find_highest_marker(startpath, patterns)
+    if marker_root then
+      return on_dir(marker_root)
     end
-    return marker_finder(path_like)
-  end
 
-  -- Adapter that supports both calling conventions
-  return function(a, b)
-    -- New core API: (bufnr, on_dir)
-    if type(a) == 'number' and type(b) == 'function' then
-      local bufnr, on_dir = a, b
-      local fname = vim.api.nvim_buf_get_name(bufnr)
-      local dir = detect(fname ~= '' and fname or vim.loop.cwd())
-      -- MUST call on_dir (pass nil to disable/skip)
-      return on_dir(dir)
-    end
-    -- Old lspconfig style: (fname) -> dir
-    local fname = a
-    return detect(fname)
+    local git_root = M.find_highest_git_ancestor(startpath)
+    return on_dir(git_root)
   end
 end
 
