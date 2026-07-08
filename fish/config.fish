@@ -141,5 +141,114 @@ function check_and_activate_venv --on-event fish_prompt
     end
 end
 
+function latest_tag --description "Print the latest semver tag for the current repo, or nothing if none exists"
+    git tag --list --sort=-v:refname | string match -r '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1
+end
+
+function next_tag --description "Print the next semver tag for the current repo (default bump: patch)"
+    set -l bump $argv[1]
+    if test -z "$bump"
+        set bump patch
+    end
+
+    set -l latest (latest_tag)
+
+    set -l prefix ""
+    set -l ver 0.0.0
+    if test -n "$latest"
+        if string match -q 'v*' -- $latest
+            set prefix v
+            set ver (string sub -s 2 -- $latest)
+        else
+            set ver $latest
+        end
+    end
+
+    set -l parts (string split . -- $ver)
+    set -l major $parts[1]
+    set -l minor $parts[2]
+    set -l patch $parts[3]
+
+    switch $bump
+        case major
+            set major (math $major + 1)
+            set minor 0
+            set patch 0
+        case minor
+            set minor (math $minor + 1)
+            set patch 0
+        case patch ''
+            set patch (math $patch + 1)
+        case '*'
+            echo "next_tag: unknown bump '$bump' (expected major/minor/patch)" >&2
+            return 1
+    end
+
+    echo "$prefix$major.$minor.$patch"
+end
+
+function predeploy --description "PR-merge cleanup: switch to main/master, pull, prune remotes, delete local branches with gone upstream"
+    git rev-parse --git-dir >/dev/null 2>&1; or begin
+        echo "predeploy: not in a git repo" >&2
+        return 1
+    end
+
+    set -l main_branch
+    if git show-ref --verify --quiet refs/heads/main
+        set main_branch main
+    else if git show-ref --verify --quiet refs/heads/master
+        set main_branch master
+    else
+        echo "predeploy: no main or master branch found" >&2
+        return 1
+    end
+
+    set -l current (git symbolic-ref --short HEAD 2>/dev/null)
+    if test "$current" != "$main_branch"
+        echo "→ git checkout $main_branch"
+        git checkout $main_branch; or return 1
+    end
+
+    echo "→ git pull -p"
+    git pull -p; or return 1
+
+    set -l gone (git branch -vv | awk '/: gone\]/ {sub(/^\* /, ""); print $1}')
+    if test (count $gone) -eq 0
+        echo "✓ no local branches with pruned upstreams"
+        return 0
+    end
+
+    echo "→ deleting local branches with pruned upstreams:"
+    for b in $gone
+        echo "  - $b"
+    end
+    for b in $gone
+        git branch -D $b; or return 1
+    end
+end
+
+function deploy --description "Tag, push, and run 'inv deploy'. Uses arg as tag, otherwise next_tag."
+    set -l tag $argv[1]
+    if test -z "$tag"
+        set -l prev (latest_tag)
+        if test -n "$prev"
+            echo "→ previous tag: $prev"
+        else
+            echo "→ previous tag: (none found)"
+        end
+        set tag (next_tag); or return 1
+        echo "→ next tag:     $tag"
+    end
+
+    echo "→ git tag $tag"
+    git tag $tag; or return 1
+
+    echo "→ git push origin $tag"
+    git push origin $tag; or return 1
+
+    echo "→ inv deploy $tag"
+    inv deploy $tag
+end
+
 # opencode
 fish_add_path /Users/kremlan/.opencode/bin
