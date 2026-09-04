@@ -1214,6 +1214,11 @@ require("lazy").setup({
       })
       vim.lsp.enable("tailwindcss")
 
+      -- ESLint: diagnostics plus fix-on-save (conform calls its formatter for
+      -- JS/TS). nvim-lspconfig's defaults suit ESLint 9 flat config and only
+      -- attach when an eslint config file exists in the project tree.
+      vim.lsp.enable("eslint")
+
       vim.diagnostic.config({
         signs = { severity = { min = vim.diagnostic.severity.HINT } },
         virtual_text = { severity = { min = vim.diagnostic.severity.WARN } },
@@ -1310,11 +1315,13 @@ require("lazy").setup({
     -- },
     -- Everything in opts will be passed to setup()
     opts = {
-      format_on_save = {
-        -- These options will be passed to conform.format()
+      -- Baseline options for every conform.format() call. Per-filetype
+      -- entries in formatters_by_ft may override these.
+      default_format_opts = {
         timeout_ms = 500,
         lsp_format = "fallback",
       },
+      format_on_save = true,
       -- Define your formatters
       formatters_by_ft = {
         -- lua = { "stylua" },
@@ -1326,10 +1333,18 @@ require("lazy").setup({
         --     --   return { "isort", "blue" }
         --   end
         -- end,
-        javascript = { { "eslint", "prettierd", "prettier" } },
+        -- JS/TS: no CLI formatter. Formatting comes from the eslint language
+        -- server (enabled in the nvim-lspconfig block), whose formatting
+        -- request applies every eslint fix, so the project's eslint style
+        -- rules are the formatter. `name` pins the LSP client so no other
+        -- server's formatter is used; eslint on a large file can exceed
+        -- the default timeout. Does nothing in projects without eslint.
+        javascript = { lsp_format = "prefer", name = "eslint", timeout_ms = 2000 },
+        javascriptreact = { lsp_format = "prefer", name = "eslint", timeout_ms = 2000 },
+        typescript = { lsp_format = "prefer", name = "eslint", timeout_ms = 2000 },
+        typescriptreact = { lsp_format = "prefer", name = "eslint", timeout_ms = 2000 },
         css = { "prettierd", "prettier", stop_after_first = true },
         elm = { "prettier", stop_after_first = true },
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
       -- Customize formatters
       formatters = {
