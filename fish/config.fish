@@ -69,9 +69,28 @@ complete -c ccdecrypt -x -a " ( __fish_complete_suffix .cpt ) "
 
 uvx --generate-shell-completion fish | source
 
+# Secrets (API keys and tokens) live in ~/.config/fish/conf.d/secrets.fish,
+# which is gitignored and auto-sourced by fish. On a new machine, recreate
+# it with `set -x NAME value` lines for:
+#   OPENAI_API_KEY
+#   ANTHROPIC_API_KEY
+#   GEMINI_API_KEY
+#   HF_TOKEN
+#   GITHUB_PERSONAL_ACCESS_TOKEN
+#   RUNPOD_API_KEY
+#   ELEVENLABS_API_KEY
+#   LOGGLY_TOKEN
+#   ZENDESK_API_TOKEN
+
+set -x LOGGLY_SUBDOMAIN alta
+set -x ZENDESK_SUBDOMAIN altalang
+set -x ZENDESK_EMAIL bwells@altalang.com
 
 # PR Review Chat group chat - for teams-cli
 set -x TEAMS_CHAT_ID 19:02449f32b5f24aa1962249d425897c7d@thread.v2
+
+set -x PR_ASSET_BUCKET alta-pr-assets
+set -x PR_ASSET_PUBLIC_BASE_URL https://pr-assets.ops.altalang.com
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
