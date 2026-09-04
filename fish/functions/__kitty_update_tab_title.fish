@@ -1,4 +1,4 @@
-function __kitty_update_tab_title --description 'Set kitty TAB title (not window title)'
+function __kitty_update_tab_title --on-variable PWD --description 'Set kitty TAB title (not window title)'
     test -n "$KITTY_WINDOW_ID"; or return
 
     set -l title (__project_title)
