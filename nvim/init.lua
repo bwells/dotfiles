@@ -592,6 +592,35 @@ require("lazy").setup({
     end
   },
 
+  {
+    "emrearmagan/atlas.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons", -- optional but recommended
+      "esmuellert/codediff.nvim",    -- optional (PullRequest diff)
+      "sindrets/diffview.nvim",      -- optional; or "dlyongemallo/diffview-plus.nvim"
+    },
+    opts = {
+      providers = {
+        github = {},
+      },
+      pulls = {
+        diff = {
+          -- check the PR out into a temp worktree so LSP attaches during review
+          lsp = { enabled = true, link = { ".venv", "node_modules" } },
+        },
+      },
+      keymaps = {
+        pulls = {
+          review = {
+            -- free ]c/[c for CodeDiff's hunk navigation
+            next_comment = "]r",
+            prev_comment = "[r",
+          },
+        },
+      },
+    },
+  },
+
   -- git changes in the number column
   -- also provides hs to stage changes and ]c,[c to navigate to changes
   {
@@ -748,20 +777,20 @@ require("lazy").setup({
   --   config = true
   -- },
 
-  {
-    'https://github.com/barrettruth/diffs.nvim',
-    event = "VeryLazy",
-    cmd = { "Diff" },
-    -- Config is read from vim.g.diffs when the plugin sources, so it must be
-    -- set in `init` (runs at startup) rather than `config` (runs too late).
-    init = function()
-      vim.g.diffs = {
-        integrations = {
-          gitsigns = true,
-        },
-      }
-    end,
-  },
+  -- {
+  --   'https://github.com/barrettruth/diffs.nvim',
+  --   event = "VeryLazy",
+  --   cmd = { "Diff" },
+  --   -- Config is read from vim.g.diffs when the plugin sources, so it must be
+  --   -- set in `init` (runs at startup) rather than `config` (runs too late).
+  --   init = function()
+  --     vim.g.diffs = {
+  --       integrations = {
+  --         gitsigns = true,
+  --       },
+  --     }
+  --   end,
+  -- },
 
   {
     'nvim-tree/nvim-tree.lua',
