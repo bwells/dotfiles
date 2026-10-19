@@ -1,3 +1,7 @@
+# The following lines were added by Docker Desktop to add commands to your PATH.
+export PATH="$PATH:/Users/kremlan/.docker/bin"
+# End of Docker Desktop section.
+
 # create an alias to edit fish config
 abbr -a fe vim ~/.config/fish/config.fish
 abbr -a resource source ~/.config/fish/config.fish
@@ -231,18 +235,38 @@ function predeploy --description "PR-merge cleanup: switch to main/master, pull,
     echo "→ git pull -p"
     git pull -p; or return 1
 
-    set -l gone (git branch -vv | awk '/: gone\]/ {sub(/^\* /, ""); print $1}')
-    if test (count $gone) -eq 0
+    # for-each-ref instead of parsing `git branch -vv`, whose `*`/`+` markers
+    # (current branch / checked out in another worktree) shift the columns.
+    set -l gone
+    set -l in_worktree
+    for line in (git for-each-ref --format='%(refname:short)	%(upstream:track)	%(worktreepath)' refs/heads)
+        set -l fields (string split \t -- $line)
+        test "$fields[2]" = "[gone]"; or continue
+        if test -n "$fields[3]"
+            set -a in_worktree "$fields[1] ($fields[3])"
+        else
+            set -a gone $fields[1]
+        end
+    end
+
+    if test (count $gone) -eq 0 -a (count $in_worktree) -eq 0
         echo "✓ no local branches with pruned upstreams"
         return 0
     end
 
-    echo "→ deleting local branches with pruned upstreams:"
-    for b in $gone
-        echo "  - $b"
+    if test (count $gone) -gt 0
+        echo "→ deleting local branches with pruned upstreams:"
+        for b in $gone
+            echo "  - $b"
+        end
+        git branch -D $gone; or return 1
     end
-    for b in $gone
-        git branch -D $b; or return 1
+
+    if test (count $in_worktree) -gt 0
+        echo "⚠ skipped (checked out in a worktree; `git worktree remove` it first):"
+        for b in $in_worktree
+            echo "  - $b"
+        end
     end
 end
 
