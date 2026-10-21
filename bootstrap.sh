@@ -36,6 +36,8 @@ mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 ln -s ~/dotfiles/nvim/ftplugin ~/.config/nvim/ftplugin
 ln -s ~/dotfiles/nvim/lua ~/.config/nvim/lua
+mkdir -p ~/.claude
+ln -s ~/dotfiles/claude/statusline-command.sh ~/.claude/statusline-command.sh
 
 # setup repo checkouts root
 mkdir ~/workspace
