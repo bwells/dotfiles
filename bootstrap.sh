@@ -12,7 +12,7 @@ ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 # install brew. installs via .pkg these days, download from homebrew website
 
 # brew install basic packages
-brew install awscli ccrypt curl elm fd fish fzf git go kops kubernetes-cli kubectx mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv s5cmd ghostty
+brew install awscli ccrypt curl elm fd fish fzf git git-lfs go kops kubernetes-cli kubectx mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv s5cmd ghostty
 
 brew install --cask font-meslo-lg-nerd-font kitty
 
@@ -30,6 +30,9 @@ ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/.pylintrc ~/.pylintrc
 ln -s ~/dotfiles/.vimrc ~/.vimrc
 ln -s ~/dotfiles/fish ~/.config/fish
+# fzf key bindings (conf.d is gitignored; fish_user_key_bindings calls fzf_key_bindings)
+mkdir -p ~/.config/fish/conf.d
+printf 'if type -q fzf\n    fzf --fish | source\nend\n' > ~/.config/fish/conf.d/fzf.fish
 ln -s ~/dotfiles/kitty ~/.config/kitty
 ln -s ~/dotfiles/ghostty.config ~/Library/Application\ Support/com.mitchellh.ghostty/config
 mkdir -p ~/.config/nvim
@@ -39,6 +42,7 @@ ln -s ~/dotfiles/nvim/lua ~/.config/nvim/lua
 mkdir -p ~/.claude
 ln -s ~/dotfiles/claude/statusline-command.sh ~/.claude/statusline-command.sh
 ln -s ~/dotfiles/claude/settings.json ~/.claude/settings.json
+ln -s ~/dotfiles/claude/hooks ~/.claude/hooks
 
 # setup repo checkouts root
 mkdir ~/workspace
