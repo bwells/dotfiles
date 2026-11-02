@@ -43,6 +43,7 @@ mkdir -p ~/.claude
 ln -s ~/dotfiles/claude/statusline-command.sh ~/.claude/statusline-command.sh
 ln -s ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -s ~/dotfiles/claude/hooks ~/.claude/hooks
+ln -s ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
 
 # setup repo checkouts root
 mkdir ~/workspace
