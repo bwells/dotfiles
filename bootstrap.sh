@@ -44,6 +44,9 @@ ln -s ~/dotfiles/claude/statusline-command.sh ~/.claude/statusline-command.sh
 ln -s ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -s ~/dotfiles/claude/hooks ~/.claude/hooks
 ln -s ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
+mkdir -p ~/.codex ~/.gemini
+ln -s ~/dotfiles/claude/CLAUDE.md ~/.codex/AGENTS.md
+ln -s ~/dotfiles/claude/CLAUDE.md ~/.gemini/GEMINI.md
 
 # setup repo checkouts root
 mkdir ~/workspace
