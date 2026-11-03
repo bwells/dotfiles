@@ -4,6 +4,6 @@ End every turn where you're blocked on me, or where the next step needs me, with
 
 If there are several, put the quickest or most blocking one first, and say what you'll get on with in the meantime.
 
-If you don't need anything from me, say "Nothing needed from you right now", and say whether the work is finished or still going.
+If you don't need anything from me, leave the section out entirely. Don't write "Nothing needed from you" or any placeholder in its place; just say whether the work is finished or still going as part of your normal recap.
 
 Never bury a request for me in the middle of a long update.
