@@ -2,7 +2,7 @@ function claude-find --description 'Fuzzy-find any Claude Code session by its pr
     # Index: ~/.claude/history.jsonl records every prompt with its project dir and session id,
     # so one search covers sessions from every directory. Titles come from the transcripts.
     #   enter   cd to the session's directory and `claude --resume` it here
-    #   ctrl-o  resume it in a new Rex tab instead (when running inside Rex)
+    #   ctrl-o  resume it in a new Rex tab and switch to it; the finder stays open here
     #   ctrl-y  copy the session id
     set -l hist ~/.claude/history.jsonl
     if not test -r $hist
@@ -79,11 +79,12 @@ function claude-find --description 'Fuzzy-find any Claude Code session by its pr
         | fzf --ansi --delimiter '\t' --with-nth 3 --exact --no-sort --no-hscroll --ellipsis '' \
               --layout reverse --info inline-right --border none \
               --prompt 'claude ❯ ' --query "$argv" \
-              --header 'enter resume · ctrl-o new Rex tab · ctrl-y copy id' \
+              --header 'enter resume here · ctrl-o open in new Rex tab · ctrl-y copy id' \
               --with-shell 'fish -c' \
               --preview '__claude_find_preview {1} {q}' \
               --preview-window 'right,50%,wrap,border-left,<160(down,55%,wrap,border-top)' \
-              --expect 'ctrl-o,ctrl-y'
+              --bind 'ctrl-o:transform-header(__claude_find_open_tab {1} {2})' \
+              --expect 'ctrl-y'
     )
     or return
 
@@ -102,11 +103,6 @@ function claude-find --description 'Fuzzy-find any Claude Code session by its pr
         echo "claude-find: directory $dir no longer exists (deleted worktree or tmp scratchpad?)." >&2
         echo "Transcript: "(path resolve ~/.claude/projects/*/$sid.jsonl) >&2
         return 1
-    end
-
-    if test "$key" = ctrl-o; and set -q REX_SESSION
-        rex window new -s $REX_SESSION -c $dir (path basename $dir) -- fish -lc "claude --resume $sid"
-        return
     end
 
     cd $dir; and claude --resume $sid
