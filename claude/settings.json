@@ -44,19 +44,10 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "fable",
+  "model": "opus",
+  "cleanupPeriodDays": 90,
   "hooks": {
     "SessionStart": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/kremlan/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10
-          }
-        ]
-      },
       {
         "hooks": [
           {
@@ -76,15 +67,11 @@
     "command": "sh ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "code-review@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "pr-review-toolkit@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
     "superpowers@claude-plugins-official": false,
     "mattpocock-skills@claude-plugins-official": true
   },
@@ -97,6 +84,11 @@
     }
   },
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "high"
+    }
+  },
   "advisorModel": "fable",
   "tui": "fullscreen",
   "voice": {
