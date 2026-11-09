@@ -4,6 +4,8 @@ function claude-find --description 'Fuzzy-find any Claude Code session by its pr
     #   enter   cd to the session's directory and `claude --resume` it here
     #   ctrl-o  resume it in a new Rex tab and switch to it; the finder stays open here
     #   ctrl-y  copy the session id
+    #   tab     mark sessions; ctrl-e exports the marked ones (or the current one) with claude-export,
+    #           ctrl-s sends them to another Rex host with claude-send
     set -l hist ~/.claude/history.jsonl
     if not test -r $hist
         echo "claude-find: $hist not found" >&2
@@ -79,19 +81,27 @@ function claude-find --description 'Fuzzy-find any Claude Code session by its pr
         | fzf --ansi --delimiter '\t' --with-nth 3 --exact --no-sort --no-hscroll --ellipsis '' \
               --layout reverse --info inline-right --border none \
               --prompt 'claude ❯ ' --query "$argv" \
-              --header 'enter resume here · ctrl-o open in new Rex tab · ctrl-y copy id' \
+              --multi --header 'enter resume here · ctrl-o new Rex tab · ctrl-y copy id · tab mark · ctrl-e export · ctrl-s send' \
               --with-shell 'fish -c' \
               --preview '__claude_find_preview {1} {q}' \
               --preview-window 'right,50%,wrap,border-left,<160(down,55%,wrap,border-top)' \
               --bind 'ctrl-o:transform-header(__claude_find_open_tab {1} {2})' \
-              --expect 'ctrl-y'
+              --expect 'ctrl-y,ctrl-e,ctrl-s'
     )
     or return
 
     set -l key $picked[1]
+    if test "$key" = ctrl-e
+        claude-export (string split -f1 \t -- $picked[2..])
+        return
+    end
+    if test "$key" = ctrl-s
+        claude-send (string split -f1 \t -- $picked[2..])
+        return
+    end
     set -l fields (string split \t -- $picked[2])
     set -l sid $fields[1]
-    set -l dir $fields[2]
+    set -l dir (__claude_session_dir $sid; or echo $fields[2])
 
     if test "$key" = ctrl-y
         printf '%s' $sid | pbcopy

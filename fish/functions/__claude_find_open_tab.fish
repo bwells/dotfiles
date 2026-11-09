@@ -1,7 +1,7 @@
 function __claude_find_open_tab --description 'claude-find ctrl-o: resume a session in a new, focused Rex tab; prints the new fzf header'
     set -l sid $argv[1]
-    set -l dir $argv[2]
-    set -l keys 'enter resume here · ctrl-o open in new Rex tab · ctrl-y copy id'
+    set -l dir (__claude_session_dir $sid; or echo $argv[2])
+    set -l keys 'enter resume here · ctrl-o new Rex tab · ctrl-y copy id · tab mark · ctrl-e export · ctrl-s send'
     set -l red (set_color red)
     set -l green (set_color green)
     set -l off (set_color normal)
