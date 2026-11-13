@@ -15,6 +15,10 @@ ssh-keygen -t ed25519 -C "kremlan@dioxin.com"
 brew install awscli ccrypt curl elm fd fish fzf git git-lfs go kops kubernetes-cli kubectx mysql neovim nmap node ripgrep sops sqlite stern tmux vim python stern pkg-config uv s5cmd ghostty
 
 brew install --cask font-meslo-lg-nerd-font kitty
+# On a fresh account ~/Library/Fonts doesn't exist until the cask creates it, and
+# fontd doesn't notice the new dir, so apps (Ghostty) silently fall back to their
+# default font. Restarting fontd (it respawns on demand) makes it pick Meslo up.
+killall fontd
 
 # change default shell to fish
 # add /opt/homebrew/bin/fish to /etc/shells
@@ -35,6 +39,8 @@ mkdir -p ~/.config/fish/conf.d
 printf 'if type -q fzf\n    fzf --fish | source\nend\n' > ~/.config/fish/conf.d/fzf.fish
 ln -s ~/dotfiles/kitty ~/.config/kitty
 ln -s ~/dotfiles/ghostty.config ~/Library/Application\ Support/com.mitchellh.ghostty/config
+mkdir -p ~/.config/rex
+ln -s ~/dotfiles/rex/init.lua ~/.config/rex/init.lua
 mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 ln -s ~/dotfiles/nvim/ftplugin ~/.config/nvim/ftplugin
