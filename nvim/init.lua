@@ -421,7 +421,18 @@ require("lazy").setup({
       { "gc", mode = "x" },
     },
     config = function()
-      require('Comment').setup()
+      require('Comment').setup({
+        -- Neovim 0.12's vim.treesitter.get_parser() returns nil instead of
+        -- throwing when a filetype has no parser, which Comment.nvim doesn't
+        -- handle ("[Comment.nvim] nil"). Resolve the commentstring ourselves
+        -- in that case so Comment.nvim never touches the nil parser.
+        pre_hook = function(ctx)
+          local ok, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })
+          if not ok or not parser then
+            return require('Comment.ft').get(vim.bo.filetype, ctx.ctype) or vim.bo.commentstring
+          end
+        end,
+      })
 
       -- set the comment string for .txt to "# "
       local ft = require('Comment.ft')
@@ -1271,6 +1282,24 @@ require("lazy").setup({
     lazy = false,
     event = { 'BufReadPre' },
     build = ':TSUpdate',
+    config = function()
+      -- Equivalent of the old `ensure_installed = "all"` /
+      -- `ignore_install = { "phpdoc" }` / `highlight.enable = true` setup,
+      -- which the nvim-treesitter `main` branch no longer provides.
+      local ts = require('nvim-treesitter')
+      local languages = vim.tbl_filter(function(lang)
+        return lang ~= 'phpdoc'
+      end, ts.get_available())
+      ts.install(languages) -- async; no-op for parsers already installed
+
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('treesitter_highlight', { clear = true }),
+        callback = function(args)
+          -- silently skipped for filetypes without a parser
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
+    end,
     dependencies = {
       {
         'nvim-treesitter/nvim-treesitter-textobjects',
