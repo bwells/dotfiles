@@ -615,9 +615,11 @@ require("lazy").setup({
         github = {},
       },
       pulls = {
+        -- check the PR out into a temp worktree so LSP attaches during review;
+        -- link these from the main checkout so the language servers find deps
+        worktree = { link = { ".venv", "node_modules" } },
         diff = {
-          -- check the PR out into a temp worktree so LSP attaches during review
-          lsp = { enabled = true, link = { ".venv", "node_modules" } },
+          lsp = { enabled = true },
         },
       },
       keymaps = {
